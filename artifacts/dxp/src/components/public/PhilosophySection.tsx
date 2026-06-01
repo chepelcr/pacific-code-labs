@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { BookOpen, Users, Leaf } from "lucide-react";
+import { parseRichText } from "@/lib/rich-text";
 import philosophyData from "@/content/philosophy.json";
 
 export function PhilosophySection() {
@@ -85,7 +86,7 @@ export function PhilosophySection() {
                 <h3 className="text-xl font-bold text-[#0F172A] dark:text-white min-w-0">{pillar.title}</h3>
               </div>
 
-              <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{pillar.text}</p>
+              <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{parseRichText(pillar.text)}</p>
 
               {/* Bottom accent */}
               <div

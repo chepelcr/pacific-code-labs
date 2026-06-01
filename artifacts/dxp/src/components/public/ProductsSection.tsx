@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { resolveIcon } from "@/lib/icons";
+import { parseRichText } from "@/lib/rich-text";
 import { listActiveProducts } from "@/services/products.service";
 
 export function ProductsSection() {
@@ -81,7 +82,7 @@ export function ProductsSection() {
                   >
                     {tr.tagline}
                   </p>
-                  <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed mb-8">{tr.description}</p>
+                  <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed mb-8">{parseRichText(tr.description)}</p>
 
                   {/* Actions — pinned to the bottom so footers align across cards */}
                   <div className="flex items-center gap-3 mt-auto pt-2">

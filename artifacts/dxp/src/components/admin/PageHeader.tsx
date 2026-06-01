@@ -1,14 +1,30 @@
 import { Download } from "lucide-react";
+import { SaveButton } from "./AdminUI";
 
 interface Props {
   title: string;
   description?: string;
+  /** Standardized primary save (consistent top-right placement across pages). */
+  onSave?: () => void;
+  saving?: boolean;
+  saved?: boolean;
+  saveLabel?: string;
   onExport?: () => void;
   exportLabel?: string;
   action?: React.ReactNode;
 }
 
-export function PageHeader({ title, description, onExport, exportLabel = "Export JSON", action }: Props) {
+export function PageHeader({
+  title,
+  description,
+  onSave,
+  saving,
+  saved,
+  saveLabel,
+  onExport,
+  exportLabel = "Export JSON",
+  action,
+}: Props) {
   return (
     <div className="flex items-start justify-between gap-4 mb-8" data-testid="page-header">
       <div>
@@ -17,6 +33,7 @@ export function PageHeader({ title, description, onExport, exportLabel = "Export
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         {action}
+        {onSave && <SaveButton onClick={onSave} saving={saving} saved={saved} label={saveLabel} />}
         {onExport && (
           <button
             onClick={onExport}

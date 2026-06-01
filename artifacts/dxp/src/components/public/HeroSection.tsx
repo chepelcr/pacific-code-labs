@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
+import { parseRichText } from "@/lib/rich-text";
 import heroData from "@/content/hero.json";
 
 export function HeroSection() {
@@ -74,10 +75,7 @@ export function HeroSection() {
           className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0F172A] dark:text-white leading-tight tracking-tight mb-6"
           data-testid="hero-title"
         >
-          {content.title.split(" ").slice(0, 4).join(" ")}{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#06B6D4]">
-            {content.title.split(" ").slice(4).join(" ")}
-          </span>
+          {parseRichText(content.title)}
         </h1>
 
         {/* Subtitle */}

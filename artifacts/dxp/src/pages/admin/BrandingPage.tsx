@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { Upload, Image as ImageIcon, CheckCircle, AlertCircle, RefreshCw } from "lucide-react";
+import { uploadAsset } from "@/lib/local-cms";
 
 interface BrandAsset {
   label: string;
@@ -70,6 +71,9 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
     if (!preview) return;
     localStorage.setItem(asset.storageKey, preview);
     setSaved(true);
+    // In local dev, write the image into public/ so it's committed with the repo.
+    const targetFile = asset.currentUrl.replace(/^\//, "");
+    void uploadAsset(targetFile, preview);
     // Apply favicon live
     if (asset.storageKey === "pcl-favicon-url") {
       const link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
