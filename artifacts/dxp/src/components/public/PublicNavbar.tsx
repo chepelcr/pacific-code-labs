@@ -24,9 +24,7 @@ export function PublicNavbar() {
   });
   const lang = i18n.language as "es" | "en";
 
-  useEffect(() => {
-    applyTheme(dark);
-  }, [dark]);
+  useEffect(() => { applyTheme(dark); }, [dark]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -42,22 +40,20 @@ export function PublicNavbar() {
 
   const toggleTheme = () => setDark((d) => !d);
 
+  /* Tailwind classes change between light/dark based on the `.dark` class on <html> */
+  const navBg = scrolled
+    ? "bg-white/95 dark:bg-[#0F172A]/95 shadow-sm dark:shadow-none border-b border-[#E2E8F0]/80 dark:border-white/5 backdrop-blur-md"
+    : "bg-transparent";
+
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0F172A]/95 backdrop-blur-md shadow-lg border-b border-white/5"
-          : "bg-transparent"
-      }`}
-      data-testid="public-navbar"
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`} data-testid="public-navbar">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             <Logo size={36} />
-            <span className="text-white font-semibold tracking-tight hidden sm:block">
+            <span className="text-[#0F172A] dark:text-white font-semibold tracking-tight hidden sm:block">
               Pacific Code Labs
             </span>
           </a>
@@ -70,7 +66,7 @@ export function PublicNavbar() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-white/70 hover:text-white text-sm font-medium transition-colors"
+                  className="text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium transition-colors"
                   data-testid={`nav-link-${item.href.replace("#", "")}`}
                 >
                   {item.label[lang] ?? item.label.es}
@@ -83,7 +79,7 @@ export function PublicNavbar() {
             {/* Language toggle */}
             <button
               onClick={toggleLang}
-              className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/8 text-sm font-medium transition-all"
+              className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 text-sm font-medium transition-all"
               data-testid="lang-toggle"
               title={lang === "es" ? "Switch to English" : "Cambiar a Español"}
             >
@@ -94,19 +90,17 @@ export function PublicNavbar() {
             {/* Dark / light toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/8 transition-all"
+              className="p-2 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 transition-all"
               data-testid="theme-toggle"
               title={dark ? "Modo claro" : "Modo oscuro"}
             >
-              {dark
-                ? <Sun className="w-4 h-4" />
-                : <Moon className="w-4 h-4" />}
+              {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
             {/* Admin link */}
             <a
               href="/admin"
-              className="hidden sm:block px-2 py-1.5 rounded-lg text-xs text-white/35 hover:text-white/60 hover:bg-white/5 transition-all"
+              className="hidden sm:block px-2 py-1.5 rounded-lg text-xs text-[#94A3B8] hover:text-[#475569] dark:text-white/35 dark:hover:text-white/60 hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-all"
               data-testid="admin-link"
             >
               Admin
@@ -115,7 +109,7 @@ export function PublicNavbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/8 transition-all"
+              className="md:hidden p-2 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 transition-all"
               data-testid="mobile-menu-toggle"
             >
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -126,7 +120,7 @@ export function PublicNavbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#0F172A]/98 backdrop-blur-md border-t border-white/5 px-4 py-4 space-y-1">
+        <div className="md:hidden bg-white/98 dark:bg-[#0F172A]/98 backdrop-blur-md border-t border-[#E2E8F0] dark:border-white/5 px-4 py-4 space-y-1">
           {[...navigationData.items]
             .sort((a, b) => a.order - b.order)
             .map((item) => (
@@ -134,7 +128,7 @@ export function PublicNavbar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className="block text-white/70 hover:text-white text-sm font-medium py-2 px-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="block text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium py-2 px-2 rounded-lg hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-colors"
               >
                 {item.label[lang] ?? item.label.es}
               </a>

@@ -17,7 +17,7 @@ export function CaseStudiesSection() {
   return (
     <section
       id="case-studies"
-      className="py-24 bg-white"
+      className="py-24 bg-white dark:bg-[#0F172A]"
       data-testid="case-studies-section"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,10 +25,10 @@ export function CaseStudiesSection() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
             {t("caseStudies.title")}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
             {t("caseStudies.title")}
           </h2>
-          <p className="text-[#64748B] max-w-xl mx-auto">{t("caseStudies.subtitle")}</p>
+          <p className="text-[#64748B] dark:text-white/50 max-w-xl mx-auto">{t("caseStudies.subtitle")}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -39,10 +39,10 @@ export function CaseStudiesSection() {
             return (
               <div
                 key={cs.id}
-                className="rounded-2xl border border-[#E2E8F0] overflow-hidden hover:shadow-xl transition-all duration-300"
+                className="rounded-2xl border border-[#E2E8F0] dark:border-white/8 overflow-hidden hover:shadow-xl transition-all duration-300"
                 data-testid={`case-study-card-${cs.id}`}
               >
-                {/* Header */}
+                {/* Header — always dark gradient (intentional brand design element) */}
                 <div
                   className="px-8 py-6 relative overflow-hidden"
                   style={{ background: `linear-gradient(135deg, #0F172A, #1e3a5f)` }}
@@ -64,7 +64,7 @@ export function CaseStudiesSection() {
                 </div>
 
                 {/* Body */}
-                <div className="p-8 space-y-5 bg-white">
+                <div className="p-8 space-y-5 bg-white dark:bg-white/5">
                   {[
                     { key: "challenge", label: t("caseStudies.challenge"), icon: Zap, color: "#F59E0B" },
                     { key: "solution", label: t("caseStudies.solution"), icon: Zap, color: "#2563EB" },
@@ -84,7 +84,7 @@ export function CaseStudiesSection() {
                           <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: c }}>
                             {label}
                           </div>
-                          <p className="text-[#475569] text-sm leading-relaxed">{text}</p>
+                          <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{text}</p>
                         </div>
                       </div>
                     );

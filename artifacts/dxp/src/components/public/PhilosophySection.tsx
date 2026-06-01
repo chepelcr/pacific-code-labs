@@ -36,7 +36,7 @@ export function PhilosophySection() {
   return (
     <section
       id="philosophy"
-      className="py-24 bg-[#F8FAFC] relative overflow-hidden"
+      className="py-24 bg-[#F8FAFC] dark:bg-[#111827] relative overflow-hidden"
       data-testid="philosophy-section"
     >
       {/* Decorative pattern */}
@@ -53,17 +53,17 @@ export function PhilosophySection() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10B981]/10 text-[#10B981] text-xs font-semibold uppercase tracking-widest mb-4">
             {t("philosophy.title")}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
             {t("philosophy.title")}
           </h2>
-          <p className="text-[#64748B] max-w-xl mx-auto">{t("philosophy.subtitle")}</p>
+          <p className="text-[#64748B] dark:text-white/50 max-w-xl mx-auto">{t("philosophy.subtitle")}</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {pillars.map((pillar, idx) => (
             <div
               key={pillar.key}
-              className="relative group rounded-2xl bg-white border border-[#E2E8F0] p-8 hover:shadow-lg transition-all duration-300 overflow-hidden"
+              className="relative group rounded-2xl bg-white dark:bg-white/5 border border-[#E2E8F0] dark:border-white/8 p-8 hover:shadow-lg dark:hover:shadow-none dark:hover:bg-white/8 transition-all duration-300 overflow-hidden"
               data-testid={`philosophy-pillar-${pillar.key}`}
             >
               {/* Number */}
@@ -82,8 +82,8 @@ export function PhilosophySection() {
                 <pillar.icon className="w-6 h-6" style={{ color: pillar.color }} />
               </div>
 
-              <h3 className="text-xl font-bold text-[#0F172A] mb-3">{pillar.title}</h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">{pillar.text}</p>
+              <h3 className="text-xl font-bold text-[#0F172A] dark:text-white mb-3">{pillar.title}</h3>
+              <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{pillar.text}</p>
 
               {/* Bottom accent */}
               <div

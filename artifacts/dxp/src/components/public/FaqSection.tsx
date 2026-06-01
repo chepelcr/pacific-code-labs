@@ -15,7 +15,7 @@ export function FaqSection() {
   return (
     <section
       id="faq"
-      className="py-24 bg-[#F8FAFC]"
+      className="py-24 bg-[#F8FAFC] dark:bg-[#111827]"
       data-testid="faq-section"
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,10 +23,10 @@ export function FaqSection() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
             FAQ
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
             {t("faq.title")}
           </h2>
-          <p className="text-[#64748B]">{t("faq.subtitle")}</p>
+          <p className="text-[#64748B] dark:text-white/50">{t("faq.subtitle")}</p>
         </div>
 
         <div className="space-y-3">
@@ -39,8 +39,8 @@ export function FaqSection() {
                 key={entry.id}
                 className={`rounded-xl border transition-all duration-200 overflow-hidden ${
                   isOpen
-                    ? "border-[#2563EB]/30 bg-white shadow-sm"
-                    : "border-[#E2E8F0] bg-white hover:border-[#CBD5E1]"
+                    ? "border-[#2563EB]/30 bg-white dark:bg-white/8 shadow-sm"
+                    : "border-[#E2E8F0] dark:border-white/8 bg-white dark:bg-white/4 hover:border-[#CBD5E1] dark:hover:border-white/15"
                 }`}
                 data-testid={`faq-item-${entry.id}`}
               >
@@ -49,7 +49,7 @@ export function FaqSection() {
                   onClick={() => setOpen(isOpen ? null : entry.id)}
                   data-testid={`faq-toggle-${entry.id}`}
                 >
-                  <span className="text-[#0F172A] font-medium text-sm">{tr.question}</span>
+                  <span className="text-[#0F172A] dark:text-white font-medium text-sm">{tr.question}</span>
                   <ChevronDown
                     className={`w-5 h-5 text-[#94A3B8] flex-shrink-0 transition-transform duration-200 ${
                       isOpen ? "rotate-180 text-[#2563EB]" : ""
@@ -58,7 +58,7 @@ export function FaqSection() {
                 </button>
                 {isOpen && (
                   <div className="px-6 pb-5">
-                    <p className="text-[#475569] text-sm leading-relaxed">{tr.answer}</p>
+                    <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{tr.answer}</p>
                   </div>
                 )}
               </div>

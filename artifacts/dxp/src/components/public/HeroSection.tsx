@@ -10,22 +10,22 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0F172A]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#EEF2FF] dark:bg-[#0F172A]"
       data-testid="hero-section"
     >
       {/* Animated grid background */}
-      <div className="absolute inset-0 grid-pattern opacity-100" />
+      <div className="absolute inset-0 grid-pattern opacity-40 dark:opacity-100" />
 
       {/* Radial glow */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#2563EB]/10 blur-3xl" />
-        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-[#06B6D4]/8 blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/3 w-[300px] h-[300px] rounded-full bg-[#10B981]/6 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#2563EB]/8 dark:bg-[#2563EB]/10 blur-3xl" />
+        <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] rounded-full bg-[#06B6D4]/6 dark:bg-[#06B6D4]/8 blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/3 w-[300px] h-[300px] rounded-full bg-[#10B981]/4 dark:bg-[#10B981]/6 blur-3xl" />
       </div>
 
       {/* Geometric SVG network */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-10"
+        className="absolute inset-0 w-full h-full opacity-10 dark:opacity-10"
         viewBox="0 0 1200 800"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -49,16 +49,13 @@ export function HeroSection() {
           <line x1="1150" y1="500" x2="950" y2="380" />
           <line x1="100" y1="200" x2="200" y2="600" />
         </g>
-        {/* Nodes */}
         {[
           [100, 200], [350, 400], [600, 250], [850, 420],
           [1100, 200], [200, 600], [450, 450], [700, 580], [950, 380],
         ].map(([cx, cy], i) => (
           <circle key={i} cx={cx} cy={cy} r="4" fill="#2563EB" opacity="0.6" />
         ))}
-        {[
-          [50, 400], [1150, 500],
-        ].map(([cx, cy], i) => (
+        {[[50, 400], [1150, 500]].map(([cx, cy], i) => (
           <circle key={`c${i}`} cx={cx} cy={cy} r="3" fill="#06B6D4" opacity="0.5" />
         ))}
       </svg>
@@ -66,14 +63,14 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 text-[#06B6D4] text-sm font-medium mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-sm font-medium mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
           Costa Rica · Technology · Purpose
         </div>
 
         {/* Heading */}
         <h1
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-6"
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0F172A] dark:text-white leading-tight tracking-tight mb-6"
           data-testid="hero-title"
         >
           {content.title.split(" ").slice(0, 4).join(" ")}{" "}
@@ -84,7 +81,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p
-          className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-lg sm:text-xl text-[#475569] dark:text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed"
           data-testid="hero-subtitle"
         >
           {content.subtitle}
@@ -101,7 +98,7 @@ export function HeroSection() {
           </a>
           <a
             href="#contact"
-            className="px-8 py-3.5 rounded-xl border border-white/15 text-white/80 font-semibold text-sm hover:bg-white/5 hover:text-white transition-all"
+            className="px-8 py-3.5 rounded-xl border border-[#0F172A]/20 dark:border-white/15 text-[#0F172A] dark:text-white/80 font-semibold text-sm hover:bg-[#0F172A]/5 dark:hover:bg-white/5 hover:text-[#0F172A] dark:hover:text-white transition-all"
             data-testid="hero-cta-secondary"
           >
             {t("hero.cta_secondary")}
@@ -109,23 +106,23 @@ export function HeroSection() {
         </div>
 
         {/* Stats */}
-        <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto border-t border-white/10 pt-10">
+        <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto border-t border-[#0F172A]/10 dark:border-white/10 pt-10">
           {[
             { value: "2", label: lang === "es" ? "Productos SaaS" : "SaaS Products" },
             { value: "5+", label: lang === "es" ? "Áreas de servicio" : "Service areas" },
             { value: "CR", label: lang === "es" ? "Hecho en Costa Rica" : "Made in Costa Rica" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <div className="text-xs text-white/40 mt-1">{stat.label}</div>
+              <div className="text-2xl font-bold text-[#0F172A] dark:text-white">{stat.value}</div>
+              <div className="text-xs text-[#94A3B8] dark:text-white/40 mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30">
-        <div className="w-px h-10 bg-gradient-to-b from-transparent to-white/30" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#94A3B8] dark:text-white/30">
+        <div className="w-px h-10 bg-gradient-to-b from-transparent to-[#94A3B8] dark:to-white/30" />
         <svg className="w-4 h-4 animate-bounce" viewBox="0 0 16 16" fill="none">
           <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>

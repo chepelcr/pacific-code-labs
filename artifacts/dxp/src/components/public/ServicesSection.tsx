@@ -22,22 +22,22 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="py-24 bg-[#0F172A] relative overflow-hidden"
+      className="py-24 bg-[#F5F8FF] dark:bg-[#0F172A] relative overflow-hidden"
       data-testid="services-section"
     >
       {/* Background grid */}
-      <div className="absolute inset-0 grid-pattern opacity-30" />
+      <div className="absolute inset-0 grid-pattern opacity-20 dark:opacity-30" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 text-[#06B6D4] text-xs font-semibold uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-xs font-semibold uppercase tracking-widest mb-4">
             {t("services.title")}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
             {t("services.title")}
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto">{t("services.subtitle")}</p>
+          <p className="text-[#64748B] dark:text-white/50 max-w-xl mx-auto">{t("services.subtitle")}</p>
         </div>
 
         {/* Services grid */}
@@ -50,7 +50,7 @@ export function ServicesSection() {
             return (
               <div
                 key={service.id}
-                className="group p-6 rounded-2xl border border-white/8 bg-white/4 hover:bg-white/7 hover:border-white/15 transition-all duration-300"
+                className="group p-6 rounded-2xl border border-[#E2E8F0] bg-white hover:shadow-lg dark:border-white/8 dark:bg-white/4 dark:hover:bg-white/7 dark:hover:border-white/15 transition-all duration-300"
                 data-testid={`service-card-${service.id}`}
               >
                 {/* Icon */}
@@ -69,8 +69,8 @@ export function ServicesSection() {
                   {String(idx + 1).padStart(2, "0")}
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-3">{tr.name}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{tr.description}</p>
+                <h3 className="text-lg font-bold text-[#0F172A] dark:text-white mb-3">{tr.name}</h3>
+                <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{tr.description}</p>
 
                 {/* Bottom line */}
                 <div

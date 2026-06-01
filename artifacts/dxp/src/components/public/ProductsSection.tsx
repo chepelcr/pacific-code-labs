@@ -20,11 +20,11 @@ export function ProductsSection() {
   return (
     <section
       id="products"
-      className="py-24 bg-white relative overflow-hidden"
+      className="py-24 bg-white dark:bg-[#111827] relative overflow-hidden"
       data-testid="products-section"
     >
       {/* Subtle bg */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white dark:from-[#0F172A] dark:to-[#111827]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -32,10 +32,10 @@ export function ProductsSection() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
             {t("products.title")}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
             {t("products.title")}
           </h2>
-          <p className="text-[#64748B] max-w-xl mx-auto">{t("products.subtitle")}</p>
+          <p className="text-[#64748B] dark:text-white/50 max-w-xl mx-auto">{t("products.subtitle")}</p>
         </div>
 
         {/* Products grid */}
@@ -47,7 +47,7 @@ export function ProductsSection() {
             return (
               <div
                 key={product.id}
-                className="group relative rounded-2xl border border-[#E2E8F0] bg-white hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="group relative rounded-2xl border border-[#E2E8F0] dark:border-white/8 bg-white dark:bg-white/4 hover:shadow-xl dark:hover:bg-white/7 transition-all duration-300 overflow-hidden"
                 data-testid={`product-card-${product.id}`}
               >
                 {/* Top accent bar */}
@@ -70,14 +70,14 @@ export function ProductsSection() {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-[#0F172A] mb-2">{tr.name}</h3>
+                  <h3 className="text-2xl font-bold text-[#0F172A] dark:text-white mb-2">{tr.name}</h3>
                   <p
                     className="text-sm font-medium mb-4"
                     style={{ color: colors.from }}
                   >
                     {tr.tagline}
                   </p>
-                  <p className="text-[#64748B] text-sm leading-relaxed mb-8">{tr.description}</p>
+                  <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed mb-8">{tr.description}</p>
 
                   {/* Actions */}
                   <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ export function ProductsSection() {
                         href={product.externalUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm text-[#94A3B8] hover:text-[#64748B] transition-colors ml-auto"
+                        className="flex items-center gap-1.5 text-sm text-[#94A3B8] dark:text-white/30 hover:text-[#64748B] dark:hover:text-white/60 transition-colors ml-auto"
                         data-testid={`product-visit-${product.id}`}
                       >
                         {t("products.visit")}
