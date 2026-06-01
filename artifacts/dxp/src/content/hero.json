@@ -5,9 +5,18 @@
       "title": "Transformamos procesos empresariales en {{software inteligente}}.",
       "subtitle": "Desarrollamos productos tecnológicos y soluciones empresariales desde Costa Rica.",
       "stats": [
-        { "value": "2", "label": "Productos SaaS" },
-        { "value": "5+", "label": "Áreas de servicio" },
-        { "value": "CR", "label": "Hecho en Costa Rica" }
+        {
+          "value": "2",
+          "label": "Productos en linea"
+        },
+        {
+          "value": "5+",
+          "label": "Áreas de servicio"
+        },
+        {
+          "value": "CR",
+          "label": "Hecho en Costa Rica"
+        }
       ]
     },
     "en": {
@@ -15,9 +24,18 @@
       "title": "We transform business processes into {{intelligent software}}.",
       "subtitle": "We build technology products and business solutions from Costa Rica.",
       "stats": [
-        { "value": "2", "label": "SaaS Products" },
-        { "value": "5+", "label": "Service areas" },
-        { "value": "CR", "label": "Made in Costa Rica" }
+        {
+          "value": "2",
+          "label": "Online Products"
+        },
+        {
+          "value": "5+",
+          "label": "Service areas"
+        },
+        {
+          "value": "CR",
+          "label": "Made in Costa Rica"
+        }
       ]
     }
   }

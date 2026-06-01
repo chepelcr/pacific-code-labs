@@ -1,23 +1,58 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { TextField, Toggle, AdminCard } from "@/components/admin/AdminUI";
+import { useAdminStore, downloadJson } from "@/lib/admin-store";
+import { translatorSupported } from "@/lib/translate";
+import { contactDeliveryEnabled } from "@/lib/contact";
+
+const selectCls =
+  "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
+
+const CONTACT_PROVIDERS = ["none", "formsubmit", "web3forms", "formspree", "custom"] as const;
 
 export function SettingsPage() {
   const { t } = useTranslation();
+  const { settings, setSettings } = useAdminStore();
+  const [draft, setDraft] = useState(() => structuredClone(settings));
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const update = (mut: (d: typeof draft) => void) =>
+    setDraft((prev) => {
+      const next = structuredClone(prev);
+      mut(next);
+      return next;
+    });
+
+  const save = async () => {
+    setSaving(true);
+    setSettings(draft);
+    await downloadJson("settings.json", draft);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const provider = draft.contact.provider;
 
   return (
     <div data-testid="settings-page">
-      <PageHeader title={t("admin.settings")} description="Configuración del sistema DXP." />
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-8 max-w-xl">
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-[#0F172A] mb-1">Nombre del sitio</h3>
-            <p className="text-xs text-[#94A3B8] mb-2">Se muestra en el navegador y en compartir.</p>
-            <input
-              defaultValue="Pacific Code Labs"
-              className="w-full px-3 py-2.5 rounded-xl border border-[#E2E8F0] text-sm focus:outline-none focus:border-[#2563EB]"
-              data-testid="input-site-name"
-            />
-          </div>
+      <PageHeader
+        title={t("admin.settings")}
+        description="Configuración del sistema DXP."
+        onSave={save}
+        saving={saving}
+        saved={saved}
+      />
+
+      <div className="space-y-6">
+        <AdminCard title="General">
+          <TextField
+            label={t("admin.siteName")}
+            value={draft.siteName}
+            onChange={(v) => update((d) => { d.siteName = v; })}
+          />
           <div>
             <h3 className="text-sm font-semibold text-[#0F172A] mb-1">Modo de almacenamiento</h3>
             <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
@@ -25,19 +60,83 @@ export function SettingsPage() {
               <span className="text-sm text-[#475569]">JSON local (archivos en repositorio)</span>
             </div>
           </div>
+        </AdminCard>
+
+        <AdminCard title={t("admin.autoTranslate")}>
+          <Toggle
+            label={t("admin.autoTranslate")}
+            checked={draft.autoTranslate.enabled}
+            onChange={(v) => update((d) => { d.autoTranslate.enabled = v; })}
+          />
+          <p className="text-xs text-[#94A3B8] -mt-2">{t("admin.autoTranslateHint")}</p>
+          <Toggle
+            label="Auto-llenar al salir del campo"
+            checked={draft.autoTranslate.fillEmptyOnBlur}
+            onChange={(v) => update((d) => { d.autoTranslate.fillEmptyOnBlur = v; })}
+          />
+          {!translatorSupported() && (
+            <p className="text-xs text-[#D97706] bg-[#FFFBEB] border border-[#FDE68A] rounded-lg px-3 py-2">
+              {t("admin.autoTranslateUnsupported")}
+            </p>
+          )}
+        </AdminCard>
+
+        <AdminCard title={t("admin.contactDelivery")}>
+          <p className="text-xs text-[#94A3B8]">{t("admin.contactDeliveryHint")}</p>
           <div>
-            <h3 className="text-sm font-semibold text-[#0F172A] mb-3">Acciones</h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => { localStorage.clear(); window.location.reload(); }}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#FCA5A5] text-[#DC2626] text-sm font-medium hover:bg-[#FEF2F2] transition-colors text-left"
-                data-testid="btn-clear-storage"
-              >
-                Limpiar almacenamiento local
-              </button>
-            </div>
+            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">{t("admin.contactProvider")}</label>
+            <select
+              value={provider}
+              onChange={(e) => update((d) => { d.contact.provider = e.target.value; })}
+              className={selectCls}
+              data-testid="select-contact-provider"
+            >
+              {CONTACT_PROVIDERS.map((p) => (
+                <option key={p} value={p}>{p === "none" ? "none (solo local)" : p}</option>
+              ))}
+            </select>
           </div>
-        </div>
+          {provider === "web3forms" && (
+            <TextField
+              label={t("admin.contactKey")}
+              value={draft.contact.accessKey}
+              onChange={(v) => update((d) => { d.contact.accessKey = v; })}
+              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+            />
+          )}
+          {(provider === "formsubmit" || provider === "formspree" || provider === "custom") && (
+            <TextField
+              label={t("admin.contactEndpoint")}
+              value={draft.contact.endpoint}
+              onChange={(v) => update((d) => { d.contact.endpoint = v; })}
+              placeholder={
+                provider === "formsubmit"
+                  ? "tu@correo.com"
+                  : provider === "formspree"
+                    ? "xxxxxxx (form id) o URL completa"
+                    : "https://tu-endpoint/submit"
+              }
+            />
+          )}
+          <div className="flex items-center gap-2 text-xs">
+            <span className={`w-2 h-2 rounded-full ${contactDeliveryEnabled(draft.contact) ? "bg-[#10B981]" : "bg-[#CBD5E1]"}`} />
+            <span className="text-[#64748B]">
+              {contactDeliveryEnabled(draft.contact)
+                ? "Entrega activa — los mensajes se envían al proveedor."
+                : "Entrega inactiva — los mensajes solo se guardan localmente."}
+            </span>
+          </div>
+        </AdminCard>
+
+        <AdminCard title="Acciones">
+          <button
+            onClick={() => { localStorage.clear(); window.location.reload(); }}
+            className="w-full px-4 py-2.5 rounded-xl border border-[#FCA5A5] text-[#DC2626] text-sm font-medium hover:bg-[#FEF2F2] transition-colors text-left"
+            data-testid="btn-clear-storage"
+          >
+            Limpiar almacenamiento local
+          </button>
+        </AdminCard>
       </div>
     </div>
   );

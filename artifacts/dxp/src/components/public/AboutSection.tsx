@@ -2,18 +2,23 @@ import { useTranslation } from "react-i18next";
 import { MapPin, Users, Briefcase } from "lucide-react";
 import { parseRichText } from "@/lib/rich-text";
 import { listActiveServices } from "@/services/services.service";
+import { getAbout } from "@/repositories/about.repository";
 
 const AREA_COLORS = ["#2563EB", "#06B6D4", "#10B981", "#8B5CF6", "#F59E0B"];
+// Decorative stat icons, by position (the copy itself is editable in about.json).
+const STAT_ICONS = [MapPin, Users, Briefcase];
 
 export function AboutSection() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const lang = i18n.language as "es" | "en";
 
-  const stats = [
-    { icon: MapPin, value: "2019", label: t("about.founded") },
-    { icon: Users, value: "10+", label: t("about.clients") },
-    { icon: Briefcase, value: "20+", label: t("about.projects") },
-  ];
+  const about = getAbout();
+  const content = about.translations[lang] ?? about.translations.es;
+  const stats = content.stats.map((s, i) => ({
+    icon: STAT_ICONS[i % STAT_ICONS.length],
+    value: s.value,
+    label: s.label,
+  }));
 
   // "Our Areas" mirrors the editable services so the two never drift apart.
   const areas = listActiveServices().map(
@@ -31,12 +36,12 @@ export function AboutSection() {
           {/* Left – text */}
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10B981]/10 text-[#10B981] text-xs font-semibold uppercase tracking-widest mb-6">
-              Pacific Code Labs
+              {content.eyebrow}
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-6 leading-tight">
-              {t("about.title")}
+              {content.title}
             </h2>
-            <p className="text-[#475569] dark:text-white/60 leading-relaxed mb-8 text-lg">{parseRichText(t("about.body"))}</p>
+            <p className="text-[#475569] dark:text-white/60 leading-relaxed mb-8 text-lg">{parseRichText(content.body)}</p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
@@ -78,7 +83,7 @@ export function AboutSection() {
 
               <div className="relative z-10 space-y-4">
                 <div className="text-[#0F172A] dark:text-white font-semibold text-lg mb-6">
-                  {t("about.values_title")}
+                  {content.valuesTitle}
                 </div>
                 {areas.map((area, i) => (
                   <div key={area} className="flex items-center gap-3 text-[#475569] dark:text-white/70 text-sm">
@@ -97,7 +102,7 @@ export function AboutSection() {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
                 <span className="text-xs font-semibold text-[#0F172A] dark:text-white">
-                  {t("about.founded")}
+                  {content.stats[0]?.label}
                 </span>
               </div>
             </div>

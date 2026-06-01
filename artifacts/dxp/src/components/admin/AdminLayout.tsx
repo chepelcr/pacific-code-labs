@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
 import { Logo } from "@/components/shared/Logo";
 import { Menu } from "lucide-react";
-import { AdminLangProvider } from "@/lib/admin-lang";
 
 interface Props {
   children: React.ReactNode;
@@ -13,7 +12,6 @@ export function AdminLayout({ children }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <AdminLangProvider>
     <div className="flex h-screen bg-[#F8FAFC] overflow-hidden" data-testid="admin-layout">
       {/* Desktop sidebar */}
       <div className="hidden lg:flex flex-shrink-0">
@@ -59,6 +57,5 @@ export function AdminLayout({ children }: Props) {
         </main>
       </div>
     </div>
-    </AdminLangProvider>
   );
 }

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField } from "@/components/admin/AdminUI";
+import { TextField, BilingualField, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 
 export function FooterPage() {
   const { t } = useTranslation();
   const { footer, setFooter } = useAdminStore();
-  const { lang } = useAdminLang();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -30,49 +29,44 @@ export function FooterPage() {
         saved={saved}
       />
 
-      <div className="space-y-4 max-w-lg">
-        <LangToggle />
-
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-4">
-          <TextField
-            label="Copyright"
-            value={footer.copyright?.[lang] ?? ""}
-            onChange={(v) => setFooter({ ...footer, copyright: { ...footer.copyright, [lang]: v } })}
+      <div className="space-y-4">
+        <BilingualSection title="Copyright">
+          <BilingualField
+            es={footer.copyright?.es ?? ""}
+            en={footer.copyright?.en ?? ""}
+            onChange={(l: Lang, v) => setFooter({ ...footer, copyright: { ...footer.copyright, [l]: v } })}
           />
+        </BilingualSection>
 
-          <div>
-            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">Enlaces</label>
-            <div className="space-y-2">
-              {footer.links.map((link, i) => (
-                <div key={i} className="flex gap-2">
-                  <TextField
-                    className="flex-1"
-                    value={link.label[lang] ?? ""}
-                    onChange={(v) =>
-                      setFooter({
-                        ...footer,
-                        links: footer.links.map((l, j) => (j === i ? { ...l, label: { ...l.label, [lang]: v } } : l)),
-                      })
-                    }
-                    placeholder={lang === "es" ? "Etiqueta" : "Label"}
-                  />
-                  <TextField
-                    className="w-40"
-                    type="url"
-                    value={link.url}
-                    onChange={(v) =>
-                      setFooter({
-                        ...footer,
-                        links: footer.links.map((l, j) => (j === i ? { ...l, url: v } : l)),
-                      })
-                    }
-                    placeholder="/privacy"
-                  />
-                </div>
-              ))}
+        <BilingualSection title="Enlaces">
+          {footer.links.map((link, i) => (
+            <div key={i} className="space-y-2 pb-3 border-b border-[#F1F5F9] last:border-0 last:pb-0">
+              <BilingualField
+                label="Etiqueta"
+                es={link.label.es ?? ""}
+                en={link.label.en ?? ""}
+                onChange={(l: Lang, v) =>
+                  setFooter({
+                    ...footer,
+                    links: footer.links.map((lk, j) => (j === i ? { ...lk, label: { ...lk.label, [l]: v } } : lk)),
+                  })
+                }
+              />
+              <TextField
+                label="URL"
+                type="url"
+                value={link.url}
+                onChange={(v) =>
+                  setFooter({
+                    ...footer,
+                    links: footer.links.map((lk, j) => (j === i ? { ...lk, url: v } : lk)),
+                  })
+                }
+                placeholder="/privacy"
+              />
             </div>
-          </div>
-        </div>
+          ))}
+        </BilingualSection>
       </div>
     </div>
   );

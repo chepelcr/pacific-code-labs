@@ -2,21 +2,34 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Edit2, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
+import { BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 import { ICON_NAMES } from "@/lib/icons";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 const selectCls =
   "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
 
+interface ServiceForm {
+  es: { name: string; description: string };
+  en: { name: string; description: string };
+  iconName: string;
+  status: string;
+}
+
+const emptyTr = { name: "", description: "" };
+
 export function ServicesPage() {
   const { t } = useTranslation();
   const { services, setServices } = useAdminStore();
-  const { lang } = useAdminLang();
   const [editing, setEditing] = useState<string | null>(null);
-  const [form, setForm] = useState<Record<string, string>>({});
+  const [form, setForm] = useState<ServiceForm>({
+    es: { ...emptyTr },
+    en: { ...emptyTr },
+    iconName: "",
+    status: "active",
+  });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -28,12 +41,15 @@ export function ServicesPage() {
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const setTr = (lang: Lang, key: keyof typeof emptyTr, value: string) =>
+    setForm((f) => ({ ...f, [lang]: { ...f[lang], [key]: value } }));
+
   const handleEdit = (id: string) => {
     const s = services.find((x) => x.id === id);
     if (!s) return;
     setForm({
-      name: s.translations[lang]?.name ?? "",
-      description: s.translations[lang]?.description ?? "",
+      es: { ...emptyTr, ...s.translations.es },
+      en: { ...emptyTr, ...s.translations.en },
       iconName: s.iconName ?? "",
       status: s.status,
     });
@@ -51,7 +67,8 @@ export function ServicesPage() {
               iconName: form.iconName || null,
               translations: {
                 ...s.translations,
-                [lang]: { ...s.translations[lang], name: form.name, description: form.description },
+                es: { ...s.translations.es, ...form.es },
+                en: { ...s.translations.en, ...form.en },
               },
               updatedAt: new Date().toISOString(),
             }
@@ -77,8 +94,6 @@ export function ServicesPage() {
       />
 
       <div className="space-y-4">
-        <LangToggle />
-
         <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
           <table className="w-full text-sm">
             <thead>
@@ -92,8 +107,8 @@ export function ServicesPage() {
             <tbody>
               {services.map((s) => (
                 <tr key={s.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]">
-                  <td className="px-6 py-4 font-medium text-[#0F172A]">{s.translations[lang]?.name}</td>
-                  <td className="px-6 py-4 text-[#64748B] hidden md:table-cell max-w-xs truncate">{s.translations[lang]?.description}</td>
+                  <td className="px-6 py-4 font-medium text-[#0F172A]">{s.translations.es?.name}</td>
+                  <td className="px-6 py-4 text-[#64748B] hidden md:table-cell max-w-xs truncate">{s.translations.es?.description}</td>
                   <td className="px-6 py-4">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                       s.status === "active" ? "bg-[#DCFCE7] text-[#16A34A]" : "bg-[#F1F5F9] text-[#64748B]"
@@ -114,15 +129,14 @@ export function ServicesPage() {
 
       {editing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-[#0F172A]">Editar Servicio</h2>
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#94A3B8]">{lang === "es" ? "Español" : "English"}</span>
-            </div>
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+            <h2 className="text-lg font-bold text-[#0F172A] mb-6">Editar Servicio</h2>
             <div className="space-y-4">
-              <TextField label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-              <TextAreaField label="Descripción" value={form.description} onChange={(v) => setForm({ ...form, description: v })} rows={3} hint={RICH_TEXT_HINT} />
-              <div className="grid grid-cols-2 gap-4">
+              <BilingualSection>
+                <BilingualField label="Nombre" es={form.es.name} en={form.en.name} onChange={(l, v) => setTr(l, "name", v)} />
+                <BilingualTextArea label="Descripción" es={form.es.description} en={form.en.description} onChange={(l, v) => setTr(l, "description", v)} rows={3} hint={RICH_TEXT_HINT} />
+              </BilingualSection>
+              <div className="grid grid-cols-2 gap-4 bg-white rounded-2xl border border-[#E2E8F0] p-6">
                 <div>
                   <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">Icono</label>
                   <select value={form.iconName} onChange={(e) => setForm({ ...form, iconName: e.target.value })} className={selectCls}>

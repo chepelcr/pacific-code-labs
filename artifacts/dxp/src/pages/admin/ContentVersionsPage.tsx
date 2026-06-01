@@ -9,6 +9,7 @@ export function ContentVersionsPage() {
 
   const files = [
     { name: "hero.json", data: store.hero, description: "Hero section content" },
+    { name: "about.json", data: store.about, description: "About section content" },
     { name: "products.json", data: store.products, description: `${store.products.length} products` },
     { name: "services.json", data: store.services, description: `${store.services.length} services` },
     { name: "caseStudies.json", data: store.caseStudies, description: `${store.caseStudies.length} case studies` },
@@ -20,6 +21,8 @@ export function ContentVersionsPage() {
     { name: "seo.json", data: store.seo, description: "SEO settings" },
     { name: "languages.json", data: store.languages, description: `${store.languages.length} languages` },
     { name: "themes.json", data: store.themes, description: `${store.themes.length} themes` },
+    { name: "settings.json", data: store.settings, description: "Site & auto-translate settings" },
+    { name: "inventory.json", data: store.inventory, description: `${store.inventory.counts.nodes} modules, ${store.inventory.counts.edges} links` },
   ];
 
   const exportAll = () => {

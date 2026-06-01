@@ -85,11 +85,11 @@ admin editor for it. Run the audit mindset: grep `src/components/public` and
 Every `src/content/*.json` entity has a matching admin page, is in `AdminSidebar`,
 is routed in `AdminRouter`, and is downloadable from `ContentVersionsPage`. When
 you add a content file you MUST add all four. Current map: hero→HeroPage,
-products→ProductsPage, services→ServicesPage, caseStudies→CaseStudiesPage,
+about→AboutPage, products→ProductsPage, services→ServicesPage, caseStudies→CaseStudiesPage,
 philosophy→PhilosophyPage, faq→FaqPage, navigation→NavigationPage,
 footer→FooterPage, legal→LegalPagesPage, seo→SeoPage, branding→BrandingPage,
-languages→LanguagesPage, themes→ThemesPage. Contact messages → ContactPage
-(localStorage only).
+languages→LanguagesPage, themes→ThemesPage, settings→SettingsPage,
+inventory→InventoryPage. Contact messages → ContactPage (localStorage only).
 
 The i18n strings in `translations/{es,en}.json` are editable via **TranslationsPage**
 (`/admin/translations`): a flattened key table with live preview
@@ -97,9 +97,36 @@ The i18n strings in `translations/{es,en}.json` are editable via **TranslationsP
 language *metadata* only. So translatable UI chrome lives in the translation
 files (editable there) and per-entity copy lives in `content/*.json`.
 
+### Bilingual editing & auto-translation
+
+Admin content pages edit **both languages side by side** (Spanish | English) —
+there is no single "editing language" toggle. Use the bilingual primitives in
+`src/components/admin/AdminUI.tsx`: `BilingualField` / `BilingualTextArea` (props
+`es`, `en`, `onChange(lang, value)`) wrapped in a `BilingualSection`. Do **not**
+reintroduce a per-page language toggle or read `translations[lang]` for editing —
+write `translations.es` and `translations.en` directly.
+
+Auto-translation runs **on-device** via the Chrome built-in Translator API
+(`src/lib/translate.ts`, `translateText` / `translatorSupported`). It is gated by
+`content/settings.json` (`autoTranslate.enabled` / `fillEmptyOnBlur`, edited in
+SettingsPage). When enabled, a field auto-fills the empty opposite side on blur,
+and each `BilingualSection` shows a button that fills every blank target. It
+degrades silently where the API is unavailable (non-Chrome, non-secure context) —
+admin is dev-only, so this is fine. Rich-text markup tokens (`{{}}`, `[[]]`,
+`**`) may need a manual pass after translating.
+
+### Inventory map (keep regenerated)
+
+`src/content/inventory.json` maps every DXP `src/` module and its import
+relationships (`{ nodes, edges }`); InventoryPage (`/admin/inventory`) renders it
+as an interactive pan/zoom graph. It is produced by
+`artifacts/dxp/scripts/build-inventory.mjs`. **Whenever you add, remove, or
+rename a file/component under `artifacts/dxp/src`, regenerate it** with
+`pnpm --filter @workspace/dxp run inventory` so the map stays accurate.
+
 ## Where things live (DXP)
 
-- `src/content/*.json` — content (hero, products, services, caseStudies, faq, philosophy, navigation, footer, legal, seo, branding, languages, themes).
+- `src/content/*.json` — content (hero, about, products, services, caseStudies, faq, philosophy, navigation, footer, legal, seo, branding, languages, themes, settings, inventory).
 - `src/translations/{es,en}.json` — i18n strings. Default `es`, persisted in `localStorage("pcl-lang")`.
 - `src/lib/i18n.ts` — i18next init. `src/lib/admin-store.ts` — Zustand store + `downloadJson()` export helper. `src/lib/icons.ts` — editable-icon registry. `src/lib/sections.ts` — landing section slugs/paths.
 - `src/repositories/` — typed JSON readers per entity. `src/services/` — business logic (filter/sort).
@@ -109,9 +136,9 @@ files (editable there) and per-entity copy lives in `content/*.json`.
 ## Architecture notes
 
 - **No backend at runtime.** Content is bundled JSON. Admin edits live in Zustand; "save" = click **Export JSON** → `downloadJson()` → commit the file → next build picks it up.
-- Contact form submissions persist to `localStorage("pcl-contact-messages")` only.
+- Contact form: always logs to `localStorage("pcl-contact-messages")`, and (since the site is serverless on Pages) **delivers off-device through a configurable third-party form provider** — `settings.json` `contact.{provider,endpoint,accessKey}`, edited in SettingsPage, sent via `src/lib/contact.ts` (`submitContact`). Providers: `formsubmit`/`web3forms`/`formspree`/`custom`/`none`.
 - Routing: `wouter` (path-based, no `#` hashes), base derived from `import.meta.env.BASE_URL`. The landing page is one scrollable document; each section has a clean path (`/products`, `/services`, …) that maps to its element `id` via `src/lib/sections.ts`. `PublicWebsite` smooth-scrolls to the matching section on every location change, so nav clicks, deep links, and back/forward all work. Section anchors get `scroll-margin-top` (in `index.css`) so the fixed navbar doesn't cover them.
-- Styling: TailwindCSS v4 + shadcn/ui. Theme toggle persisted in `localStorage("pcl-theme")`.
+- Styling: TailwindCSS v4 + shadcn/ui. Theme toggle persisted in `localStorage("pcl-theme")`. Native scrollbars are brand-themed globally in `index.css` (`@layer base`, driven by `--muted-foreground` so they adapt to light/dark).
 - Brand colors: Midnight Navy `#0F172A` · Tech Blue `#2563EB` · Electric Cyan `#06B6D4` · Emerald `#10B981` · BG `#F8FAFC`.
 
 ## Deployment

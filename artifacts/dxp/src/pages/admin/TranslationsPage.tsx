@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Languages, Loader2 } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { useAutoTranslate } from "@/lib/use-auto-translate";
 import { downloadJson } from "@/lib/admin-store";
+import { translateText } from "@/lib/translate";
 import esData from "@/translations/es.json";
 import enData from "@/translations/en.json";
 
@@ -43,10 +46,24 @@ const inputCls =
 
 export function TranslationsPage() {
   const { t, i18n } = useTranslation();
+  const { enabled: autoTranslateEnabled } = useAutoTranslate();
   const [es, setEs] = useState<Flat>(() => flatten(esData as Record<string, unknown>));
   const [en, setEn] = useState<Flat>(() => flatten(enData as Record<string, unknown>));
   const [query, setQuery] = useState("");
   const [applied, setApplied] = useState(false);
+  const [translatingGroup, setTranslatingGroup] = useState<string | null>(null);
+
+  // Fill every empty English cell in a group from its Spanish source (on-device).
+  const translateGroup = async (groupKeys: string[]) => {
+    setTranslatingGroup(groupKeys[0]?.split(".")[0] ?? null);
+    for (const k of groupKeys) {
+      const src = es[k];
+      if (!src?.trim() || en[k]?.trim()) continue;
+      const out = await translateText(src, "es", "en");
+      if (out) setEn((prev) => ({ ...prev, [k]: out }));
+    }
+    setTranslatingGroup(null);
+  };
 
   // Union of keys, ordered by the Spanish (canonical) file then any EN extras.
   const keys = useMemo(() => {
@@ -124,8 +141,23 @@ export function TranslationsPage() {
       <div className="space-y-6">
         {groups.map(([group, groupKeys]) => (
           <div key={group} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
-            <div className="px-6 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+            <div className="px-6 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-between gap-3">
               <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">{group}</span>
+              {autoTranslateEnabled && (
+                <button
+                  onClick={() => translateGroup(groupKeys)}
+                  disabled={translatingGroup === group}
+                  className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-white border border-[#E2E8F0] text-[#475569] text-xs font-semibold hover:border-[#2563EB] hover:text-[#2563EB] disabled:opacity-60 transition-colors"
+                  title="ES → EN"
+                >
+                  {translatingGroup === group ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Languages className="w-3.5 h-3.5" />
+                  )}
+                  {translatingGroup === group ? t("admin.autoTranslating") : t("admin.autoTranslateSection")}
+                </button>
+              )}
             </div>
             <table className="w-full text-sm">
               <thead>

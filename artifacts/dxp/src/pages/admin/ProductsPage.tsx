@@ -2,21 +2,36 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Edit2, Trash2, ExternalLink } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
+import { BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 import { ICON_NAMES } from "@/lib/icons";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 const selectCls =
   "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
 
+interface ProductForm {
+  es: { name: string; tagline: string; description: string };
+  en: { name: string; tagline: string; description: string };
+  externalUrl: string;
+  iconName: string;
+  status: string;
+}
+
+const emptyTr = { name: "", tagline: "", description: "" };
+
 export function ProductsPage() {
   const { t } = useTranslation();
   const { products, setProducts } = useAdminStore();
-  const { lang } = useAdminLang();
   const [editing, setEditing] = useState<string | null>(null);
-  const [form, setForm] = useState<Record<string, string>>({});
+  const [form, setForm] = useState<ProductForm>({
+    es: { ...emptyTr },
+    en: { ...emptyTr },
+    externalUrl: "",
+    iconName: "",
+    status: "active",
+  });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -28,13 +43,15 @@ export function ProductsPage() {
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const setTr = (lang: Lang, key: keyof typeof emptyTr, value: string) =>
+    setForm((f) => ({ ...f, [lang]: { ...f[lang], [key]: value } }));
+
   const handleEdit = (id: string) => {
     const p = products.find((x) => x.id === id);
     if (!p) return;
     setForm({
-      name: p.translations[lang]?.name ?? "",
-      tagline: p.translations[lang]?.tagline ?? "",
-      description: p.translations[lang]?.description ?? "",
+      es: { ...emptyTr, ...p.translations.es },
+      en: { ...emptyTr, ...p.translations.en },
       externalUrl: p.externalUrl ?? "",
       iconName: p.iconName ?? "",
       status: p.status,
@@ -54,7 +71,8 @@ export function ProductsPage() {
               iconName: form.iconName || "Boxes",
               translations: {
                 ...p.translations,
-                [lang]: { ...p.translations[lang], name: form.name, tagline: form.tagline, description: form.description },
+                es: { ...p.translations.es, ...form.es },
+                en: { ...p.translations.en, ...form.en },
               },
               updatedAt: new Date().toISOString(),
             }
@@ -80,8 +98,6 @@ export function ProductsPage() {
       />
 
       <div className="space-y-4">
-        <LangToggle />
-
         <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
           <table className="w-full text-sm" data-testid="products-table">
             <thead>
@@ -95,8 +111,8 @@ export function ProductsPage() {
             <tbody>
               {products.map((p) => (
                 <tr key={p.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]" data-testid={`product-row-${p.id}`}>
-                  <td className="px-6 py-4 font-medium text-[#0F172A]">{p.translations[lang]?.name}</td>
-                  <td className="px-6 py-4 text-[#64748B] hidden md:table-cell max-w-xs truncate">{p.translations[lang]?.tagline}</td>
+                  <td className="px-6 py-4 font-medium text-[#0F172A]">{p.translations.es?.name}</td>
+                  <td className="px-6 py-4 text-[#64748B] hidden md:table-cell max-w-xs truncate">{p.translations.es?.tagline}</td>
                   <td className="px-6 py-4">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                       p.status === "active" ? "bg-[#DCFCE7] text-[#16A34A]" :
@@ -121,17 +137,19 @@ export function ProductsPage() {
 
       {editing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-[#0F172A]">Editar Producto</h2>
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#94A3B8]">{lang === "es" ? "Español" : "English"}</span>
-            </div>
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+            <h2 className="text-lg font-bold text-[#0F172A] mb-6">Editar Producto</h2>
             <div className="space-y-4">
-              <TextField label="Nombre" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-              <TextField label="Tagline" value={form.tagline} onChange={(v) => setForm({ ...form, tagline: v })} />
-              <TextAreaField label="Descripción" value={form.description} onChange={(v) => setForm({ ...form, description: v })} rows={3} hint={RICH_TEXT_HINT} />
-              <TextField label="URL externa" type="url" value={form.externalUrl} onChange={(v) => setForm({ ...form, externalUrl: v })} />
-              <div className="grid grid-cols-2 gap-4">
+              <BilingualSection>
+                <BilingualField label="Nombre" es={form.es.name} en={form.en.name} onChange={(l, v) => setTr(l, "name", v)} />
+                <BilingualField label="Tagline" es={form.es.tagline} en={form.en.tagline} onChange={(l, v) => setTr(l, "tagline", v)} />
+                <BilingualTextArea label="Descripción" es={form.es.description} en={form.en.description} onChange={(l, v) => setTr(l, "description", v)} rows={3} hint={RICH_TEXT_HINT} />
+              </BilingualSection>
+              <div className="grid grid-cols-3 gap-4 bg-white rounded-2xl border border-[#E2E8F0] p-6">
+                <div>
+                  <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">URL externa</label>
+                  <input type="url" value={form.externalUrl} onChange={(e) => setForm({ ...form, externalUrl: e.target.value })} className={`${selectCls} font-mono`} />
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">Icono</label>
                   <select value={form.iconName} onChange={(e) => setForm({ ...form, iconName: e.target.value })} className={selectCls} data-testid="select-product-icon">
