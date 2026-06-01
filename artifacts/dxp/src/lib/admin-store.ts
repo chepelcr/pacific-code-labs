@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { saveContentFile } from "./local-cms";
 import heroData from "../content/hero.json";
 import productsData from "../content/products.json";
 import servicesData from "../content/services.json";
@@ -105,7 +106,13 @@ export const useAdminStore = create<AdminStore>((set) => ({
     }),
 }));
 
-export function downloadJson(filename: string, data: unknown) {
+export async function downloadJson(filename: string, data: unknown) {
+  // In local dev, write straight into the repo file (ready to commit). Falls
+  // back to a browser download when the write-back endpoint isn't available.
+  if (await saveContentFile(filename, data)) {
+    console.info(`[local-cms] saved ${filename} to the repo`);
+    return;
+  }
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
