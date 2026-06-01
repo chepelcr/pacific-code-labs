@@ -150,9 +150,17 @@ async function main() {
         faq: route.faq,
         canonical,
       });
-      const dir = path.join(DIST, lang, route.slug);
-      await fs.mkdir(dir, { recursive: true });
-      await fs.writeFile(path.join(dir, "index.html"), html, "utf8");
+      // Flat <lang>.html / <lang>/<slug>.html files — GitHub Pages serves these
+      // for /es and /es/products WITHOUT the trailing-slash 301 that a
+      // <slug>/index.html layout triggers (which breaks WhatsApp's scraper).
+      let outPath;
+      if (route.slug) {
+        await fs.mkdir(path.join(DIST, lang), { recursive: true });
+        outPath = path.join(DIST, lang, `${route.slug}.html`);
+      } else {
+        outPath = path.join(DIST, `${lang}.html`);
+      }
+      await fs.writeFile(outPath, html, "utf8");
       count++;
       sitemapUrls.push({ slug: route.slug, lang });
     }
