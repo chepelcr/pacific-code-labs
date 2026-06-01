@@ -79,7 +79,7 @@ jobs:
     env:
       # IndexNow key — also hosted at /<key>.txt (public/). Not secret: the file
       # is public by design. Push-notifies Bing/Yandex/AI engines on each deploy.
-      INDEXNOW_KEY: "395197df96a5632dfa44a1e6d7ee5f13"
+      INDEXNOW_KEY: "93314dacee5c453a915339f82ae16f8c"
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
