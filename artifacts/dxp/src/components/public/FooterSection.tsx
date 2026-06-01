@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/shared/Logo";
 import footerData from "@/content/footer.json";
@@ -23,15 +24,21 @@ export function FooterSection() {
 
           {/* Links */}
           <div className="flex items-center gap-4">
-            {footerData.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                className="text-[#94A3B8] dark:text-white/30 hover:text-[#475569] dark:hover:text-white/60 text-xs transition-colors"
-              >
-                {link.label[lang] ?? link.label.es}
-              </a>
-            ))}
+            {footerData.links.map((link, i) => {
+              const label = link.label[lang] ?? link.label.es;
+              const className =
+                "text-[#94A3B8] dark:text-white/30 hover:text-[#475569] dark:hover:text-white/60 text-xs transition-colors";
+              // Internal paths use the SPA router; external URLs open normally.
+              return link.url.startsWith("/") ? (
+                <Link key={i} href={link.url} className={className}>
+                  {label}
+                </Link>
+              ) : (
+                <a key={i} href={link.url} className={className}>
+                  {label}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

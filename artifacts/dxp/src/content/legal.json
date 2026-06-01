@@ -1,0 +1,32 @@
+{
+  "privacy": {
+    "slug": "privacy",
+    "translations": {
+      "es": {
+        "title": "Política de Privacidad",
+        "updated": "Última actualización: enero 2026",
+        "body": "En Pacific Code Labs respetamos su privacidad. Esta política describe cómo recopilamos, usamos y protegemos su información.\n\nDatos que recopilamos\nÚnicamente recopilamos la información que usted nos proporciona voluntariamente a través de nuestro formulario de contacto: nombre, correo electrónico, empresa y mensaje.\n\nUso de la información\nUtilizamos sus datos exclusivamente para responder a sus consultas y dar seguimiento a su solicitud. No vendemos ni compartimos su información con terceros.\n\nContacto\nSi tiene preguntas sobre esta política, escríbanos a través del formulario de contacto del sitio."
+      },
+      "en": {
+        "title": "Privacy Policy",
+        "updated": "Last updated: January 2026",
+        "body": "At Pacific Code Labs we respect your privacy. This policy describes how we collect, use, and protect your information.\n\nData we collect\nWe only collect the information you voluntarily provide through our contact form: name, email, company, and message.\n\nUse of information\nWe use your data solely to respond to your inquiries and follow up on your request. We do not sell or share your information with third parties.\n\nContact\nIf you have questions about this policy, reach us through the contact form on this site."
+      }
+    }
+  },
+  "terms": {
+    "slug": "terms",
+    "translations": {
+      "es": {
+        "title": "Términos de Servicio",
+        "updated": "Última actualización: enero 2026",
+        "body": "Estos términos rigen el uso del sitio web de Pacific Code Labs.\n\nUso del sitio\nEl contenido de este sitio es informativo. Nos reservamos el derecho de modificarlo en cualquier momento sin previo aviso.\n\nPropiedad intelectual\nLas marcas, logotipos y contenidos pertenecen a Pacific Code Labs salvo que se indique lo contrario.\n\nLimitación de responsabilidad\nEl sitio se ofrece \"tal cual\". No garantizamos que esté libre de errores o interrupciones.\n\nContacto\nPara consultas sobre estos términos, utilice el formulario de contacto del sitio."
+      },
+      "en": {
+        "title": "Terms of Service",
+        "updated": "Last updated: January 2026",
+        "body": "These terms govern the use of the Pacific Code Labs website.\n\nUse of the site\nThe content on this site is informational. We reserve the right to modify it at any time without notice.\n\nIntellectual property\nTrademarks, logos, and content belong to Pacific Code Labs unless otherwise stated.\n\nLimitation of liability\nThe site is provided \"as is\". We do not warrant that it is free of errors or interruptions.\n\nContact\nFor questions about these terms, use the contact form on this site."
+      }
+    }
+  }
+}

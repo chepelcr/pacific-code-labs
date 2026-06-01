@@ -63,14 +63,47 @@ the entire admin panel out of the production bundle. **Do not weaken this gate**
 (e.g. by registering admin routes unconditionally). If you add admin entry
 points, guard them with `ADMIN_ENABLED`.
 
+## NO hardcoded user-visible text — everything must be editable
+
+**Hard rule:** every user-visible string on the public site must come from an
+editable source — either a `src/content/*.json` file or an i18n key via
+`t("...")` (`src/translations/{es,en}.json`). **Never** put a visible literal
+directly in a component, and **never** use bilingual ternaries like
+`lang === "es" ? "Activo" : "Active"` (that bypasses the content system).
+
+- Per-entity copy that an editor manages (hero eyebrow/stats, product taglines, legal body…) → `src/content/*.json`, with an admin page to edit it.
+- Fixed UI chrome / labels shared across the site → i18n keys in `src/translations/{es,en}.json`.
+- Selectable icons are editable too: store an `iconName` in content and resolve it through `src/lib/icons.ts` (the icon registry / `resolveIcon`). Do **not** hardcode emoji or icon-per-id maps in components.
+- The only acceptable in-component literals are non-content tokens: `data-testid`, class names, decorative `aria-hidden` SVGs, and the brand name "Pacific Code Labs".
+
+When you add any new visible text, add it to content/translations and wire an
+admin editor for it. Run the audit mindset: grep `src/components/public` and
+`src/pages/public` for string literals before shipping.
+
+### Content ↔ admin mapping (keep complete)
+
+Every `src/content/*.json` entity has a matching admin page, is in `AdminSidebar`,
+is routed in `AdminRouter`, and is downloadable from `ContentVersionsPage`. When
+you add a content file you MUST add all four. Current map: hero→HeroPage,
+products→ProductsPage, services→ServicesPage, caseStudies→CaseStudiesPage,
+philosophy→PhilosophyPage, faq→FaqPage, navigation→NavigationPage,
+footer→FooterPage, legal→LegalPagesPage, seo→SeoPage, branding→BrandingPage,
+languages→LanguagesPage, themes→ThemesPage. Contact messages → ContactPage
+(localStorage only).
+
+> **Known gap:** the i18n strings in `translations/{es,en}.json` have no admin
+> editor (LanguagesPage only manages language metadata). They are edited in the
+> files directly. If asked to make translations editable, add a translations
+> admin page.
+
 ## Where things live (DXP)
 
-- `src/content/*.json` — content (hero, products, services, caseStudies, faq, philosophy, languages, navigation, footer, seo, themes).
+- `src/content/*.json` — content (hero, products, services, caseStudies, faq, philosophy, navigation, footer, legal, seo, branding, languages, themes).
 - `src/translations/{es,en}.json` — i18n strings. Default `es`, persisted in `localStorage("pcl-lang")`.
-- `src/lib/i18n.ts` — i18next init. `src/lib/admin-store.ts` — Zustand store + `downloadJson()` export helper.
+- `src/lib/i18n.ts` — i18next init. `src/lib/admin-store.ts` — Zustand store + `downloadJson()` export helper. `src/lib/icons.ts` — editable-icon registry. `src/lib/sections.ts` — landing section slugs/paths.
 - `src/repositories/` — typed JSON readers per entity. `src/services/` — business logic (filter/sort).
 - `src/components/public/` — public sections. `src/components/admin/` — AdminLayout/Sidebar/PageHeader.
-- `src/pages/public/PublicWebsite.tsx` — landing page. `src/pages/admin/AdminRouter.tsx` + `src/pages/admin/*` — admin pages.
+- `src/pages/public/PublicWebsite.tsx` — landing page; `src/pages/public/LegalPage.tsx` — `/privacy` & `/terms`. `src/pages/admin/AdminRouter.tsx` + `src/pages/admin/*` — admin pages.
 
 ## Architecture notes
 

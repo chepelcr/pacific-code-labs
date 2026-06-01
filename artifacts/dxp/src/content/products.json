@@ -4,6 +4,7 @@
     "slug": "tsuru",
     "status": "active",
     "sortOrder": 1,
+    "iconName": "Bird",
     "externalUrl": "https://tsuru.example.com",
     "logoUrl": null,
     "translations": {
@@ -26,6 +27,7 @@
     "slug": "firecode-cr",
     "status": "active",
     "sortOrder": 2,
+    "iconName": "Flame",
     "externalUrl": "https://firecode.example.com",
     "logoUrl": null,
     "translations": {

@@ -1,14 +1,23 @@
 import { useTranslation } from "react-i18next";
 import { MapPin, Users, Briefcase } from "lucide-react";
+import { listActiveServices } from "@/services/services.service";
+
+const AREA_COLORS = ["#2563EB", "#06B6D4", "#10B981", "#8B5CF6", "#F59E0B"];
 
 export function AboutSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "es" | "en";
 
   const stats = [
     { icon: MapPin, value: "2019", label: t("about.founded") },
     { icon: Users, value: "10+", label: t("about.clients") },
     { icon: Briefcase, value: "20+", label: t("about.projects") },
   ];
+
+  // "Our Areas" mirrors the editable services so the two never drift apart.
+  const areas = listActiveServices().map(
+    (s) => (s.translations[lang] ?? s.translations.es).name
+  );
 
   return (
     <section
@@ -70,11 +79,11 @@ export function AboutSection() {
                 <div className="text-[#0F172A] dark:text-white font-semibold text-lg mb-6">
                   {t("about.values_title")}
                 </div>
-                {["Software Engineering", "Artificial Intelligence", "Business Automation", "Cloud Architecture", "Technical Support"].map((area, i) => (
+                {areas.map((area, i) => (
                   <div key={area} className="flex items-center gap-3 text-[#475569] dark:text-white/70 text-sm">
                     <div
                       className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: ["#2563EB","#06B6D4","#10B981","#8B5CF6","#F59E0B"][i] }}
+                      style={{ backgroundColor: AREA_COLORS[i % AREA_COLORS.length] }}
                     />
                     {area}
                   </div>

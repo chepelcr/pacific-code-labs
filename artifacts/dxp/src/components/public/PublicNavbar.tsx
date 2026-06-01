@@ -18,7 +18,7 @@ function applyTheme(dark: boolean) {
 }
 
 export function PublicNavbar() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
@@ -83,7 +83,7 @@ export function PublicNavbar() {
               onClick={toggleLang}
               className="group flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 text-sm font-medium transition-all duration-300"
               data-testid="lang-toggle"
-              title={lang === "es" ? "Switch to English" : "Cambiar a Español"}
+              title={t("common.toggle_language")}
               aria-label="Toggle language"
             >
               <Globe className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />

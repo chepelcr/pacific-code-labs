@@ -10,6 +10,7 @@ import navigationData from "../content/navigation.json";
 import footerData from "../content/footer.json";
 import seoData from "../content/seo.json";
 import themesData from "../content/themes.json";
+import legalData from "../content/legal.json";
 
 export interface ContactMessage {
   id: string;
@@ -34,6 +35,7 @@ interface AdminStore {
   footer: typeof footerData;
   seo: typeof seoData;
   themes: typeof themesData;
+  legal: typeof legalData;
   contactMessages: ContactMessage[];
   mediaFiles: Array<{ id: string; filename: string; url: string; type: string; size: number; altText?: string; createdAt: string }>;
 
@@ -48,6 +50,7 @@ interface AdminStore {
   setFooter: (data: typeof footerData) => void;
   setSeo: (data: typeof seoData) => void;
   setThemes: (data: typeof themesData) => void;
+  setLegal: (data: typeof legalData) => void;
   addContactMessage: (msg: Omit<ContactMessage, "id" | "createdAt" | "status">) => void;
   updateContactMessage: (id: string, updates: Partial<ContactMessage>) => void;
 }
@@ -64,6 +67,7 @@ export const useAdminStore = create<AdminStore>((set) => ({
   footer: footerData,
   seo: seoData,
   themes: themesData,
+  legal: legalData,
   contactMessages: JSON.parse(localStorage.getItem("pcl-contact-messages") || "[]"),
   mediaFiles: [],
 
@@ -78,6 +82,7 @@ export const useAdminStore = create<AdminStore>((set) => ({
   setFooter: (data) => set({ footer: data }),
   setSeo: (data) => set({ seo: data }),
   setThemes: (data) => set({ themes: data }),
+  setLegal: (data) => set({ legal: data }),
   addContactMessage: (msg) =>
     set((state) => {
       const newMsg: ContactMessage = {

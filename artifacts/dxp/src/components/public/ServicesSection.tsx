@@ -1,14 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { Code2, BrainCircuit, Workflow, Cloud, Headphones } from "lucide-react";
+import { resolveIcon } from "@/lib/icons";
 import { listActiveServices } from "@/services/services.service";
-
-const ICONS: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
-  Code2,
-  BrainCircuit,
-  Workflow,
-  Cloud,
-  Headphones,
-};
 
 export function ServicesSection() {
   const { t, i18n } = useTranslation();
@@ -44,7 +36,7 @@ export function ServicesSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, idx) => {
             const tr = service.translations[lang] ?? service.translations.es;
-            const Icon = ICONS[service.iconName ?? "Code2"] ?? Code2;
+            const Icon = resolveIcon(service.iconName);
             const color = accentColors[idx % accentColors.length];
 
             return (
@@ -53,23 +45,25 @@ export function ServicesSection() {
                 className="group p-6 rounded-2xl border border-[#E2E8F0] bg-white hover:shadow-lg dark:border-white/8 dark:bg-white/4 dark:hover:bg-white/7 dark:hover:border-white/15 transition-all duration-300"
                 data-testid={`service-card-${service.id}`}
               >
-                {/* Icon */}
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                  style={{ background: `${color}20` }}
-                >
-                  <Icon className="w-6 h-6" style={{ color }} />
+                {/* Header row: icon · index · title — all on one line */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: `${color}20` }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color }} />
+                  </div>
+                  <span
+                    className="text-xs font-bold font-mono flex-shrink-0"
+                    style={{ color: `${color}80` }}
+                  >
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="text-lg font-bold text-[#0F172A] dark:text-white min-w-0 truncate">
+                    {tr.name}
+                  </h3>
                 </div>
 
-                {/* Index */}
-                <div
-                  className="text-xs font-bold mb-2 font-mono"
-                  style={{ color: `${color}80` }}
-                >
-                  {String(idx + 1).padStart(2, "0")}
-                </div>
-
-                <h3 className="text-lg font-bold text-[#0F172A] dark:text-white mb-3">{tr.name}</h3>
                 <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{tr.description}</p>
 
                 {/* Bottom line */}

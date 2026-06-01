@@ -66,7 +66,7 @@ export function HeroSection() {
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-sm font-medium mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
-          Costa Rica · Technology · Purpose
+          {content.eyebrow}
         </div>
 
         {/* Heading */}
@@ -108,11 +108,7 @@ export function HeroSection() {
 
         {/* Stats */}
         <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto border-t border-[#0F172A]/10 dark:border-white/10 pt-10">
-          {[
-            { value: "2", label: lang === "es" ? "Productos SaaS" : "SaaS Products" },
-            { value: "5+", label: lang === "es" ? "Áreas de servicio" : "Service areas" },
-            { value: "CR", label: lang === "es" ? "Hecho en Costa Rica" : "Made in Costa Rica" },
-          ].map((stat) => (
+          {content.stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl font-bold text-[#0F172A] dark:text-white">{stat.value}</div>
               <div className="text-xs text-[#94A3B8] dark:text-white/40 mt-1">{stat.label}</div>

@@ -1,17 +1,13 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ExternalLink, ArrowRight } from "lucide-react";
+import { resolveIcon } from "@/lib/icons";
 import { listActiveProducts } from "@/services/products.service";
 
 export function ProductsSection() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "es" | "en";
   const products = listActiveProducts();
-
-  const productIcons: Record<string, string> = {
-    tsuru: "🦢",
-    firecode: "🔥",
-  };
 
   const productColors: Record<string, { from: string; to: string; border: string }> = {
     tsuru: { from: "#10B981", to: "#059669", border: "#10B981" },
@@ -44,6 +40,7 @@ export function ProductsSection() {
           {products.map((product) => {
             const tr = product.translations[lang] ?? product.translations.es;
             const colors = productColors[product.id] ?? { from: "#2563EB", to: "#1d4ed8", border: "#2563EB" };
+            const Icon = resolveIcon(product.iconName);
 
             return (
               <div
@@ -61,13 +58,17 @@ export function ProductsSection() {
                   {/* Icon + badge */}
                   <div className="flex items-start justify-between mb-6">
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center"
                       style={{ background: `${colors.from}15` }}
                     >
-                      {productIcons[product.id] ?? "◆"}
+                      {product.logoUrl ? (
+                        <img src={product.logoUrl} alt={tr.name} className="w-8 h-8 object-contain" />
+                      ) : (
+                        <Icon className="w-7 h-7" style={{ color: colors.from }} />
+                      )}
                     </div>
                     <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F0FDF4] text-[#16A34A]">
-                      {lang === "es" ? "Activo" : "Active"}
+                      {t("products.active")}
                     </span>
                   </div>
 
