@@ -1,0 +1,54 @@
+[
+  {
+    "id": "case-tsuru-coope",
+    "slug": "tsuru-cooperativa",
+    "status": "active",
+    "sortOrder": 1,
+    "imageUrl": null,
+    "industry": "Agriculture",
+    "translations": {
+      "es": {
+        "title": "Cooperativa Agrícola moderniza su gestión con Tsuru",
+        "summary": "Una cooperativa de productores implementó Tsuru para digitalizar su cadena de producción y comercialización.",
+        "challenge": "La cooperativa manejaba inventarios, pedidos y facturación manualmente, generando errores y retrasos costosos.",
+        "solution": "Implementamos Tsuru con módulos de inventario, POS y facturación electrónica integrados con el sistema tributario costarricense.",
+        "result": "Reducción del 60% en errores administrativos y aumento del 35% en eficiencia operativa en los primeros 6 meses."
+      },
+      "en": {
+        "title": "Agricultural Cooperative modernizes management with Tsuru",
+        "summary": "A producers' cooperative implemented Tsuru to digitize their production and marketing chain.",
+        "challenge": "The cooperative managed inventory, orders, and invoicing manually, generating costly errors and delays.",
+        "solution": "We implemented Tsuru with integrated inventory, POS, and electronic invoicing modules connected to Costa Rica's tax system.",
+        "result": "60% reduction in administrative errors and 35% increase in operational efficiency in the first 6 months."
+      }
+    },
+    "createdAt": "2024-03-01T00:00:00Z",
+    "updatedAt": "2024-03-01T00:00:00Z"
+  },
+  {
+    "id": "case-firecode-eng",
+    "slug": "firecode-ingenieria",
+    "status": "active",
+    "sortOrder": 2,
+    "imageUrl": null,
+    "industry": "Engineering",
+    "translations": {
+      "es": {
+        "title": "Firma de ingeniería reduce tiempos de consulta con FireCode CR",
+        "summary": "Una firma de ingeniería especializada adoptó FireCode CR para acelerar consultas de cumplimiento técnico.",
+        "challenge": "Los ingenieros invertían hasta 4 horas por proyecto buscando normativas NFPA y reglamentos locales aplicables.",
+        "solution": "Integramos FireCode CR como asistente de consulta instantánea para el equipo técnico, con acceso a toda la normativa vigente.",
+        "result": "El tiempo de consulta de normativas se redujo de 4 horas a 15 minutos por proyecto, con mayor precisión en los dictámenes."
+      },
+      "en": {
+        "title": "Engineering firm reduces consultation time with FireCode CR",
+        "summary": "A specialized engineering firm adopted FireCode CR to accelerate technical compliance consultations.",
+        "challenge": "Engineers spent up to 4 hours per project searching for applicable NFPA standards and local regulations.",
+        "solution": "We integrated FireCode CR as an instant consultation assistant for the technical team, with access to all current regulations.",
+        "result": "Regulation consultation time was reduced from 4 hours to 15 minutes per project, with greater accuracy in technical opinions."
+      }
+    },
+    "createdAt": "2024-05-01T00:00:00Z",
+    "updatedAt": "2024-05-01T00:00:00Z"
+  }
+]

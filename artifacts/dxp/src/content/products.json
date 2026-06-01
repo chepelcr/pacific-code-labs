@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tsuru",
+    "slug": "tsuru",
+    "status": "active",
+    "sortOrder": 1,
+    "externalUrl": "https://tsuru.example.com",
+    "logoUrl": null,
+    "translations": {
+      "es": {
+        "name": "Tsuru",
+        "tagline": "Conectando producción, comunidad y comercio.",
+        "description": "Plataforma para cooperativas, asociaciones y organizaciones productivas. Incluye POS, facturación electrónica, inventario, clientes, pedidos, analíticas y tiendas digitales."
+      },
+      "en": {
+        "name": "Tsuru",
+        "tagline": "Connecting production, community and commerce.",
+        "description": "Platform for cooperatives, associations, and productive organizations. Includes POS, electronic invoicing, inventory, customers, orders, analytics, and digital stores."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "firecode",
+    "slug": "firecode-cr",
+    "status": "active",
+    "sortOrder": 2,
+    "externalUrl": "https://firecode.example.com",
+    "logoUrl": null,
+    "translations": {
+      "es": {
+        "name": "FireCode CR",
+        "tagline": "Asistente de IA para ingeniería contra incendios.",
+        "description": "Asistente inteligente para protección contra incendios, reglamentos eléctricos, cumplimiento técnico, estándares NFPA y normativas costarricenses."
+      },
+      "en": {
+        "name": "FireCode CR",
+        "tagline": "AI assistant for fire protection engineering.",
+        "description": "Intelligent assistant for fire protection engineering, electrical regulations, technical compliance, NFPA standards, and Costa Rican regulations."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  }
+]

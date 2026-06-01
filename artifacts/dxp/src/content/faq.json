@@ -1,0 +1,87 @@
+[
+  {
+    "id": "faq-1",
+    "status": "active",
+    "sortOrder": 1,
+    "translations": {
+      "es": {
+        "question": "¿En qué países operan?",
+        "answer": "Tenemos base en Costa Rica y atendemos clientes en toda Centroamérica y México. Trabajamos de forma remota con organizaciones en cualquier parte del mundo."
+      },
+      "en": {
+        "question": "Which countries do you operate in?",
+        "answer": "We are based in Costa Rica and serve clients throughout Central America and Mexico. We work remotely with organizations anywhere in the world."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "faq-2",
+    "status": "active",
+    "sortOrder": 2,
+    "translations": {
+      "es": {
+        "question": "¿Qué tecnologías utilizan para el desarrollo?",
+        "answer": "Trabajamos con React, TypeScript, Node.js, Python, y tecnologías cloud como AWS y GCP. Seleccionamos la tecnología más adecuada según las necesidades de cada proyecto."
+      },
+      "en": {
+        "question": "What technologies do you use for development?",
+        "answer": "We work with React, TypeScript, Node.js, Python, and cloud technologies like AWS and GCP. We select the most appropriate technology based on each project's needs."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "faq-3",
+    "status": "active",
+    "sortOrder": 3,
+    "translations": {
+      "es": {
+        "question": "¿Cómo es el proceso para iniciar un proyecto?",
+        "answer": "Iniciamos con una consulta de diagnóstico gratuita para entender sus necesidades. Luego elaboramos una propuesta técnica y comercial. El proceso típico va de consulta inicial a entrega en 4 a 16 semanas según la complejidad."
+      },
+      "en": {
+        "question": "What is the process to start a project?",
+        "answer": "We start with a free diagnostic consultation to understand your needs. We then develop a technical and commercial proposal. The typical process goes from initial consultation to delivery in 4 to 16 weeks depending on complexity."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "faq-4",
+    "status": "active",
+    "sortOrder": 4,
+    "translations": {
+      "es": {
+        "question": "¿Ofrecen soporte post-lanzamiento?",
+        "answer": "Sí, todos nuestros proyectos incluyen un período de garantía y ofrecemos planes de soporte técnico continuo adaptados a las necesidades de cada cliente."
+      },
+      "en": {
+        "question": "Do you offer post-launch support?",
+        "answer": "Yes, all our projects include a warranty period and we offer continuous technical support plans adapted to each client's needs."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "faq-5",
+    "status": "active",
+    "sortOrder": 5,
+    "translations": {
+      "es": {
+        "question": "¿Trabajan con cooperativas y organizaciones sociales?",
+        "answer": "Absolutamente. Tsuru fue diseñado específicamente para cooperativas, asociaciones y organizaciones de la economía social. Tenemos experiencia profunda en este sector."
+      },
+      "en": {
+        "question": "Do you work with cooperatives and social organizations?",
+        "answer": "Absolutely. Tsuru was specifically designed for cooperatives, associations, and social economy organizations. We have deep experience in this sector."
+      }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  }
+]

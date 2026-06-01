@@ -1,0 +1,28 @@
+[
+  {
+    "id": "pacific-default",
+    "name": "Pacific Default",
+    "isActive": true,
+    "colors": {
+      "primary": "#2563EB",
+      "accent": "#06B6D4",
+      "emerald": "#10B981",
+      "navy": "#0F172A",
+      "background": "#F8FAFC"
+    },
+    "createdAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "pacific-dark",
+    "name": "Pacific Dark",
+    "isActive": false,
+    "colors": {
+      "primary": "#3B82F6",
+      "accent": "#22D3EE",
+      "emerald": "#34D399",
+      "navy": "#020617",
+      "background": "#0F172A"
+    },
+    "createdAt": "2024-01-01T00:00:00Z"
+  }
+]

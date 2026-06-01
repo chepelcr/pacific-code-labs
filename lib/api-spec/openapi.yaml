@@ -1,22 +1,45 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Pacific Code Labs DXP API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: content
+    description: Public content endpoints
+  - name: products
+    description: Product management
+  - name: services
+    description: Services management
+  - name: caseStudies
+    description: Case studies management
+  - name: faq
+    description: FAQ management
+  - name: contact
+    description: Contact form
+  - name: media
+    description: Media library
+  - name: translations
+    description: Translation management
+  - name: themes
+    description: Theme management
+  - name: seo
+    description: SEO management
+  - name: navigation
+    description: Navigation management
+  - name: dashboard
+    description: Admin dashboard
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +47,1465 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── Public content ──────────────────────────────────────────────────────────
+
+  /content/hero:
+    get:
+      operationId: getHero
+      tags: [content]
+      summary: Get hero content
+      responses:
+        "200":
+          description: Hero content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroContent"
+    put:
+      operationId: updateHero
+      tags: [content]
+      summary: Update hero content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HeroInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroContent"
+
+  /content/philosophy:
+    get:
+      operationId: getPhilosophy
+      tags: [content]
+      summary: Get philosophy content
+      responses:
+        "200":
+          description: Philosophy content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PhilosophyContent"
+    put:
+      operationId: updatePhilosophy
+      tags: [content]
+      summary: Update philosophy content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PhilosophyInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PhilosophyContent"
+
+  /content/footer:
+    get:
+      operationId: getFooter
+      tags: [content]
+      summary: Get footer content
+      responses:
+        "200":
+          description: Footer content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FooterContent"
+    put:
+      operationId: updateFooter
+      tags: [content]
+      summary: Update footer content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FooterInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FooterContent"
+
+  /content/navigation:
+    get:
+      operationId: getNavigation
+      tags: [navigation]
+      summary: Get navigation config
+      responses:
+        "200":
+          description: Navigation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NavigationContent"
+    put:
+      operationId: updateNavigation
+      tags: [navigation]
+      summary: Update navigation config
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NavigationInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NavigationContent"
+
+  # ── Products ─────────────────────────────────────────────────────────────────
+
+  /products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List all products
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [active, draft, archived]
+      responses:
+        "200":
+          description: Product list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      operationId: createProduct
+      tags: [products]
+      summary: Create product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /products/{id}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get product by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateProduct
+      tags: [products]
+      summary: Update product
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      operationId: deleteProduct
+      tags: [products]
+      summary: Delete product
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Services ─────────────────────────────────────────────────────────────────
+
+  /services:
+    get:
+      operationId: listServices
+      tags: [services]
+      summary: List services
+      responses:
+        "200":
+          description: Services list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+    post:
+      operationId: createService
+      tags: [services]
+      summary: Create service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    get:
+      operationId: getService
+      tags: [services]
+      summary: Get service by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    patch:
+      operationId: updateService
+      tags: [services]
+      summary: Update service
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      summary: Delete service
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Case Studies ──────────────────────────────────────────────────────────────
+
+  /case-studies:
+    get:
+      operationId: listCaseStudies
+      tags: [caseStudies]
+      summary: List case studies
+      responses:
+        "200":
+          description: Case studies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CaseStudy"
+    post:
+      operationId: createCaseStudy
+      tags: [caseStudies]
+      summary: Create case study
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaseStudyInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseStudy"
+
+  /case-studies/{id}:
+    get:
+      operationId: getCaseStudy
+      tags: [caseStudies]
+      summary: Get case study by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Case study
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseStudy"
+    patch:
+      operationId: updateCaseStudy
+      tags: [caseStudies]
+      summary: Update case study
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaseStudyUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseStudy"
+    delete:
+      operationId: deleteCaseStudy
+      tags: [caseStudies]
+      summary: Delete case study
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── FAQ ───────────────────────────────────────────────────────────────────────
+
+  /faq:
+    get:
+      operationId: listFaq
+      tags: [faq]
+      summary: List FAQ entries
+      responses:
+        "200":
+          description: FAQ list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FaqEntry"
+    post:
+      operationId: createFaqEntry
+      tags: [faq]
+      summary: Create FAQ entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FaqInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FaqEntry"
+
+  /faq/{id}:
+    patch:
+      operationId: updateFaqEntry
+      tags: [faq]
+      summary: Update FAQ entry
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FaqUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FaqEntry"
+    delete:
+      operationId: deleteFaqEntry
+      tags: [faq]
+      summary: Delete FAQ entry
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Contact ───────────────────────────────────────────────────────────────────
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit contact form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+
+  /contact/messages:
+    get:
+      operationId: listContactMessages
+      tags: [contact]
+      summary: List contact messages (admin)
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [new, read, archived]
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactMessage"
+
+  /contact/messages/{id}:
+    patch:
+      operationId: updateContactMessage
+      tags: [contact]
+      summary: Update contact message status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessageUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+
+  # ── Media Library ─────────────────────────────────────────────────────────────
+
+  /media:
+    get:
+      operationId: listMedia
+      tags: [media]
+      summary: List media files
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [image, document, video]
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Media files
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MediaFile"
+    post:
+      operationId: createMediaRecord
+      tags: [media]
+      summary: Create media record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MediaInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MediaFile"
+
+  /media/{id}:
+    delete:
+      operationId: deleteMedia
+      tags: [media]
+      summary: Delete media file
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Translations ──────────────────────────────────────────────────────────────
+
+  /translations:
+    get:
+      operationId: listLanguages
+      tags: [translations]
+      summary: List supported languages
+      responses:
+        "200":
+          description: Languages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Language"
+    post:
+      operationId: createLanguage
+      tags: [translations]
+      summary: Add language
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LanguageInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Language"
+
+  /translations/{code}:
+    delete:
+      operationId: deleteLanguage
+      tags: [translations]
+      summary: Remove language
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Themes ────────────────────────────────────────────────────────────────────
+
+  /themes:
+    get:
+      operationId: listThemes
+      tags: [themes]
+      summary: List themes
+      responses:
+        "200":
+          description: Themes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Theme"
+    post:
+      operationId: createTheme
+      tags: [themes]
+      summary: Create theme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ThemeInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Theme"
+
+  /themes/{id}/activate:
+    post:
+      operationId: activateTheme
+      tags: [themes]
+      summary: Activate a theme
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Theme"
+
+  # ── SEO ───────────────────────────────────────────────────────────────────────
+
+  /seo:
+    get:
+      operationId: getSeoSettings
+      tags: [seo]
+      summary: Get global SEO settings
+      responses:
+        "200":
+          description: SEO settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeoSettings"
+    put:
+      operationId: updateSeoSettings
+      tags: [seo]
+      summary: Update global SEO settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeoInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeoSettings"
+
+  # ── Dashboard ─────────────────────────────────────────────────────────────────
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get admin dashboard stats
+      responses:
+        "200":
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent content activity
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    # ── Translations helper ────────────────────────────────────────────────────
+
+    LocalizedString:
+      type: object
+      description: Translated text keyed by language code
+      additionalProperties:
+        type: string
+
+    # ── Hero ──────────────────────────────────────────────────────────────────
+
+    HeroContent:
+      type: object
+      required: [translations]
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              title:
+                type: string
+              subtitle:
+                type: string
+
+    HeroInput:
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              title:
+                type: string
+              subtitle:
+                type: string
+
+    # ── Philosophy ────────────────────────────────────────────────────────────
+
+    PhilosophyContent:
+      type: object
+      properties:
+        knowledge:
+          $ref: "#/components/schemas/LocalizedString"
+        community:
+          $ref: "#/components/schemas/LocalizedString"
+        growth:
+          $ref: "#/components/schemas/LocalizedString"
+
+    PhilosophyInput:
+      type: object
+      properties:
+        knowledge:
+          $ref: "#/components/schemas/LocalizedString"
+        community:
+          $ref: "#/components/schemas/LocalizedString"
+        growth:
+          $ref: "#/components/schemas/LocalizedString"
+
+    # ── Footer ────────────────────────────────────────────────────────────────
+
+    FooterContent:
+      type: object
+      properties:
+        copyright:
+          $ref: "#/components/schemas/LocalizedString"
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                $ref: "#/components/schemas/LocalizedString"
+              url:
+                type: string
+
+    FooterInput:
+      type: object
+      properties:
+        copyright:
+          $ref: "#/components/schemas/LocalizedString"
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                $ref: "#/components/schemas/LocalizedString"
+              url:
+                type: string
+
+    # ── Navigation ────────────────────────────────────────────────────────────
+
+    NavigationContent:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                $ref: "#/components/schemas/LocalizedString"
+              href:
+                type: string
+              order:
+                type: integer
+
+    NavigationInput:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                $ref: "#/components/schemas/LocalizedString"
+              href:
+                type: string
+              order:
+                type: integer
+
+    # ── Product ───────────────────────────────────────────────────────────────
+
+    Product:
+      type: object
+      required: [id, slug, status, sortOrder, translations, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        externalUrl:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              tagline:
+                type: string
+              description:
+                type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    ProductInput:
+      type: object
+      required: [slug, translations]
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        externalUrl:
+          type: string
+        logoUrl:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              tagline:
+                type: string
+              description:
+                type: string
+
+    ProductUpdate:
+      type: object
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        externalUrl:
+          type: string
+        logoUrl:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              tagline:
+                type: string
+              description:
+                type: string
+
+    # ── Service ───────────────────────────────────────────────────────────────
+
+    Service:
+      type: object
+      required: [id, slug, status, sortOrder, translations, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        iconName:
+          type: ["string", "null"]
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    ServiceInput:
+      type: object
+      required: [slug, translations]
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        iconName:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+
+    ServiceUpdate:
+      type: object
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        iconName:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+
+    # ── CaseStudy ─────────────────────────────────────────────────────────────
+
+    CaseStudy:
+      type: object
+      required: [id, slug, status, sortOrder, translations, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        imageUrl:
+          type: ["string", "null"]
+        industry:
+          type: ["string", "null"]
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              title:
+                type: string
+              summary:
+                type: string
+              challenge:
+                type: string
+              solution:
+                type: string
+              result:
+                type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    CaseStudyInput:
+      type: object
+      required: [slug, translations]
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        imageUrl:
+          type: string
+        industry:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              title:
+                type: string
+              summary:
+                type: string
+              challenge:
+                type: string
+              solution:
+                type: string
+              result:
+                type: string
+
+    CaseStudyUpdate:
+      type: object
+      properties:
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        imageUrl:
+          type: string
+        industry:
+          type: string
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              title:
+                type: string
+              summary:
+                type: string
+              challenge:
+                type: string
+              solution:
+                type: string
+              result:
+                type: string
+
+    # ── FAQ ───────────────────────────────────────────────────────────────────
+
+    FaqEntry:
+      type: object
+      required: [id, status, sortOrder, translations, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              question:
+                type: string
+              answer:
+                type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    FaqInput:
+      type: object
+      required: [translations]
+      properties:
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              question:
+                type: string
+              answer:
+                type: string
+
+    FaqUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [active, draft, archived]
+        sortOrder:
+          type: integer
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              question:
+                type: string
+              answer:
+                type: string
+
+    # ── Contact ───────────────────────────────────────────────────────────────
+
+    ContactMessage:
+      type: object
+      required: [id, name, email, message, status, createdAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        company:
+          type: ["string", "null"]
+        subject:
+          type: ["string", "null"]
+        message:
+          type: string
+        status:
+          type: string
+          enum: [new, read, archived]
+        createdAt:
+          type: string
+
+    ContactInput:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        company:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+
+    ContactMessageUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [new, read, archived]
+
+    # ── Media ─────────────────────────────────────────────────────────────────
+
+    MediaFile:
+      type: object
+      required: [id, filename, url, type, size, createdAt]
+      properties:
+        id:
+          type: string
+        filename:
+          type: string
+        url:
+          type: string
+        type:
+          type: string
+          enum: [image, document, video]
+        size:
+          type: integer
+        mimeType:
+          type: ["string", "null"]
+        altText:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    MediaInput:
+      type: object
+      required: [filename, url, type, size]
+      properties:
+        filename:
+          type: string
+        url:
+          type: string
+        type:
+          type: string
+          enum: [image, document, video]
+        size:
+          type: integer
+        mimeType:
+          type: string
+        altText:
+          type: string
+
+    # ── Language ──────────────────────────────────────────────────────────────
+
+    Language:
+      type: object
+      required: [code, name, isDefault, isActive]
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        isDefault:
+          type: boolean
+        isActive:
+          type: boolean
+
+    LanguageInput:
+      type: object
+      required: [code, name]
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        isDefault:
+          type: boolean
+        isActive:
+          type: boolean
+
+    # ── Theme ─────────────────────────────────────────────────────────────────
+
+    Theme:
+      type: object
+      required: [id, name, isActive, createdAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isActive:
+          type: boolean
+        colors:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+
+    ThemeInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        colors:
+          type: object
+          additionalProperties:
+            type: string
+
+    # ── SEO ───────────────────────────────────────────────────────────────────
+
+    SeoSettings:
+      type: object
+      properties:
+        siteTitle:
+          $ref: "#/components/schemas/LocalizedString"
+        siteDescription:
+          $ref: "#/components/schemas/LocalizedString"
+        ogImageUrl:
+          type: ["string", "null"]
+        twitterHandle:
+          type: ["string", "null"]
+        googleAnalyticsId:
+          type: ["string", "null"]
+
+    SeoInput:
+      type: object
+      properties:
+        siteTitle:
+          $ref: "#/components/schemas/LocalizedString"
+        siteDescription:
+          $ref: "#/components/schemas/LocalizedString"
+        ogImageUrl:
+          type: string
+        twitterHandle:
+          type: string
+        googleAnalyticsId:
+          type: string
+
+    # ── Dashboard ─────────────────────────────────────────────────────────────
+
+    DashboardStats:
+      type: object
+      required: [products, services, caseStudies, faqEntries, contactMessages, mediaFiles]
+      properties:
+        products:
+          type: object
+          properties:
+            total:
+              type: integer
+            active:
+              type: integer
+            draft:
+              type: integer
+        services:
+          type: object
+          properties:
+            total:
+              type: integer
+            active:
+              type: integer
+        caseStudies:
+          type: object
+          properties:
+            total:
+              type: integer
+            active:
+              type: integer
+        faqEntries:
+          type: object
+          properties:
+            total:
+              type: integer
+        contactMessages:
+          type: object
+          properties:
+            total:
+              type: integer
+            new:
+              type: integer
+        mediaFiles:
+          type: object
+          properties:
+            total:
+              type: integer
+
+    ActivityItem:
+      type: object
+      required: [id, type, action, entityType, entityId, entityTitle, timestamp]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        action:
+          type: string
+          enum: [created, updated, deleted, published, archived]
+        entityType:
+          type: string
+        entityId:
+          type: string
+        entityTitle:
+          type: string
+        timestamp:
+          type: string

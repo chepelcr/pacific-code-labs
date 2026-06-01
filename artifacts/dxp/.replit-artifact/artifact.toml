@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Pacific Code Labs DXP"
+version = "1.0.0"
+id = "artifacts/dxp"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25433
+
+[services.development]
+run = "pnpm --filter @workspace/dxp run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/dxp", "run", "build" ]
+publicDir = "artifacts/dxp/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25433"
+BASE_PATH = "/"

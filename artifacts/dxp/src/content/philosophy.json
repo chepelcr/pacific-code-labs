@@ -1,0 +1,14 @@
+{
+  "knowledge": {
+    "es": "El conocimiento debe ser accesible para todos. La tecnología democratiza el acceso a la información y empodera a comunidades enteras.",
+    "en": "Knowledge should be accessible to everyone. Technology democratizes access to information and empowers entire communities."
+  },
+  "community": {
+    "es": "La tecnología fortalece las comunidades humanas. Construimos herramientas que conectan personas, fomentan la colaboración y crean valor compartido.",
+    "en": "Technology strengthens human communities. We build tools that connect people, foster collaboration, and create shared value."
+  },
+  "growth": {
+    "es": "El crecimiento debe ser sostenible y duradero. Creamos tecnología que genera valor a largo plazo sin comprometer el futuro.",
+    "en": "Growth should be sustainable and lasting. We create technology that generates long-term value without compromising the future."
+  }
+}

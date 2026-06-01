@@ -1,0 +1,10 @@
+{
+  "copyright": {
+    "es": "© 2025 Pacific Code Labs. Todos los derechos reservados.",
+    "en": "© 2025 Pacific Code Labs. All rights reserved."
+  },
+  "links": [
+    { "url": "#", "label": { "es": "Privacidad", "en": "Privacy" } },
+    { "url": "#", "label": { "es": "Términos", "en": "Terms" } }
+  ]
+}

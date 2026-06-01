@@ -1,0 +1,4 @@
+[
+  { "code": "es", "name": "Español", "isDefault": true, "isActive": true },
+  { "code": "en", "name": "English", "isDefault": false, "isActive": true }
+]

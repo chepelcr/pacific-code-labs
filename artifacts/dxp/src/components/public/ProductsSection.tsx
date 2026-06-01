@@ -1,0 +1,113 @@
+import { useTranslation } from "react-i18next";
+import { ExternalLink, ArrowRight } from "lucide-react";
+import { listActiveProducts } from "@/services/products.service";
+
+export function ProductsSection() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "es" | "en";
+  const products = listActiveProducts();
+
+  const productIcons: Record<string, string> = {
+    tsuru: "🦢",
+    firecode: "🔥",
+  };
+
+  const productColors: Record<string, { from: string; to: string; border: string }> = {
+    tsuru: { from: "#10B981", to: "#059669", border: "#10B981" },
+    firecode: { from: "#F59E0B", to: "#D97706", border: "#F59E0B" },
+  };
+
+  return (
+    <section
+      id="products"
+      className="py-24 bg-white relative overflow-hidden"
+      data-testid="products-section"
+    >
+      {/* Subtle bg */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
+            {t("products.title")}
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] mb-4">
+            {t("products.title")}
+          </h2>
+          <p className="text-[#64748B] max-w-xl mx-auto">{t("products.subtitle")}</p>
+        </div>
+
+        {/* Products grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {products.map((product) => {
+            const tr = product.translations[lang] ?? product.translations.es;
+            const colors = productColors[product.id] ?? { from: "#2563EB", to: "#1d4ed8", border: "#2563EB" };
+
+            return (
+              <div
+                key={product.id}
+                className="group relative rounded-2xl border border-[#E2E8F0] bg-white hover:shadow-xl transition-all duration-300 overflow-hidden"
+                data-testid={`product-card-${product.id}`}
+              >
+                {/* Top accent bar */}
+                <div
+                  className="h-1 w-full"
+                  style={{ background: `linear-gradient(to right, ${colors.from}, ${colors.to})` }}
+                />
+
+                <div className="p-8">
+                  {/* Icon + badge */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                      style={{ background: `${colors.from}15` }}
+                    >
+                      {productIcons[product.id] ?? "◆"}
+                    </div>
+                    <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F0FDF4] text-[#16A34A]">
+                      {lang === "es" ? "Activo" : "Active"}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-[#0F172A] mb-2">{tr.name}</h3>
+                  <p
+                    className="text-sm font-medium mb-4"
+                    style={{ color: colors.from }}
+                  >
+                    {tr.tagline}
+                  </p>
+                  <p className="text-[#64748B] text-sm leading-relaxed mb-8">{tr.description}</p>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-3">
+                    <a
+                      href="#contact"
+                      className="flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8] transition-colors"
+                      data-testid={`product-learn-more-${product.id}`}
+                    >
+                      {t("products.learn_more")}
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                    {product.externalUrl && (
+                      <a
+                        href={product.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-sm text-[#94A3B8] hover:text-[#64748B] transition-colors ml-auto"
+                        data-testid={`product-visit-${product.id}`}
+                      >
+                        {t("products.visit")}
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

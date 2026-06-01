@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "products": "Productos",
+    "services": "Servicios",
+    "about": "Nosotros",
+    "philosophy": "Filosofía",
+    "caseStudies": "Casos de Éxito",
+    "faq": "FAQ",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "cta_primary": "Conocer Productos",
+    "cta_secondary": "Hablar con un Experto"
+  },
+  "about": {
+    "title": "Tecnología construida en Costa Rica",
+    "body": "Pacific Code Labs nace de la convicción de que la tecnología debe resolver problemas reales. Somos un equipo de ingenieros y diseñadores costarricenses que construye productos digitales con identidad, propósito y excelencia técnica.",
+    "values_title": "Nuestras Áreas",
+    "founded": "Fundados en Costa Rica",
+    "clients": "Clientes en Centroamérica",
+    "projects": "Proyectos entregados"
+  },
+  "philosophy": {
+    "title": "Nuestra Filosofía",
+    "subtitle": "Principios ancestrales aplicados a la tecnología moderna.",
+    "knowledge_title": "Conocimiento",
+    "community_title": "Comunidad",
+    "growth_title": "Crecimiento Sostenible"
+  },
+  "products": {
+    "title": "Nuestros Productos",
+    "subtitle": "Soluciones tecnológicas diseñadas para transformar industrias.",
+    "learn_more": "Saber Más",
+    "visit": "Visitar"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Capacidades técnicas al servicio de su organización."
+  },
+  "caseStudies": {
+    "title": "Casos de Éxito",
+    "subtitle": "Resultados reales para organizaciones reales.",
+    "challenge": "El Desafío",
+    "solution": "La Solución",
+    "result": "El Resultado"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Todo lo que necesita saber sobre nuestros servicios."
+  },
+  "contact": {
+    "title": "Hablemos",
+    "subtitle": "Cuéntenos sobre su proyecto y encontremos juntos la mejor solución.",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "company": "Empresa (opcional)",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje",
+    "success": "Mensaje enviado. Nos pondremos en contacto pronto.",
+    "placeholder_name": "Su nombre completo",
+    "placeholder_email": "su@correo.com",
+    "placeholder_company": "Nombre de su organización",
+    "placeholder_subject": "¿En qué podemos ayudarle?",
+    "placeholder_message": "Cuéntenos sobre su proyecto..."
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "dashboard": "Panel Principal",
+    "products": "Productos",
+    "services": "Servicios",
+    "caseStudies": "Casos de Éxito",
+    "faq": "FAQ",
+    "contact": "Mensajes de Contacto",
+    "seo": "SEO",
+    "navigation": "Navegación",
+    "footer": "Pie de Página",
+    "languages": "Idiomas",
+    "themes": "Temas",
+    "media": "Biblioteca de Medios",
+    "contentVersions": "Versiones de Contenido",
+    "settings": "Configuración",
+    "contentExplorer": "Explorador de Contenido",
+    "diagnostics": "Diagnósticos",
+    "export": "Exportar JSON",
+    "exportAll": "Exportar Todo",
+    "add": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "status": "Estado",
+    "active": "Activo",
+    "draft": "Borrador",
+    "archived": "Archivado",
+    "business": "Negocio",
+    "cms": "CMS",
+    "platform": "Plataforma",
+    "new_messages": "mensajes nuevos",
+    "total_products": "Productos",
+    "total_services": "Servicios",
+    "total_case_studies": "Casos de Éxito",
+    "total_faq": "Entradas FAQ",
+    "recent_activity": "Actividad Reciente",
+    "no_data": "Sin datos disponibles"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "not_found": "No encontrado",
+    "back_home": "Volver al inicio",
+    "go_to_admin": "Ir al Admin"
+  }
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "software",
+    "slug": "software-engineering",
+    "status": "active",
+    "sortOrder": 1,
+    "iconName": "Code2",
+    "translations": {
+      "es": { "name": "Ingeniería de Software", "description": "Desarrollo de aplicaciones a medida, APIs y sistemas escalables para resolver problemas reales de negocio." },
+      "en": { "name": "Software Engineering", "description": "Custom application development, APIs and scalable systems to solve real business problems." }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "ai",
+    "slug": "artificial-intelligence",
+    "status": "active",
+    "sortOrder": 2,
+    "iconName": "BrainCircuit",
+    "translations": {
+      "es": { "name": "Inteligencia Artificial", "description": "Soluciones de IA, automatización inteligente y modelos de lenguaje aplicados a procesos productivos." },
+      "en": { "name": "Artificial Intelligence", "description": "AI solutions, intelligent automation and language models applied to productive processes." }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "automation",
+    "slug": "business-automation",
+    "status": "active",
+    "sortOrder": 3,
+    "iconName": "Workflow",
+    "translations": {
+      "es": { "name": "Automatización de Negocios", "description": "Optimización de procesos, integración de sistemas y flujos de trabajo digitales para mayor eficiencia." },
+      "en": { "name": "Business Automation", "description": "Process optimization, systems integration and digital workflows for greater efficiency." }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "cloud",
+    "slug": "cloud-architecture",
+    "status": "active",
+    "sortOrder": 4,
+    "iconName": "Cloud",
+    "translations": {
+      "es": { "name": "Arquitectura Cloud", "description": "Diseño e implementación de infraestructura cloud escalable, segura y rentable para su organización." },
+      "en": { "name": "Cloud Architecture", "description": "Design and implementation of scalable, secure, and cost-effective cloud infrastructure for your organization." }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "support",
+    "slug": "technical-support",
+    "status": "active",
+    "sortOrder": 5,
+    "iconName": "Headphones",
+    "translations": {
+      "es": { "name": "Soporte Técnico", "description": "Acompañamiento técnico continuo para equipos y organizaciones que requieren estabilidad y respuesta rápida." },
+      "en": { "name": "Technical Support", "description": "Continuous technical support for teams and organizations that require stability and fast response." }
+    },
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  }
+]

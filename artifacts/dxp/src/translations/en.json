@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "products": "Products",
+    "services": "Services",
+    "about": "About",
+    "philosophy": "Philosophy",
+    "caseStudies": "Case Studies",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "hero": {
+    "cta_primary": "Explore Products",
+    "cta_secondary": "Talk to an Expert"
+  },
+  "about": {
+    "title": "Technology built in Costa Rica",
+    "body": "Pacific Code Labs was born from the conviction that technology must solve real problems. We are a team of Costa Rican engineers and designers who build digital products with identity, purpose, and technical excellence.",
+    "values_title": "Our Areas",
+    "founded": "Founded in Costa Rica",
+    "clients": "Clients in Central America",
+    "projects": "Projects delivered"
+  },
+  "philosophy": {
+    "title": "Our Philosophy",
+    "subtitle": "Ancestral principles applied to modern technology.",
+    "knowledge_title": "Knowledge",
+    "community_title": "Community",
+    "growth_title": "Sustainable Growth"
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Technology solutions designed to transform industries.",
+    "learn_more": "Learn More",
+    "visit": "Visit"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Technical capabilities at the service of your organization."
+  },
+  "caseStudies": {
+    "title": "Case Studies",
+    "subtitle": "Real results for real organizations.",
+    "challenge": "The Challenge",
+    "solution": "The Solution",
+    "result": "The Result"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about our services."
+  },
+  "contact": {
+    "title": "Let's Talk",
+    "subtitle": "Tell us about your project and let's find the best solution together.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent. We will be in touch soon.",
+    "placeholder_name": "Your full name",
+    "placeholder_email": "your@email.com",
+    "placeholder_company": "Your organization name",
+    "placeholder_subject": "How can we help you?",
+    "placeholder_message": "Tell us about your project..."
+  },
+  "admin": {
+    "title": "Administration Panel",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "services": "Services",
+    "caseStudies": "Case Studies",
+    "faq": "FAQ",
+    "contact": "Contact Messages",
+    "seo": "SEO",
+    "navigation": "Navigation",
+    "footer": "Footer",
+    "languages": "Languages",
+    "themes": "Themes",
+    "media": "Media Library",
+    "contentVersions": "Content Versions",
+    "settings": "Settings",
+    "contentExplorer": "Content Explorer",
+    "diagnostics": "Diagnostics",
+    "export": "Export JSON",
+    "exportAll": "Export All",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "status": "Status",
+    "active": "Active",
+    "draft": "Draft",
+    "archived": "Archived",
+    "business": "Business",
+    "cms": "CMS",
+    "platform": "Platform",
+    "new_messages": "new messages",
+    "total_products": "Products",
+    "total_services": "Services",
+    "total_case_studies": "Case Studies",
+    "total_faq": "FAQ Entries",
+    "recent_activity": "Recent Activity",
+    "no_data": "No data available"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "not_found": "Not found",
+    "back_home": "Back to home",
+    "go_to_admin": "Go to Admin"
+  }
+}
