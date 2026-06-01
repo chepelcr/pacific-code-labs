@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -6,9 +7,19 @@ import { useAdminStore, downloadJson } from "@/lib/admin-store";
 export function ThemesPage() {
   const { t } = useTranslation();
   const { themes, setThemes } = useAdminStore();
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const handleActivate = (id: string) => {
     setThemes(themes.map((th) => ({ ...th, isActive: th.id === id })) as typeof themes);
+  };
+
+  const persist = async () => {
+    setSaving(true);
+    await downloadJson("themes.json", themes);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   const active = themes.find((th) => th.isActive);
@@ -18,7 +29,9 @@ export function ThemesPage() {
       <PageHeader
         title={t("admin.themes")}
         description={`Tema activo: ${active?.name ?? "—"}`}
-        onExport={() => downloadJson("themes.json", themes)}
+        onSave={persist}
+        saving={saving}
+        saved={saved}
       />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

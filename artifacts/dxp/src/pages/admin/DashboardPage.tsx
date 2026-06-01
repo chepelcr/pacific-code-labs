@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Package, Wrench, BookOpen, HelpCircle, Mail, Image, TrendingUp, Clock } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -8,49 +9,12 @@ export function DashboardPage() {
   const store = useAdminStore();
 
   const stats = [
-    {
-      label: t("admin.total_products"),
-      value: store.products.length,
-      active: store.products.filter((p) => p.status === "active").length,
-      icon: Package,
-      color: "#2563EB",
-    },
-    {
-      label: t("admin.total_services"),
-      value: store.services.length,
-      active: store.services.filter((s) => s.status === "active").length,
-      icon: Wrench,
-      color: "#06B6D4",
-    },
-    {
-      label: t("admin.total_case_studies"),
-      value: store.caseStudies.length,
-      active: store.caseStudies.filter((c) => c.status === "active").length,
-      icon: BookOpen,
-      color: "#10B981",
-    },
-    {
-      label: t("admin.total_faq"),
-      value: store.faq.length,
-      active: store.faq.filter((f) => f.status === "active").length,
-      icon: HelpCircle,
-      color: "#8B5CF6",
-    },
-    {
-      label: t("admin.contact"),
-      value: store.contactMessages.length,
-      active: store.contactMessages.filter((m) => m.status === "new").length,
-      icon: Mail,
-      color: "#F59E0B",
-      activeLabel: t("admin.new_messages"),
-    },
-    {
-      label: t("admin.media"),
-      value: store.mediaFiles.length,
-      active: store.mediaFiles.length,
-      icon: Image,
-      color: "#EC4899",
-    },
+    { href: "/admin/products", label: t("admin.total_products"), value: store.products.length, active: store.products.filter((p) => p.status === "active").length, icon: Package, color: "#2563EB" },
+    { href: "/admin/services", label: t("admin.total_services"), value: store.services.length, active: store.services.filter((s) => s.status === "active").length, icon: Wrench, color: "#06B6D4" },
+    { href: "/admin/case-studies", label: t("admin.total_case_studies"), value: store.caseStudies.length, active: store.caseStudies.filter((c) => c.status === "active").length, icon: BookOpen, color: "#10B981" },
+    { href: "/admin/faq", label: t("admin.total_faq"), value: store.faq.length, active: store.faq.filter((f) => f.status === "active").length, icon: HelpCircle, color: "#8B5CF6" },
+    { href: "/admin/contact", label: t("admin.contact"), value: store.contactMessages.length, active: store.contactMessages.filter((m) => m.status === "new").length, icon: Mail, color: "#F59E0B", activeLabel: t("admin.new_messages") },
+    { href: "/admin/media", label: t("admin.media"), value: store.mediaFiles.length, active: store.mediaFiles.length, icon: Image, color: "#EC4899" },
   ];
 
   const newMessages = store.contactMessages.filter((m) => m.status === "new");
@@ -65,9 +29,10 @@ export function DashboardPage() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {stats.map((s) => (
-          <div
+          <Link
             key={s.label}
-            className="bg-white rounded-2xl border border-[#E2E8F0] p-5 hover:shadow-sm transition-shadow"
+            href={s.href}
+            className="block bg-white rounded-2xl border border-[#E2E8F0] p-5 hover:shadow-md hover:border-[#CBD5E1] transition-all"
             data-testid={`stat-card-${s.label}`}
           >
             <div className="flex items-start justify-between mb-3">
@@ -81,9 +46,9 @@ export function DashboardPage() {
             </div>
             <div className="text-sm font-medium text-[#64748B]">{s.label}</div>
             <div className="text-xs text-[#94A3B8] mt-0.5">
-              {s.active} {s.activeLabel ?? (s.label === t("admin.total_products") ? "activos" : "activos")}
+              {s.active} {s.activeLabel ?? t("admin.active").toLowerCase()}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
