@@ -93,16 +93,24 @@ export function PublicNavbar() {
           <nav className="hidden md:flex items-center gap-6" data-testid="nav-links">
             {[...navigationData.items]
               .sort((a, b) => a.order - b.order)
-              .map((item) => (
-                <Link
-                  key={item.href}
-                  href={localizeHref(lang, item.href)}
-                  className="text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium transition-colors"
-                  data-testid={`nav-link-${item.href.replace(/^\//, "")}`}
-                >
-                  {item.label[lang] ?? item.label.es}
-                </Link>
-              ))}
+              .map((item) => {
+                const active = slug === item.href.replace(/^\//, "").replace(/\/$/, "");
+                return (
+                  <Link
+                    key={item.href}
+                    href={localizeHref(lang, item.href)}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:rounded-full after:bg-[#2563EB] dark:after:bg-[#06B6D4] after:transition-all after:duration-300 ${
+                      active
+                        ? "text-[#2563EB] dark:text-[#06B6D4] after:w-full"
+                        : "text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white after:w-0 hover:after:w-full"
+                    }`}
+                    data-testid={`nav-link-${item.href.replace(/^\//, "")}`}
+                  >
+                    {item.label[lang] ?? item.label.es}
+                  </Link>
+                );
+              })}
           </nav>
 
           {/* Actions */}
@@ -165,16 +173,24 @@ export function PublicNavbar() {
         <div className="md:hidden bg-white/98 dark:bg-[#0F172A]/98 backdrop-blur-md border-t border-[#E2E8F0] dark:border-white/5 px-4 py-4 space-y-1">
           {[...navigationData.items]
             .sort((a, b) => a.order - b.order)
-            .map((item) => (
-              <Link
-                key={item.href}
-                href={localizeHref(lang, item.href)}
-                onClick={() => setMenuOpen(false)}
-                className="block text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium py-2 px-2 rounded-lg hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-colors"
-              >
-                {item.label[lang] ?? item.label.es}
-              </Link>
-            ))}
+            .map((item) => {
+              const active = slug === item.href.replace(/^\//, "").replace(/\/$/, "");
+              return (
+                <Link
+                  key={item.href}
+                  href={localizeHref(lang, item.href)}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`block text-sm font-medium py-2 px-2 rounded-lg transition-colors ${
+                    active
+                      ? "text-[#2563EB] dark:text-[#06B6D4] bg-[#2563EB]/8 dark:bg-white/5"
+                      : "text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white hover:bg-[#0F172A]/5 dark:hover:bg-white/5"
+                  }`}
+                >
+                  {item.label[lang] ?? item.label.es}
+                </Link>
+              );
+            })}
         </div>
       )}
     </header>
