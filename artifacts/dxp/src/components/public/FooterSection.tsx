@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/shared/Logo";
+import { localizeHref } from "@/lib/sections";
 import footerData from "@/content/footer.json";
 
 export function FooterSection() {
@@ -28,9 +29,9 @@ export function FooterSection() {
               const label = link.label[lang] ?? link.label.es;
               const className =
                 "text-[#94A3B8] dark:text-white/30 hover:text-[#475569] dark:hover:text-white/60 text-xs transition-colors";
-              // Internal paths use the SPA router; external URLs open normally.
+              // Internal paths use the SPA router (localized); external URLs open normally.
               return link.url.startsWith("/") ? (
-                <Link key={i} href={link.url} className={className}>
+                <Link key={i} href={localizeHref(lang, link.url)} className={className}>
                   {label}
                 </Link>
               ) : (

@@ -9,7 +9,19 @@ interface Props {
 
 export function AdminLayout({ children }: Props) {
   const [collapsed, setCollapsed] = useState(false);
+  // `render` keeps the drawer mounted through its exit animation; `open` drives
+  // the slide/fade transition (in on open, out on close).
+  const [mobileRender, setMobileRender] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const openMobile = () => {
+    setMobileRender(true);
+    requestAnimationFrame(() => setMobileOpen(true));
+  };
+  const closeMobile = () => {
+    setMobileOpen(false);
+    window.setTimeout(() => setMobileRender(false), 300);
+  };
 
   return (
     <div className="flex h-screen bg-[#F8FAFC] overflow-hidden" data-testid="admin-layout">
@@ -18,19 +30,21 @@ export function AdminLayout({ children }: Props) {
         <AdminSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       </div>
 
-      {/* Mobile sidebar overlay */}
-      {mobileOpen && (
+      {/* Mobile sidebar overlay (animated in + out) */}
+      {mobileRender && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div
-            className="absolute inset-0 bg-black/60 animate-in fade-in duration-200"
-            onClick={() => setMobileOpen(false)}
+            className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${
+              mobileOpen ? "opacity-100" : "opacity-0"
+            }`}
+            onClick={closeMobile}
           />
-          <div className="relative z-10 w-64 h-full animate-in slide-in-from-left duration-300 ease-out">
-            <AdminSidebar
-              collapsed={false}
-              onToggle={() => setMobileOpen(false)}
-              onClose={() => setMobileOpen(false)}
-            />
+          <div
+            className={`relative z-10 w-64 h-full transition-transform duration-300 ease-out ${
+              mobileOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <AdminSidebar collapsed={false} onToggle={closeMobile} onClose={closeMobile} />
           </div>
         </div>
       )}
@@ -40,7 +54,7 @@ export function AdminLayout({ children }: Props) {
         {/* Mobile topbar */}
         <div className="lg:hidden flex items-center gap-3 h-14 px-4 bg-white border-b border-[#E2E8F0]">
           <button
-            onClick={() => setMobileOpen(true)}
+            onClick={openMobile}
             className="text-[#64748B] hover:text-[#0F172A]"
             data-testid="mobile-menu-btn"
           >

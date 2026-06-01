@@ -4,9 +4,22 @@ import { useTranslation } from "react-i18next";
 import { Home, Compass } from "lucide-react";
 import { PublicNavbar } from "@/components/public/PublicNavbar";
 import { FooterSection } from "@/components/public/FooterSection";
+import { useHeadTags, type Lang } from "@/lib/seo";
 
 export default function NotFound() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.language as Lang) ?? "es";
+
+  // 404s should not be indexed.
+  useHeadTags(
+    {
+      title: `${t("notFound.title")} — Pacific Code Labs`,
+      description: t("notFound.subtitle"),
+      canonical: "https://pacific-code-labs.jcampos.dev/",
+      noindex: true,
+    },
+    lang,
+  );
 
   // Land at the top regardless of how the user arrived here.
   useEffect(() => {

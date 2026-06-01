@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Menu, X, Globe, Sun, Moon } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 import navigationData from "@/content/navigation.json";
 import { ADMIN_ENABLED } from "@/lib/admin-enabled";
+import { isLang, localizedPath, localizeHref, pathLang } from "@/lib/sections";
 
 function getInitialDark(): boolean {
   const stored = localStorage.getItem("pcl-theme");
@@ -18,13 +19,18 @@ function applyTheme(dark: boolean) {
 }
 
 export function PublicNavbar() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const [location, navigate] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => {
     try { return getInitialDark(); } catch { return false; }
   });
-  const lang = i18n.language as "es" | "en";
+  const lang = pathLang(location);
+
+  // Current slug (path without the language prefix), e.g. "" | "products" | "privacy".
+  const segs = location.replace(/^\/+/, "").replace(/\/+$/, "").split("/").filter(Boolean);
+  const slug = segs.length && isLang(segs[0]) ? segs.slice(1).join("/") : segs.join("/");
 
   useEffect(() => { applyTheme(dark); }, [dark]);
 
@@ -37,8 +43,10 @@ export function PublicNavbar() {
   const toggleLang = () => {
     const next = lang === "es" ? "en" : "es";
     const apply = () => {
-      i18n.changeLanguage(next);
       localStorage.setItem("pcl-lang", next);
+      // Navigate to the same page under the other language prefix; the router
+      // syncs i18n from the URL.
+      navigate(localizedPath(next, slug));
     };
     const el = document.getElementById("page-content");
     if (!el) {
@@ -74,7 +82,7 @@ export function PublicNavbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href={localizedPath(lang)} className="flex items-center gap-2">
             <Logo size={36} />
             <span className="text-[#0F172A] dark:text-white font-semibold tracking-tight text-sm sm:text-base">
               Pacific Code Labs
@@ -88,7 +96,7 @@ export function PublicNavbar() {
               .map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={localizeHref(lang, item.href)}
                   className="text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium transition-colors"
                   data-testid={`nav-link-${item.href.replace(/^\//, "")}`}
                 >
@@ -160,7 +168,7 @@ export function PublicNavbar() {
             .map((item) => (
               <Link
                 key={item.href}
-                href={item.href}
+                href={localizeHref(lang, item.href)}
                 onClick={() => setMenuOpen(false)}
                 className="block text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium py-2 px-2 rounded-lg hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-colors"
               >

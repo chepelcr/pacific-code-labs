@@ -4,15 +4,18 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { PublicNavbar } from "@/components/public/PublicNavbar";
 import { FooterSection } from "@/components/public/FooterSection";
+import { resolveSeo, useHeadTags, type Lang } from "@/lib/seo";
 import legalData from "@/content/legal.json";
 
 type LegalKey = keyof typeof legalData;
 
 export function LegalPage({ page }: { page: LegalKey }) {
   const { t, i18n } = useTranslation();
-  const lang = i18n.language as "es" | "en";
+  const lang = (i18n.language as Lang) ?? "es";
   const entry = legalData[page];
   const tr = entry.translations[lang] ?? entry.translations.es;
+
+  useHeadTags(resolveSeo(`/${page}`, lang), lang);
 
   // Open legal pages at the top, regardless of prior scroll position.
   useEffect(() => {
