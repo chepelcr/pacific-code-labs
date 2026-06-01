@@ -230,6 +230,21 @@
   section[id] { scroll-margin-top: 4rem; }
 }
 
+/* Language-switch transition: fade + scale + blur out, then in. Applied to the
+   page content wrapper (not the fixed navbar) when toggling es/en. */
+@keyframes pclLangOut {
+  to { opacity: 0; transform: scale(0.985); filter: blur(4px); }
+}
+@keyframes pclLangIn {
+  from { opacity: 0; transform: scale(0.985); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.lang-anim-out { animation: pclLangOut 0.22s cubic-bezier(0.4, 0, 0.6, 1) forwards; }
+.lang-anim-in { animation: pclLangIn 0.32s cubic-bezier(0.2, 0, 0.2, 1) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .lang-anim-out, .lang-anim-in { animation: none; }
+}
+
 @layer utilities {
   input[type="search"]::-webkit-search-cancel-button { @apply hidden; }
 

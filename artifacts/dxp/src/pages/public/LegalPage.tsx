@@ -23,7 +23,7 @@ export function LegalPage({ page }: { page: LegalKey }) {
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#0F172A]" data-testid={`legal-page-${page}`}>
       <PublicNavbar />
 
-      <main className="flex-1 pt-28 pb-20">
+      <main id="page-content" className="flex-1 pt-28 pb-20">
         <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/"

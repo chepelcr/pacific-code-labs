@@ -74,15 +74,17 @@ export function PhilosophySection() {
                 {String(idx + 1).padStart(2, "0")}
               </div>
 
-              {/* Icon */}
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
-                style={{ background: `${pillar.bg}15` }}
-              >
-                <pillar.icon className="w-6 h-6" style={{ color: pillar.color }} />
+              {/* Icon + title on one row */}
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: `${pillar.bg}15` }}
+                >
+                  <pillar.icon className="w-6 h-6" style={{ color: pillar.color }} />
+                </div>
+                <h3 className="text-xl font-bold text-[#0F172A] dark:text-white min-w-0">{pillar.title}</h3>
               </div>
 
-              <h3 className="text-xl font-bold text-[#0F172A] dark:text-white mb-3">{pillar.title}</h3>
               <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{pillar.text}</p>
 
               {/* Bottom accent */}

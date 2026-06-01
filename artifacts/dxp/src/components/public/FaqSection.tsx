@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import faqData from "@/content/faq.json";
 
-export function FaqSection() {
+export function FaqSection({ embedded = false }: { embedded?: boolean }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "es" | "en";
   const [open, setOpen] = useState<string | null>(null);
@@ -12,24 +12,19 @@ export function FaqSection() {
     .filter((f) => f.status === "active")
     .sort((a, b) => a.sortOrder - b.sortOrder);
 
-  return (
-    <section
-      id="faq"
-      className="py-24 bg-[#F8FAFC] dark:bg-[#111827]"
-      data-testid="faq-section"
-    >
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
-            FAQ
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
-            {t("faq.title")}
-          </h2>
-          <p className="text-[#64748B] dark:text-white/50">{t("faq.subtitle")}</p>
+  const content = (
+    <>
+      <div className={embedded ? "mb-8" : "text-center mb-16"}>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
+          FAQ
         </div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
+          {t("faq.title")}
+        </h2>
+        <p className="text-[#64748B] dark:text-white/50">{t("faq.subtitle")}</p>
+      </div>
 
-        <div className="space-y-3">
+      <div className="space-y-3">
           {activeFaq.map((entry) => {
             const tr = entry.translations[lang] ?? entry.translations.es;
             const isOpen = open === entry.id;
@@ -64,8 +59,15 @@ export function FaqSection() {
               </div>
             );
           })}
-        </div>
       </div>
+    </>
+  );
+
+  if (embedded) return <div data-testid="faq-section">{content}</div>;
+
+  return (
+    <section id="faq" className="py-24 bg-[#F8FAFC] dark:bg-[#111827]" data-testid="faq-section">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">{content}</div>
     </section>
   );
 }

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Send, CheckCircle } from "lucide-react";
 import { useAdminStore } from "@/lib/admin-store";
 
-export function ContactSection() {
+export function ContactSection({ embedded = false }: { embedded?: boolean }) {
   const { t } = useTranslation();
   const addMessage = useAdminStore((s) => s.addContactMessage);
   const [sent, setSent] = useState(false);
@@ -25,25 +25,17 @@ export function ContactSection() {
 
   const inputClass = "w-full px-4 py-2.5 rounded-xl bg-[#F1F5F9] dark:bg-white/6 border border-[#E2E8F0] dark:border-white/10 text-[#0F172A] dark:text-white placeholder-[#94A3B8] dark:placeholder-white/25 text-sm focus:outline-none focus:border-[#2563EB]/60 dark:focus:border-[#2563EB]/50 focus:bg-white dark:focus:bg-white/8 transition-colors";
 
-  return (
-    <section
-      id="contact"
-      className="py-24 bg-[#EEF2FF] dark:bg-[#0F172A] relative overflow-hidden"
-      data-testid="contact-section"
-    >
-      <div className="absolute inset-0 grid-pattern opacity-20 dark:opacity-20" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#2563EB]/6 dark:bg-[#2563EB]/8 blur-3xl" />
-
-      <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-xs font-semibold uppercase tracking-widest mb-4">
-            {t("contact.title")}
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
-            {t("contact.title")}
-          </h2>
-          <p className="text-[#64748B] dark:text-white/50">{t("contact.subtitle")}</p>
+  const content = (
+    <>
+      <div className={embedded ? "mb-8" : "text-center mb-12"}>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-xs font-semibold uppercase tracking-widest mb-4">
+          {t("contact.title")}
         </div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-4">
+          {t("contact.title")}
+        </h2>
+        <p className="text-[#64748B] dark:text-white/50">{t("contact.subtitle")}</p>
+      </div>
 
         {sent ? (
           <div className="rounded-2xl border border-[#10B981]/30 bg-[#10B981]/10 p-10 text-center">
@@ -102,7 +94,20 @@ export function ContactSection() {
             </button>
           </form>
         )}
-      </div>
+    </>
+  );
+
+  if (embedded) return <div data-testid="contact-section">{content}</div>;
+
+  return (
+    <section
+      id="contact"
+      className="py-24 bg-[#EEF2FF] dark:bg-[#0F172A] relative overflow-hidden"
+      data-testid="contact-section"
+    >
+      <div className="absolute inset-0 grid-pattern opacity-20 dark:opacity-20" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#2563EB]/6 dark:bg-[#2563EB]/8 blur-3xl" />
+      <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8">{content}</div>
     </section>
   );
 }
