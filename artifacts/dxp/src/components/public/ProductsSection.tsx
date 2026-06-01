@@ -56,9 +56,10 @@ export function ProductsSection() {
 
                 <div className="p-8">
                   {/* Icon + badge */}
-                  <div className="flex items-start justify-between mb-6">
+                  {/* Icon + name on one row, badge aligned right */}
+                  <div className="flex items-center gap-4 mb-4">
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
                       style={{ background: `${colors.from}15` }}
                     >
                       {product.logoUrl ? (
@@ -67,12 +68,14 @@ export function ProductsSection() {
                         <Icon className="w-7 h-7" style={{ color: colors.from }} />
                       )}
                     </div>
-                    <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F0FDF4] text-[#16A34A]">
+                    <h3 className="text-2xl font-bold text-[#0F172A] dark:text-white min-w-0 truncate flex-1">
+                      {tr.name}
+                    </h3>
+                    <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F0FDF4] text-[#16A34A] flex-shrink-0">
                       {t("products.active")}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-[#0F172A] dark:text-white mb-2">{tr.name}</h3>
                   <p
                     className="text-sm font-medium mb-4"
                     style={{ color: colors.from }}
