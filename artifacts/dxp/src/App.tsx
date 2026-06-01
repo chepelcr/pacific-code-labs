@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PublicWebsite } from "@/pages/public/PublicWebsite";
 import { AdminRouter } from "@/pages/admin/AdminRouter";
 import NotFound from "@/pages/not-found";
+import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 
 const queryClient = new QueryClient();
 
@@ -12,8 +13,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={PublicWebsite} />
-      <Route path="/admin" component={AdminRouter} />
-      <Route path="/admin/:rest*" component={AdminRouter} />
+      {/* Admin CMS is a local-only authoring tool — its routes are not
+          registered in production builds, so `/admin` falls through to 404. */}
+      {ADMIN_ENABLED && <Route path="/admin" component={AdminRouter} />}
+      {ADMIN_ENABLED && <Route path="/admin/:rest*" component={AdminRouter} />}
       <Route component={NotFound} />
     </Switch>
   );

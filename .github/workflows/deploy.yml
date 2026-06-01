@@ -1,0 +1,82 @@
+name: Deploy DXP to GitHub Pages
+
+# Builds the public marketing site (@workspace/dxp) and publishes it to
+# GitHub Pages. The admin CMS panel is a local-only authoring tool and is
+# intentionally NOT shipped in this build: VITE_ENABLE_ADMIN is left unset,
+# so `import.meta.env.DEV === false` gates the `/admin/*` routes and the
+# navbar link out of the production bundle (they are tree-shaken away).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment; cancel in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  # Custom domain is served at the apex of the subdomain, so the app lives at
+  # the site root. (For a default github.io project site, use "/<repo>/".)
+  BASE_PATH: "/"
+  # vite.config.ts requires PORT even for `build`; the value is irrelevant here.
+  PORT: "5000"
+  CUSTOM_DOMAIN: "pacific-code-labs.jcampos.dev"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        # Filtered install: only the DXP and its workspace deps — skips the
+        # backend (api-server/db) so CI stays fast and needs no native esbuild.
+        run: pnpm install --frozen-lockfile --filter "@workspace/dxp..."
+
+      - name: Build DXP (production, admin disabled)
+        env:
+          NODE_ENV: production
+        run: pnpm --filter @workspace/dxp run build
+
+      - name: Add custom domain (CNAME)
+        run: echo "$CUSTOM_DOMAIN" > artifacts/dxp/dist/public/CNAME
+
+      - name: Add SPA fallback
+        # GitHub Pages serves 404.html for unknown paths; reusing index.html
+        # lets client-side (wouter) deep links resolve correctly.
+        run: cp artifacts/dxp/dist/public/index.html artifacts/dxp/dist/public/404.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: artifacts/dxp/dist/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

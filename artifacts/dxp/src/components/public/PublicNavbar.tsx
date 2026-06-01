@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Menu, X, Globe, Sun, Moon } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 import navigationData from "@/content/navigation.json";
+import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 
 function getInitialDark(): boolean {
   const stored = localStorage.getItem("pcl-theme");
@@ -97,14 +98,17 @@ export function PublicNavbar() {
               {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {/* Admin link */}
-            <a
-              href="/admin"
-              className="hidden sm:block px-2 py-1.5 rounded-lg text-xs text-[#94A3B8] hover:text-[#475569] dark:text-white/35 dark:hover:text-white/60 hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-all"
-              data-testid="admin-link"
-            >
-              Admin
-            </a>
+            {/* Admin link — only rendered when the admin CMS is enabled
+                (dev builds); hidden in public production builds. */}
+            {ADMIN_ENABLED && (
+              <a
+                href="/admin"
+                className="hidden sm:block px-2 py-1.5 rounded-lg text-xs text-[#94A3B8] hover:text-[#475569] dark:text-white/35 dark:hover:text-white/60 hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-all"
+                data-testid="admin-link"
+              >
+                Admin
+              </a>
+            )}
 
             {/* Mobile hamburger */}
             <button
