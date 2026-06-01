@@ -1,0 +1,10 @@
+{
+  "logoUrl": "/logo.png",
+  "logoUrlDark": "/logo-dark-bg.png",
+  "faviconUrl": "/logo.png",
+  "companyName": "Pacific Code Labs",
+  "tagline": {
+    "es": "Tecnología construida en Costa Rica",
+    "en": "Technology built in Costa Rica"
+  }
+}

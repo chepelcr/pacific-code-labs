@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, X, Globe, Sun, Moon } from "lucide-react";
+import { Logo } from "@/components/shared/Logo";
 import navigationData from "@/content/navigation.json";
 
 function getInitialDark(): boolean {
@@ -55,9 +56,7 @@ export function PublicNavbar() {
 
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">P</span>
-            </div>
+            <Logo size={36} />
             <span className="text-white font-semibold tracking-tight hidden sm:block">
               Pacific Code Labs
             </span>

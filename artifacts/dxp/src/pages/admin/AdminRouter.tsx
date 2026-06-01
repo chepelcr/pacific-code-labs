@@ -16,6 +16,7 @@ import { ContentVersionsPage } from "./ContentVersionsPage";
 import { SettingsPage } from "./SettingsPage";
 import { ContentExplorerPage } from "./ContentExplorerPage";
 import { DiagnosticsPage } from "./DiagnosticsPage";
+import { BrandingPage } from "./BrandingPage";
 
 export function AdminRouter() {
   return (
@@ -36,6 +37,7 @@ export function AdminRouter() {
         <Route path="/admin/media" component={MediaPage} />
         <Route path="/admin/content-versions" component={ContentVersionsPage} />
         <Route path="/admin/settings" component={SettingsPage} />
+        <Route path="/admin/branding" component={BrandingPage} />
         <Route path="/admin/content-explorer" component={ContentExplorerPage} />
         <Route path="/admin/diagnostics" component={DiagnosticsPage} />
       </Switch>

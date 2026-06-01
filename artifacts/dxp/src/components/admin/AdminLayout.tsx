@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
+import { Logo } from "@/components/shared/Logo";
 import { Menu } from "lucide-react";
 
 interface Props {
@@ -46,9 +47,7 @@ export function AdminLayout({ children }: Props) {
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center">
-              <span className="text-white font-bold text-[10px]">P</span>
-            </div>
+            <Logo size={24} />
             <span className="text-[#0F172A] font-semibold text-sm">Admin</span>
           </div>
         </div>

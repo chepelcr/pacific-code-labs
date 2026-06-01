@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useTranslation } from "react-i18next";
+import { Logo } from "@/components/shared/Logo";
 import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
   Search, Navigation, LayoutTemplate, Globe, Palette, Image,
   Download, Settings, FileSearch, Activity, ChevronLeft,
-  ChevronRight, ChevronDown, X,
+  ChevronRight, ChevronDown, X, Brush,
 } from "lucide-react";
 
 interface NavItem {
@@ -42,6 +43,7 @@ const NAV: NavGroup[] = [
       { href: "/admin/media",             labelKey: "admin.media",          icon: Image },
       { href: "/admin/content-versions",  labelKey: "admin.contentVersions",icon: Download },
       { href: "/admin/settings",          labelKey: "admin.settings",       icon: Settings },
+      { href: "/admin/branding",          labelKey: "admin.branding",       icon: Brush },
     ],
   },
   {
@@ -96,14 +98,10 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
         }`}
       >
         {collapsed ? (
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center">
-            <span className="text-white font-bold text-xs">P</span>
-          </div>
+          <Logo size={28} />
         ) : (
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-xs">P</span>
-            </div>
+            <Logo size={28} />
             <span className="text-white text-sm font-semibold truncate">Pacific Code Labs</span>
           </div>
         )}
