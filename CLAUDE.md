@@ -149,6 +149,20 @@ publishes `artifacts/dxp/dist/public` to GitHub Pages. It writes a `CNAME`
 deep-link fallback. `VITE_ENABLE_ADMIN` is deliberately left unset so the admin
 panel is excluded.
 
+## SEO
+
+- Static crawl signals live in `artifacts/dxp/index.html` (title/description, canonical,
+  Open Graph + Twitter with absolute `opengraph.jpg`, `theme-color`, and JSON-LD
+  `Organization` + `WebSite`) plus `public/robots.txt` and `public/sitemap.xml`. The
+  deploy copies `index.html` → `404.html`, so these reach every deep link.
+- **When you add/rename a public route** (see `src/lib/sections.ts` + legal pages),
+  update `public/sitemap.xml` (and bump `lastmod`).
+- Keep JSON-LD values consistent with visible content (avoid "schema drift").
+- Per-route `<title>`/meta is not injected at runtime yet (no head manager); `seo.json`
+  is editable but only mirrored into the static `index.html` by hand. Manual follow-ups
+  (not in repo): verify in Google Search Console + Bing Webmaster Tools, submit the
+  sitemap, and optionally wire IndexNow for Bing/AI engines.
+
 ## Gotchas
 
 - Editing content in admin does **not** auto-persist to JSON — must Export JSON and commit.

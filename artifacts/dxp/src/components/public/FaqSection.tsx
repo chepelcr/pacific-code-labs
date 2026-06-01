@@ -14,7 +14,7 @@ export function FaqSection({ embedded = false }: { embedded?: boolean }) {
 
   const content = (
     <>
-      <div className={embedded ? "mb-8" : "text-center mb-16"}>
+      <div className={embedded ? "mb-8 lg:min-h-[150px]" : "text-center mb-16"}>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/8 text-[#2563EB] text-xs font-semibold uppercase tracking-widest mb-4">
           FAQ
         </div>
@@ -51,11 +51,18 @@ export function FaqSection({ embedded = false }: { embedded?: boolean }) {
                     }`}
                   />
                 </button>
-                {isOpen && (
-                  <div className="px-6 pb-5">
-                    <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{tr.answer}</p>
+                {/* grid-rows 1fr→0fr animates the answer height; inner clips. */}
+                <div
+                  className={`grid transition-all duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 pb-5">
+                      <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed text-justify">{tr.answer}</p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}

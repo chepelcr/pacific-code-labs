@@ -86,7 +86,7 @@ export function PhilosophySection() {
                 <h3 className="text-xl font-bold text-[#0F172A] dark:text-white min-w-0">{pillar.title}</h3>
               </div>
 
-              <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{parseRichText(pillar.text)}</p>
+              <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed text-justify">{parseRichText(pillar.text)}</p>
 
               {/* Bottom accent */}
               <div

@@ -90,7 +90,7 @@ export function CaseStudiesSection() {
                         <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: c }}>
                           {label}
                         </div>
-                        <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{parseRichText(text as string)}</p>
+                        <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed text-justify">{parseRichText(text as string)}</p>
                       </div>
                     </div>
                   );

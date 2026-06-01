@@ -82,7 +82,7 @@ export function ProductsSection() {
                   >
                     {tr.tagline}
                   </p>
-                  <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed mb-8">{parseRichText(tr.description)}</p>
+                  <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed text-justify mb-8">{parseRichText(tr.description)}</p>
 
                   {/* Actions — pinned to the bottom so footers align across cards */}
                   <div className="flex items-center gap-3 mt-auto pt-2">
