@@ -17,8 +17,14 @@ import { SettingsPage } from "./SettingsPage";
 import { ContentExplorerPage } from "./ContentExplorerPage";
 import { DiagnosticsPage } from "./DiagnosticsPage";
 import { BrandingPage } from "./BrandingPage";
+import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 
 export function AdminRouter() {
+  // Defense in depth: even if these routes were ever registered, the admin
+  // panel refuses to render in builds where it is disabled (e.g. production).
+  if (!ADMIN_ENABLED) {
+    return <Redirect to="/" />;
+  }
   return (
     <AdminLayout>
       <Switch>
