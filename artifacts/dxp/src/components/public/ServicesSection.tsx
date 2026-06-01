@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { resolveIcon } from "@/lib/icons";
+import { parseRichText } from "@/lib/rich-text";
 import { listActiveServices } from "@/services/services.service";
 
 export function ServicesSection() {
@@ -58,7 +59,7 @@ export function ServicesSection() {
                   </h3>
                 </div>
 
-                <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{tr.description}</p>
+                <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{parseRichText(tr.description)}</p>
 
                 {/* Bottom line */}
                 <div

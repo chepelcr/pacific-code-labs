@@ -1,29 +1,38 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
+import { useAdminLang } from "@/lib/admin-lang";
 
 const PAGES = ["privacy", "terms"] as const;
-const LANGS = ["es", "en"] as const;
-const inputCls =
-  "w-full px-3 py-2 rounded-xl border border-[#E2E8F0] text-sm focus:outline-none focus:border-[#2563EB]";
 
 export function LegalPagesPage() {
   const { t } = useTranslation();
   const { legal, setLegal } = useAdminStore();
+  const { lang } = useAdminLang();
   const [draft, setDraft] = useState(() => structuredClone(legal));
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const update = (
     page: (typeof PAGES)[number],
-    lang: (typeof LANGS)[number],
     field: "title" | "updated" | "body",
     value: string,
-  ) => {
+  ) =>
     setDraft((prev) => {
       const next = structuredClone(prev);
       next[page].translations[lang][field] = value;
       return next;
     });
+
+  const save = async () => {
+    setSaving(true);
+    setLegal(draft);
+    await downloadJson("legal.json", draft);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   return (
@@ -31,57 +40,27 @@ export function LegalPagesPage() {
       <PageHeader
         title={t("admin.legal")}
         description="Edita las páginas de Privacidad y Términos."
-        onExport={() => downloadJson("legal.json", draft)}
-        action={
-          <button
-            onClick={() => setLegal(draft)}
-            className="px-4 py-2 rounded-lg bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1d4ed8] transition-colors"
-            data-testid="btn-save-legal"
-          >
-            {t("admin.save")}
-          </button>
-        }
+        onSave={save}
+        saving={saving}
+        saved={saved}
       />
 
-      <div className="space-y-6">
-        {PAGES.map((page) => (
-          <div key={page} className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-[#0F172A] mb-4">
-              {page === "privacy" ? "Privacidad / Privacy" : "Términos / Terms"}
-              <span className="ml-2 font-mono text-xs font-normal text-[#94A3B8]">/{page}</span>
-            </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {LANGS.map((lang) => {
-                const tr = draft[page].translations[lang];
-                return (
-                  <div key={lang} className="space-y-3">
-                    <div className="text-xs font-bold uppercase tracking-widest text-[#94A3B8]">
-                      {lang === "es" ? "Español" : "English"}
-                    </div>
-                    <input
-                      value={tr.title}
-                      onChange={(e) => update(page, lang, "title", e.target.value)}
-                      placeholder="Title"
-                      className={inputCls}
-                    />
-                    <input
-                      value={tr.updated}
-                      onChange={(e) => update(page, lang, "updated", e.target.value)}
-                      placeholder="Last updated…"
-                      className={inputCls}
-                    />
-                    <textarea
-                      value={tr.body}
-                      onChange={(e) => update(page, lang, "body", e.target.value)}
-                      rows={10}
-                      className={`${inputCls} resize-y`}
-                    />
-                  </div>
-                );
-              })}
+      <div className="space-y-6 max-w-3xl">
+        <LangToggle />
+        {PAGES.map((page) => {
+          const tr = draft[page].translations[lang];
+          return (
+            <div key={page} className="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-3">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-[#0F172A]">
+                {page === "privacy" ? "Privacidad / Privacy" : "Términos / Terms"}
+                <span className="ml-2 font-mono text-xs font-normal text-[#94A3B8]">/{page}</span>
+              </h2>
+              <TextField label="Título" value={tr.title} onChange={(v) => update(page, "title", v)} />
+              <TextField label="Última actualización" value={tr.updated} onChange={(v) => update(page, "updated", v)} />
+              <TextAreaField label="Contenido" value={tr.body} onChange={(v) => update(page, "body", v)} rows={10} />
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

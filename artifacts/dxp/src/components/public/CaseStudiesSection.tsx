@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { TrendingUp, Zap, Tag } from "lucide-react";
+import { parseRichText } from "@/lib/rich-text";
 import { listActiveCaseStudies } from "@/services/caseStudies.service";
 
 export function CaseStudiesSection() {
@@ -66,8 +67,8 @@ export function CaseStudiesSection() {
                       </span>
                     </div>
                   )}
-                  <h3 className="text-xl font-bold text-white relative z-10">{tr.title}</h3>
-                  <p className="text-white/60 text-sm mt-2 relative z-10">{tr.summary}</p>
+                  <h3 className="text-xl font-bold text-white relative z-10">{parseRichText(tr.title)}</h3>
+                  <p className="text-white/60 text-sm mt-2 relative z-10">{parseRichText(tr.summary)}</p>
                 </div>
 
                 {/* Challenge · Solution · Result — each is its own grid row so the
@@ -89,7 +90,7 @@ export function CaseStudiesSection() {
                         <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: c }}>
                           {label}
                         </div>
-                        <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{text}</p>
+                        <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{parseRichText(text as string)}</p>
                       </div>
                     </div>
                   );

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { MapPin, Users, Briefcase } from "lucide-react";
+import { parseRichText } from "@/lib/rich-text";
 import { listActiveServices } from "@/services/services.service";
 
 const AREA_COLORS = ["#2563EB", "#06B6D4", "#10B981", "#8B5CF6", "#F59E0B"];
@@ -35,7 +36,7 @@ export function AboutSection() {
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] dark:text-white mb-6 leading-tight">
               {t("about.title")}
             </h2>
-            <p className="text-[#475569] dark:text-white/60 leading-relaxed mb-8 text-lg">{t("about.body")}</p>
+            <p className="text-[#475569] dark:text-white/60 leading-relaxed mb-8 text-lg">{parseRichText(t("about.body"))}</p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6">
