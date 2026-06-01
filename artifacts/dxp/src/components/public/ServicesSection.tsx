@@ -59,7 +59,7 @@ export function ServicesSection() {
                   </h3>
                 </div>
 
-                <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed">{parseRichText(tr.description)}</p>
+                <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed text-justify">{parseRichText(tr.description)}</p>
 
                 {/* Bottom line */}
                 <div

@@ -133,5 +133,10 @@
     "back_home": "Volver al inicio",
     "go_to_admin": "Ir al Admin",
     "toggle_language": "Switch to English"
+  },
+  "notFound": {
+    "title": "Esta página se perdió en el mar",
+    "subtitle": "La página que busca no existe o pudo haber sido movida. Le ayudamos a volver al rumbo.",
+    "cta": "Volver al inicio"
   }
 }

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-01T14:38:58.954Z",
+  "generatedAt": "2026-06-01T15:29:52.457Z",
   "counts": {
     "nodes": 139,
-    "edges": 267
+    "edges": 268
   },
   "nodes": [
     {
@@ -2202,7 +2202,12 @@
     },
     {
       "from": "pages/not-found",
-      "to": "components/ui/card",
+      "to": "components/public/FooterSection",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/not-found",
+      "to": "components/public/PublicNavbar",
       "kind": "imports"
     },
     {

@@ -42,7 +42,7 @@ export function ContactSection({ embedded = false }: { embedded?: boolean }) {
 
   const content = (
     <>
-      <div className={embedded ? "mb-8" : "text-center mb-12"}>
+      <div className={embedded ? "mb-8 lg:min-h-[150px]" : "text-center mb-12"}>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-xs font-semibold uppercase tracking-widest mb-4">
           {t("contact.title")}
         </div>

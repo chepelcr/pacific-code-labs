@@ -38,7 +38,7 @@ export function LegalPage({ page }: { page: LegalKey }) {
           </h1>
           <p className="text-sm text-[#94A3B8] dark:text-white/40 mb-10">{tr.updated}</p>
 
-          <div className="text-[#475569] dark:text-white/70 leading-relaxed whitespace-pre-line text-[15px]">
+          <div className="text-[#475569] dark:text-white/70 leading-relaxed whitespace-pre-line text-justify text-[15px]">
             {tr.body}
           </div>
         </article>
