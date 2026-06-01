@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
@@ -12,6 +13,11 @@ export function LegalPage({ page }: { page: LegalKey }) {
   const lang = i18n.language as "es" | "en";
   const entry = legalData[page];
   const tr = entry.translations[lang] ?? entry.translations.es;
+
+  // Open legal pages at the top, regardless of prior scroll position.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [page]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#0F172A]" data-testid={`legal-page-${page}`}>

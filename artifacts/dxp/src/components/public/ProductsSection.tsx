@@ -45,7 +45,7 @@ export function ProductsSection() {
             return (
               <div
                 key={product.id}
-                className="group relative rounded-2xl border border-[#E2E8F0] dark:border-white/8 bg-white dark:bg-white/4 hover:shadow-xl dark:hover:bg-white/7 transition-all duration-300 overflow-hidden"
+                className="group relative flex flex-col rounded-2xl border border-[#E2E8F0] dark:border-white/8 bg-white dark:bg-white/4 hover:shadow-xl dark:hover:bg-white/7 transition-all duration-300 overflow-hidden"
                 data-testid={`product-card-${product.id}`}
               >
                 {/* Top accent bar */}
@@ -54,8 +54,7 @@ export function ProductsSection() {
                   style={{ background: `linear-gradient(to right, ${colors.from}, ${colors.to})` }}
                 />
 
-                <div className="p-8">
-                  {/* Icon + badge */}
+                <div className="p-8 flex flex-col flex-1">
                   {/* Icon + name on one row, badge aligned right */}
                   <div className="flex items-center gap-4 mb-4">
                     <div
@@ -84,8 +83,8 @@ export function ProductsSection() {
                   </p>
                   <p className="text-[#64748B] dark:text-white/50 text-sm leading-relaxed mb-8">{tr.description}</p>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-3">
+                  {/* Actions — pinned to the bottom so footers align across cards */}
+                  <div className="flex items-center gap-3 mt-auto pt-2">
                     <Link
                       href="/contact"
                       className="flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8] transition-colors"
