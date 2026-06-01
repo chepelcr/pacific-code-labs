@@ -48,3 +48,7 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# stray pasted screenshots
+/image.png
+/image copy*.png
