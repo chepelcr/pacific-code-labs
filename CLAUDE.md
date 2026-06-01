@@ -91,10 +91,11 @@ footer→FooterPage, legal→LegalPagesPage, seo→SeoPage, branding→BrandingP
 languages→LanguagesPage, themes→ThemesPage. Contact messages → ContactPage
 (localStorage only).
 
-> **Known gap:** the i18n strings in `translations/{es,en}.json` have no admin
-> editor (LanguagesPage only manages language metadata). They are edited in the
-> files directly. If asked to make translations editable, add a translations
-> admin page.
+The i18n strings in `translations/{es,en}.json` are editable via **TranslationsPage**
+(`/admin/translations`): a flattened key table with live preview
+(`i18n.addResourceBundle`) and `es.json`/`en.json` export. LanguagesPage manages
+language *metadata* only. So translatable UI chrome lives in the translation
+files (editable there) and per-entity copy lives in `content/*.json`.
 
 ## Where things live (DXP)
 

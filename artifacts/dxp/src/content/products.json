@@ -5,7 +5,7 @@
     "status": "active",
     "sortOrder": 1,
     "iconName": "Bird",
-    "externalUrl": "https://tsuru.example.com",
+    "externalUrl": "https://pos-landing.jcampos.dev/",
     "logoUrl": null,
     "translations": {
       "es": {
@@ -28,7 +28,7 @@
     "status": "active",
     "sortOrder": 2,
     "iconName": "Flame",
-    "externalUrl": "https://firecode.example.com",
+    "externalUrl": "https://fire-code.jcampos.dev/",
     "logoUrl": null,
     "translations": {
       "es": {

@@ -20,6 +20,7 @@ import { BrandingPage } from "./BrandingPage";
 import { HeroPage } from "./HeroPage";
 import { PhilosophyPage } from "./PhilosophyPage";
 import { LegalPagesPage } from "./LegalPagesPage";
+import { TranslationsPage } from "./TranslationsPage";
 import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 
 export function AdminRouter() {
@@ -45,6 +46,7 @@ export function AdminRouter() {
         <Route path="/admin/footer" component={FooterPage} />
         <Route path="/admin/legal" component={LegalPagesPage} />
         <Route path="/admin/languages" component={LanguagesPage} />
+        <Route path="/admin/translations" component={TranslationsPage} />
         <Route path="/admin/themes" component={ThemesPage} />
         <Route path="/admin/media" component={MediaPage} />
         <Route path="/admin/content-versions" component={ContentVersionsPage} />

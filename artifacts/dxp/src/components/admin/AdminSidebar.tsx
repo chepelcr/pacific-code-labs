@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
   Search, Navigation, LayoutTemplate, Globe, Palette, Image,
   Download, Settings, FileSearch, Activity, ChevronLeft,
-  ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale,
+  ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale, Languages,
 } from "lucide-react";
 
 interface NavItem {
@@ -42,6 +42,7 @@ const NAV: NavGroup[] = [
     groupKey: "admin.cms",
     items: [
       { href: "/admin/languages",         labelKey: "admin.languages",      icon: Globe },
+      { href: "/admin/translations",      labelKey: "admin.translations",   icon: Languages },
       { href: "/admin/themes",            labelKey: "admin.themes",         icon: Palette },
       { href: "/admin/media",             labelKey: "admin.media",          icon: Image },
       { href: "/admin/content-versions",  labelKey: "admin.contentVersions",icon: Download },

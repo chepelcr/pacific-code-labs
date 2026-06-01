@@ -11,6 +11,8 @@ export function CaseStudiesSection() {
     Agriculture: "#10B981",
     Engineering: "#F59E0B",
     Technology: "#2563EB",
+    Gaming: "#8B5CF6",
+    Retail: "#EC4899",
     default: "#06B6D4",
   };
 
