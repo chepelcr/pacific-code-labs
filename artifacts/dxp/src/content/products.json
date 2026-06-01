@@ -5,18 +5,18 @@
     "status": "active",
     "sortOrder": 1,
     "iconName": "Bird",
-    "externalUrl": "https://pos-landing.jcampos.dev/",
+    "externalUrl": "https://j-markets.jcampos.dev/",
     "logoUrl": null,
     "translations": {
       "es": {
         "name": "Tsuru",
-        "tagline": "Conectando producción, comunidad y comercio.",
-        "description": "Plataforma para cooperativas, asociaciones y organizaciones productivas. Incluye POS, facturación electrónica, inventario, clientes, pedidos, analíticas y tiendas digitales."
+        "tagline": "Vende con propósito: tu tienda, tu catálogo y tu comunidad.",
+        "description": "Plataforma de comercio comunitario para emprendedores y productores locales. Diseña tu tienda con plantillas, vende por WhatsApp, gestiona tu catálogo y tus pedidos, comparte un catálogo digital con código QR y obtén tu propio espacio en línea con subdominio — pensado para ferias, trueque y economía solidaria."
       },
       "en": {
         "name": "Tsuru",
-        "tagline": "Connecting production, community and commerce.",
-        "description": "Platform for cooperatives, associations, and productive organizations. Includes POS, electronic invoicing, inventory, customers, orders, analytics, and digital stores."
+        "tagline": "Sell with purpose: your store, your catalog, your community.",
+        "description": "Community commerce platform for entrepreneurs and local producers. Design your store from templates, sell via WhatsApp, manage your catalog and orders, share a digital catalog with a QR code, and get your own online space with a custom subdomain — built for fairs, barter, and the solidarity economy."
       }
     },
     "createdAt": "2024-01-01T00:00:00Z",
