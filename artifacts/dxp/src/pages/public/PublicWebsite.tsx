@@ -8,8 +8,7 @@ import { ServicesSection } from "@/components/public/ServicesSection";
 import { AboutSection } from "@/components/public/AboutSection";
 import { PhilosophySection } from "@/components/public/PhilosophySection";
 import { CaseStudiesSection } from "@/components/public/CaseStudiesSection";
-import { FaqSection } from "@/components/public/FaqSection";
-import { ContactSection } from "@/components/public/ContactSection";
+import { ContactFaqSection } from "@/components/public/ContactFaqSection";
 import { FooterSection } from "@/components/public/FooterSection";
 
 export function PublicWebsite() {
@@ -72,15 +71,18 @@ export function PublicWebsite() {
   return (
     <div className="min-h-screen" data-testid="public-website">
       <PublicNavbar />
-      <HeroSection />
-      <ProductsSection />
-      <ServicesSection />
-      <AboutSection />
-      <PhilosophySection />
-      <CaseStudiesSection />
-      <FaqSection />
-      <ContactSection />
-      <FooterSection />
+      {/* Wrapper animated on language switch (navbar stays outside so its
+          fixed positioning isn't affected by the transform). */}
+      <div id="page-content">
+        <HeroSection />
+        <ProductsSection />
+        <ServicesSection />
+        <AboutSection />
+        <PhilosophySection />
+        <CaseStudiesSection />
+        <ContactFaqSection />
+        <FooterSection />
+      </div>
     </div>
   );
 }

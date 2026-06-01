@@ -33,15 +33,20 @@ export function CaseStudiesSection() {
           <p className="text-[#64748B] dark:text-white/50 max-w-xl mx-auto">{t("caseStudies.subtitle")}</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-x-8 gap-y-8 lg:gap-y-0 lg:grid-rows-[auto_auto_auto_auto]">
           {cases.map((cs) => {
             const tr = cs.translations[lang] ?? cs.translations.es;
             const color = industryColors[cs.industry ?? "default"] ?? industryColors.default;
+            const blocks = [
+              { key: "challenge", label: t("caseStudies.challenge"), icon: Zap, color: "#F59E0B" },
+              { key: "solution", label: t("caseStudies.solution"), icon: Zap, color: "#2563EB" },
+              { key: "result", label: t("caseStudies.result"), icon: TrendingUp, color: "#10B981" },
+            ];
 
             return (
               <div
                 key={cs.id}
-                className="rounded-2xl border border-[#E2E8F0] dark:border-white/8 overflow-hidden hover:shadow-xl transition-all duration-300"
+                className="rounded-2xl border border-[#E2E8F0] dark:border-white/8 overflow-hidden hover:shadow-xl transition-all duration-300 lg:row-span-4 lg:grid lg:grid-rows-subgrid"
                 data-testid={`case-study-card-${cs.id}`}
               >
                 {/* Header — always dark gradient (intentional brand design element) */}
@@ -65,33 +70,30 @@ export function CaseStudiesSection() {
                   <p className="text-white/60 text-sm mt-2 relative z-10">{tr.summary}</p>
                 </div>
 
-                {/* Body */}
-                <div className="p-8 space-y-5 bg-white dark:bg-white/5">
-                  {[
-                    { key: "challenge", label: t("caseStudies.challenge"), icon: Zap, color: "#F59E0B" },
-                    { key: "solution", label: t("caseStudies.solution"), icon: Zap, color: "#2563EB" },
-                    { key: "result", label: t("caseStudies.result"), icon: TrendingUp, color: "#10B981" },
-                  ].map(({ key, label, icon: Icon, color: c }) => {
-                    const text = tr[key as keyof typeof tr];
-                    if (!text) return null;
-                    return (
-                      <div key={key} className="flex gap-3">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                          style={{ background: `${c}15` }}
-                        >
-                          <Icon className="w-4 h-4" style={{ color: c }} />
-                        </div>
-                        <div>
-                          <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: c }}>
-                            {label}
-                          </div>
-                          <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{text}</p>
-                        </div>
+                {/* Challenge · Solution · Result — each is its own grid row so the
+                    three titles line up across both cards (CSS subgrid on lg+). */}
+                {blocks.map(({ key, label, icon: Icon, color: c }, bi) => {
+                  const text = tr[key as keyof typeof tr];
+                  return (
+                    <div
+                      key={key}
+                      className={`px-8 flex gap-3 bg-white dark:bg-white/5 ${bi === 0 ? "pt-6" : "pt-5"} ${bi === blocks.length - 1 ? "pb-8" : ""}`}
+                    >
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{ background: `${c}15` }}
+                      >
+                        <Icon className="w-4 h-4" style={{ color: c }} />
                       </div>
-                    );
-                  })}
-                </div>
+                      <div>
+                        <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: c }}>
+                          {label}
+                        </div>
+                        <p className="text-[#475569] dark:text-white/60 text-sm leading-relaxed">{text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             );
           })}

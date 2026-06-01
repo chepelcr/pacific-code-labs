@@ -36,8 +36,23 @@ export function PublicNavbar() {
 
   const toggleLang = () => {
     const next = lang === "es" ? "en" : "es";
-    i18n.changeLanguage(next);
-    localStorage.setItem("pcl-lang", next);
+    const apply = () => {
+      i18n.changeLanguage(next);
+      localStorage.setItem("pcl-lang", next);
+    };
+    const el = document.getElementById("page-content");
+    if (!el) {
+      apply();
+      return;
+    }
+    // Animate the content out, swap language, then animate it back in.
+    el.classList.add("lang-anim-out");
+    window.setTimeout(() => {
+      apply();
+      el.classList.remove("lang-anim-out");
+      el.classList.add("lang-anim-in");
+      window.setTimeout(() => el.classList.remove("lang-anim-in"), 340);
+    }, 220);
   };
 
   const toggleTheme = () => setDark((d) => !d);
@@ -55,7 +70,7 @@ export function PublicNavbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Logo size={36} />
-            <span className="text-[#0F172A] dark:text-white font-semibold tracking-tight hidden sm:block">
+            <span className="text-[#0F172A] dark:text-white font-semibold tracking-tight text-sm sm:text-base">
               Pacific Code Labs
             </span>
           </Link>
