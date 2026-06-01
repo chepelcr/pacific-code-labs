@@ -90,11 +90,21 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
 
   return (
     <aside
-      className={`h-full bg-[#0F172A] border-r border-white/5 flex flex-col transition-all duration-300 ${
+      className={`relative h-full bg-[#0F172A] border-r border-white/5 flex flex-col transition-all duration-300 ${
         collapsed ? "w-16" : "w-64"
       }`}
       data-testid="admin-sidebar"
     >
+      {/* Edge collapse/expand tab (desktop) — floats on the right border */}
+      <button
+        onClick={onToggle}
+        className="hidden lg:flex absolute -right-3 top-16 z-20 w-6 h-6 items-center justify-center rounded-full bg-[#2563EB] text-white shadow-md ring-2 ring-[#F8FAFC] hover:bg-[#1d4ed8] transition-colors"
+        data-testid="sidebar-edge-toggle"
+        title={collapsed ? "Expandir" : "Colapsar"}
+      >
+        {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+      </button>
+
       {/* Logo row */}
       <div
         className={`flex items-center h-14 border-b border-white/5 px-4 ${

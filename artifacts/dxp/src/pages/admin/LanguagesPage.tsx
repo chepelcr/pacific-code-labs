@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Globe, Check, X } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -6,17 +7,29 @@ import { useAdminStore, downloadJson } from "@/lib/admin-store";
 export function LanguagesPage() {
   const { t } = useTranslation();
   const { languages, setLanguages } = useAdminStore();
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const toggleActive = (code: string) => {
     setLanguages(languages.map((l) => l.code === code ? { ...l, isActive: !l.isActive } : l) as typeof languages);
+  };
+
+  const persist = async () => {
+    setSaving(true);
+    await downloadJson("languages.json", languages);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   return (
     <div data-testid="languages-page">
       <PageHeader
         title={t("admin.languages")}
-        description="Idiomas soportados por la plataforma."
-        onExport={() => downloadJson("languages.json", languages)}
+        description="Idiomas soportados. Guarda para escribir languages.json."
+        onSave={persist}
+        saving={saving}
+        saved={saved}
       />
 
       <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden max-w-xl">

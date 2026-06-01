@@ -130,17 +130,14 @@ export function TranslationsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#E2E8F0] text-left text-xs text-[#94A3B8]">
-                  <th className="px-6 py-2 font-semibold w-1/4">Clave</th>
-                  <th className="px-6 py-2 font-semibold">Español</th>
-                  <th className="px-6 py-2 font-semibold">English</th>
+                  <th className="px-6 py-2 font-semibold w-1/2">Español</th>
+                  <th className="px-6 py-2 font-semibold w-1/2">English</th>
                 </tr>
               </thead>
               <tbody>
                 {groupKeys.map((k) => (
-                  <tr key={k} className="border-b border-[#F1F5F9] last:border-0 align-top">
-                    <td className="px-6 py-3">
-                      <code className="text-[11px] font-mono text-[#2563EB] break-all">{k}</code>
-                    </td>
+                  // The technical i18n key is kept as a hover title, not a column.
+                  <tr key={k} title={k} className="border-b border-[#F1F5F9] last:border-0 align-top">
                     <td className="px-6 py-3">
                       <textarea
                         value={es[k] ?? ""}

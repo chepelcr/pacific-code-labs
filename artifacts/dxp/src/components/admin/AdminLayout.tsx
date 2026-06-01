@@ -24,10 +24,10 @@ export function AdminLayout({ children }: Props) {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div
-            className="absolute inset-0 bg-black/60"
+            className="absolute inset-0 bg-black/60 animate-in fade-in duration-200"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="relative z-10 w-64 h-full">
+          <div className="relative z-10 w-64 h-full animate-in slide-in-from-left duration-300 ease-out">
             <AdminSidebar
               collapsed={false}
               onToggle={() => setMobileOpen(false)}
