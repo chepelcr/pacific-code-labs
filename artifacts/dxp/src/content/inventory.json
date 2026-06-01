@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-01T15:29:52.457Z",
+  "generatedAt": "2026-06-01T17:47:57.257Z",
   "counts": {
-    "nodes": 139,
-    "edges": 268
+    "nodes": 141,
+    "edges": 280
   },
   "nodes": [
     {
@@ -39,6 +39,13 @@
       "type": "component",
       "group": "admin",
       "path": "src/components/admin/PageHeader.tsx"
+    },
+    {
+      "id": "components/Analytics",
+      "label": "Analytics",
+      "type": "component",
+      "group": "core",
+      "path": "src/components/Analytics.tsx"
     },
     {
       "id": "components/public/AboutSection",
@@ -685,6 +692,13 @@
       "path": "src/lib/sections.ts"
     },
     {
+      "id": "lib/seo",
+      "label": "seo",
+      "type": "lib",
+      "group": "core",
+      "path": "src/lib/seo.ts"
+    },
+    {
       "id": "lib/translate",
       "label": "translate",
       "type": "lib",
@@ -982,6 +996,11 @@
   "edges": [
     {
       "from": "App",
+      "to": "components/Analytics",
+      "kind": "imports"
+    },
+    {
+      "from": "App",
       "to": "components/ui/toaster",
       "kind": "imports"
     },
@@ -1051,6 +1070,11 @@
       "kind": "imports"
     },
     {
+      "from": "components/Analytics",
+      "to": "content/seo.json",
+      "kind": "imports"
+    },
+    {
       "from": "components/public/AboutSection",
       "to": "lib/rich-text",
       "kind": "imports"
@@ -1111,6 +1135,11 @@
       "kind": "imports"
     },
     {
+      "from": "components/public/FooterSection",
+      "to": "lib/sections",
+      "kind": "imports"
+    },
+    {
       "from": "components/public/HeroSection",
       "to": "content/hero.json",
       "kind": "imports"
@@ -1118,6 +1147,11 @@
     {
       "from": "components/public/HeroSection",
       "to": "lib/rich-text",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/HeroSection",
+      "to": "lib/sections",
       "kind": "imports"
     },
     {
@@ -1142,6 +1176,11 @@
     },
     {
       "from": "components/public/ProductsSection",
+      "to": "lib/sections",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/ProductsSection",
       "to": "services/products.service",
       "kind": "imports"
     },
@@ -1158,6 +1197,11 @@
     {
       "from": "components/public/PublicNavbar",
       "to": "lib/admin-enabled",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/PublicNavbar",
+      "to": "lib/sections",
       "kind": "imports"
     },
     {
@@ -1638,6 +1682,21 @@
     {
       "from": "lib/i18n",
       "to": "translations/es.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/seo",
+      "to": "content/legal.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/seo",
+      "to": "content/seo.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/seo",
+      "to": "lib/sections",
       "kind": "imports"
     },
     {
@@ -2211,6 +2270,11 @@
       "kind": "imports"
     },
     {
+      "from": "pages/not-found",
+      "to": "lib/seo",
+      "kind": "imports"
+    },
+    {
       "from": "pages/public/LegalPage",
       "to": "components/public/FooterSection",
       "kind": "imports"
@@ -2223,6 +2287,11 @@
     {
       "from": "pages/public/LegalPage",
       "to": "content/legal.json",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/public/LegalPage",
+      "to": "lib/seo",
       "kind": "imports"
     },
     {
@@ -2273,6 +2342,11 @@
     {
       "from": "pages/public/PublicWebsite",
       "to": "lib/sections",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/public/PublicWebsite",
+      "to": "lib/seo",
       "kind": "imports"
     },
     {

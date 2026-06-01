@@ -58,12 +58,9 @@ jobs:
         run: pnpm --filter @workspace/dxp run build
 
       - name: Add custom domain (CNAME)
+        # The build step pre-renders per-route static HTML (incl. a noindex
+        # 404.html SPA fallback) via scripts/prerender.mjs, so no cp step here.
         run: echo "$CUSTOM_DOMAIN" > artifacts/dxp/dist/public/CNAME
-
-      - name: Add SPA fallback
-        # GitHub Pages serves 404.html for unknown paths; reusing index.html
-        # lets client-side (wouter) deep links resolve correctly.
-        run: cp artifacts/dxp/dist/public/index.html artifacts/dxp/dist/public/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -76,7 +73,29 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      # IndexNow key — also hosted at /<key>.txt (public/). Not secret: the file
+      # is public by design. Push-notifies Bing/Yandex/AI engines on each deploy.
+      INDEXNOW_KEY: "395197df96a5632dfa44a1e6d7ee5f13"
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Ping IndexNow (Bing / Yandex / AI engines)
+        # Runs after the site (and the key file) is live. Submits every
+        # language-prefixed URL. Update SLUGS if routes change (see CLAUDE.md).
+        run: |
+          HOST="$CUSTOM_DOMAIN"
+          LANGS="es en"
+          SLUGS="products services about philosophy case-studies contact privacy terms"
+          urls=""
+          for l in $LANGS; do
+            urls="$urls\"https://$HOST/$l\","
+            for s in $SLUGS; do urls="$urls\"https://$HOST/$l/$s\","; done
+          done
+          urls="${urls%,}"
+          curl -sS -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "{\"host\":\"$HOST\",\"key\":\"$INDEXNOW_KEY\",\"keyLocation\":\"https://$HOST/$INDEXNOW_KEY.txt\",\"urlList\":[$urls]}" \
+            || echo "IndexNow ping failed (non-fatal)"

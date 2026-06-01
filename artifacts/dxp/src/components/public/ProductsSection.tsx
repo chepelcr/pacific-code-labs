@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { resolveIcon } from "@/lib/icons";
 import { parseRichText } from "@/lib/rich-text";
+import { localizedPath } from "@/lib/sections";
 import { listActiveProducts } from "@/services/products.service";
 
 export function ProductsSection() {
@@ -87,7 +88,7 @@ export function ProductsSection() {
                   {/* Actions — pinned to the bottom so footers align across cards */}
                   <div className="flex items-center gap-3 mt-auto pt-2">
                     <Link
-                      href="/contact"
+                      href={localizedPath(lang, "contact")}
                       className="flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8] transition-colors"
                       data-testid={`product-learn-more-${product.id}`}
                     >

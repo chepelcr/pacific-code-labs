@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "wouter";
-import { pathToSectionId, SECTION_SLUGS } from "@/lib/sections";
+import { useTranslation } from "react-i18next";
+import { pathToSectionId, SECTION_SLUGS, localizedPath, pathLang } from "@/lib/sections";
+import { resolveSeo, useHeadTags, type Lang } from "@/lib/seo";
 import { PublicNavbar } from "@/components/public/PublicNavbar";
 import { HeroSection } from "@/components/public/HeroSection";
 import { ProductsSection } from "@/components/public/ProductsSection";
@@ -13,8 +15,13 @@ import { FooterSection } from "@/components/public/FooterSection";
 
 export function PublicWebsite() {
   const [location, navigate] = useLocation();
+  useTranslation(); // re-render on language change
+  const lang = pathLang(location) as Lang;
   const locationRef = useRef(location);
   locationRef.current = location;
+
+  // Keep tab title + meta in sync with the active section path and language.
+  useHeadTags(resolveSeo(location, lang), lang);
   // When true, the next location-change is from scroll-spy, so don't re-scroll.
   const suppressScrollRef = useRef(false);
   // Ignore scroll-spy until this timestamp (while a programmatic scroll animates).
@@ -54,7 +61,7 @@ export function PublicWebsite() {
         const hit = entries.find((e) => e.isIntersecting);
         if (!hit) return;
         const id = hit.target.id;
-        const path = id === "hero" ? "/" : `/${id}`;
+        const path = id === "hero" ? localizedPath(lang) : localizedPath(lang, id);
         if (path !== locationRef.current) {
           suppressScrollRef.current = true;
           navigate(path, { replace: true });
@@ -66,7 +73,7 @@ export function PublicWebsite() {
 
     observed.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [navigate]);
+  }, [navigate, lang]);
 
   return (
     <div className="min-h-screen" data-testid="public-website">

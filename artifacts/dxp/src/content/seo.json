@@ -1,4 +1,5 @@
 {
+  "siteUrl": "https://pacific-code-labs.jcampos.dev",
   "siteTitle": {
     "es": "Pacific Code Labs — Tecnología desde Costa Rica",
     "en": "Pacific Code Labs — Technology from Costa Rica"
@@ -7,7 +8,51 @@
     "es": "Desarrollamos software inteligente, soluciones de IA y automatización de procesos empresariales desde Costa Rica.",
     "en": "We build intelligent software, AI solutions and business process automation from Costa Rica."
   },
-  "ogImageUrl": null,
+  "ogImageUrl": "https://pacific-code-labs.jcampos.dev/opengraph.jpg",
   "twitterHandle": null,
-  "googleAnalyticsId": null
+  "googleAnalyticsId": null,
+  "pages": {
+    "/products": {
+      "title": { "es": "Productos — Pacific Code Labs", "en": "Products — Pacific Code Labs" },
+      "description": {
+        "es": "Conozca nuestros productos SaaS: plataformas listas para crecer su negocio con tecnología hecha en Costa Rica.",
+        "en": "Explore our SaaS products: platforms ready to grow your business with technology built in Costa Rica."
+      }
+    },
+    "/services": {
+      "title": { "es": "Servicios — Pacific Code Labs", "en": "Services — Pacific Code Labs" },
+      "description": {
+        "es": "Desarrollo de software a medida, IA, automatización e integración de sistemas para empresas.",
+        "en": "Custom software development, AI, automation and systems integration for businesses."
+      }
+    },
+    "/about": {
+      "title": { "es": "Nosotros — Pacific Code Labs", "en": "About — Pacific Code Labs" },
+      "description": {
+        "es": "Somos un equipo de ingenieros y diseñadores costarricenses que construye productos digitales con propósito.",
+        "en": "We are a team of Costa Rican engineers and designers building digital products with purpose."
+      }
+    },
+    "/philosophy": {
+      "title": { "es": "Filosofía — Pacific Code Labs", "en": "Philosophy — Pacific Code Labs" },
+      "description": {
+        "es": "Conocimiento, comunidad y crecimiento: los pilares que guían nuestra forma de construir tecnología.",
+        "en": "Knowledge, community and growth: the pillars that guide how we build technology."
+      }
+    },
+    "/case-studies": {
+      "title": { "es": "Casos de Éxito — Pacific Code Labs", "en": "Case Studies — Pacific Code Labs" },
+      "description": {
+        "es": "Resultados reales: cómo ayudamos a nuestros clientes a resolver retos con software a la medida.",
+        "en": "Real results: how we help our clients solve challenges with custom software."
+      }
+    },
+    "/contact": {
+      "title": { "es": "Contacto — Pacific Code Labs", "en": "Contact — Pacific Code Labs" },
+      "description": {
+        "es": "Hablemos de su proyecto. Cuéntenos su reto y encontremos juntos la mejor solución.",
+        "en": "Let's talk about your project. Tell us your challenge and let's find the best solution together."
+      }
+    }
+  }
 }

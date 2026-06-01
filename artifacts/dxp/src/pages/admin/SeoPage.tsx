@@ -5,62 +5,95 @@ import { TextField, BilingualField, BilingualTextArea, BilingualSection, AdminCa
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
 import type { Lang } from "@/lib/translate";
 
+interface Bilingual { es: string; en: string }
+interface SeoDraft {
+  siteUrl: string;
+  siteTitle: Bilingual;
+  siteDescription: Bilingual;
+  ogImageUrl: string | null;
+  twitterHandle: string | null;
+  googleAnalyticsId: string | null;
+  pages: Record<string, { title: Bilingual; description: Bilingual }>;
+}
+
 export function SeoPage() {
   const { t } = useTranslation();
   const { seo, setSeo } = useAdminStore();
-  const [form, setForm] = useState<{
-    siteTitle?: { es?: string; en?: string };
-    siteDescription?: { es?: string; en?: string };
-    ogImageUrl: string | null;
-    twitterHandle: string | null;
-    googleAnalyticsId: string | null;
-  }>({ ...seo });
+  const [draft, setDraft] = useState<SeoDraft>(() => structuredClone(seo) as unknown as SeoDraft);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  const update = (mut: (d: SeoDraft) => void) =>
+    setDraft((prev) => {
+      const next = structuredClone(prev);
+      mut(next);
+      return next;
+    });
+
   const persist = async () => {
     setSaving(true);
-    setSeo(form as unknown as typeof seo);
-    await downloadJson("seo.json", form);
+    setSeo(draft as unknown as typeof seo);
+    await downloadJson("seo.json", draft);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const pages = draft.pages;
+
   return (
     <div data-testid="seo-page">
       <PageHeader
         title={t("admin.seo")}
-        description="Metadatos y SEO global. Guarda para escribir seo.json."
+        description="Metadatos y SEO por página. Guarda para escribir seo.json (lo usan el render estático y el runtime)."
         onSave={persist}
         saving={saving}
         saved={saved}
       />
 
       <div className="space-y-4">
-        <BilingualSection>
+        <BilingualSection title="Inicio (por defecto)">
           <BilingualField
             label="Título del sitio"
-            es={form.siteTitle?.es ?? ""}
-            en={form.siteTitle?.en ?? ""}
-            onChange={(l: Lang, v) => setForm({ ...form, siteTitle: { ...form.siteTitle, [l]: v } })}
+            es={draft.siteTitle?.es ?? ""}
+            en={draft.siteTitle?.en ?? ""}
+            onChange={(l: Lang, v) => update((d) => { d.siteTitle[l] = v; })}
           />
           <BilingualTextArea
             label="Descripción"
-            es={form.siteDescription?.es ?? ""}
-            en={form.siteDescription?.en ?? ""}
-            onChange={(l: Lang, v) => setForm({ ...form, siteDescription: { ...form.siteDescription, [l]: v } })}
+            es={draft.siteDescription?.es ?? ""}
+            en={draft.siteDescription?.en ?? ""}
+            onChange={(l: Lang, v) => update((d) => { d.siteDescription[l] = v; })}
             rows={3}
           />
         </BilingualSection>
 
-        <AdminCard title="Metadatos">
-          <TextField label="OG Image URL" type="url" value={form.ogImageUrl ?? ""} onChange={(v) => setForm({ ...form, ogImageUrl: v || null })} placeholder="https://..." />
+        <AdminCard title="Global">
+          <TextField label="URL del sitio (canonical base)" type="url" value={draft.siteUrl ?? ""} onChange={(v) => update((d) => { d.siteUrl = v; })} placeholder="https://pacific-code-labs.jcampos.dev" />
+          <TextField label="OG Image URL" type="url" value={draft.ogImageUrl ?? ""} onChange={(v) => update((d) => { d.ogImageUrl = v || null; })} placeholder="https://.../opengraph.jpg" />
           <div className="grid grid-cols-2 gap-4">
-            <TextField label="Twitter Handle" value={form.twitterHandle ?? ""} onChange={(v) => setForm({ ...form, twitterHandle: v || null })} placeholder="@handle" />
-            <TextField label="Google Analytics ID" value={form.googleAnalyticsId ?? ""} onChange={(v) => setForm({ ...form, googleAnalyticsId: v || null })} placeholder="G-XXXXXXXXXX" />
+            <TextField label="Twitter Handle" value={draft.twitterHandle ?? ""} onChange={(v) => update((d) => { d.twitterHandle = v || null; })} placeholder="@handle" />
+            <TextField label="Google Analytics ID" value={draft.googleAnalyticsId ?? ""} onChange={(v) => update((d) => { d.googleAnalyticsId = v || null; })} placeholder="G-XXXXXXXXXX" />
           </div>
         </AdminCard>
+
+        {Object.keys(pages).map((p) => (
+          <BilingualSection key={p} title={`Página · ${p}`}>
+            <BilingualField
+              label="Título (meta)"
+              es={pages[p].title.es}
+              en={pages[p].title.en}
+              onChange={(l: Lang, v) => update((d) => { d.pages[p].title[l] = v; })}
+            />
+            <BilingualTextArea
+              label="Descripción (meta)"
+              es={pages[p].description.es}
+              en={pages[p].description.en}
+              onChange={(l: Lang, v) => update((d) => { d.pages[p].description[l] = v; })}
+              rows={2}
+            />
+          </BilingualSection>
+        ))}
       </div>
     </div>
   );

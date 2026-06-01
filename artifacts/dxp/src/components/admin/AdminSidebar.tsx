@@ -165,36 +165,42 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
                 </button>
               )}
 
-              {/* Items — shown only when group is open (or sidebar is collapsed) */}
-              {isOpen && (
-                <div className="space-y-0.5">
-                  {group.items.map((item) => {
-                    const active =
-                      location === item.href || location.startsWith(item.href + "/");
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={handleNavClick}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
-                          active
-                            ? "bg-[#2563EB] text-white"
-                            : "text-white/50 hover:text-white hover:bg-white/5"
-                        } ${collapsed ? "justify-center" : ""}`}
-                        data-testid={`sidebar-link-${item.href.split("/").pop()}`}
-                        title={collapsed ? t(item.labelKey) : undefined}
-                      >
-                        <item.icon
-                          className={`flex-shrink-0 ${collapsed ? "w-5 h-5" : "w-4 h-4"}`}
-                        />
-                        {!collapsed && (
-                          <span className="truncate">{t(item.labelKey)}</span>
-                        )}
-                      </Link>
-                    );
-                  })}
+              {/* Items — grid-rows 1fr→0fr animates the group open/close. */}
+              <div
+                className={`grid transition-all duration-300 ease-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="space-y-0.5">
+                    {group.items.map((item) => {
+                      const active =
+                        location === item.href || location.startsWith(item.href + "/");
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={handleNavClick}
+                          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
+                            active
+                              ? "bg-[#2563EB] text-white"
+                              : "text-white/50 hover:text-white hover:bg-white/5"
+                          } ${collapsed ? "justify-center" : ""}`}
+                          data-testid={`sidebar-link-${item.href.split("/").pop()}`}
+                          title={collapsed ? t(item.labelKey) : undefined}
+                        >
+                          <item.icon
+                            className={`flex-shrink-0 ${collapsed ? "w-5 h-5" : "w-4 h-4"}`}
+                          />
+                          {!collapsed && (
+                            <span className="truncate">{t(item.labelKey)}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           );
         })}
