@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
+import { TextField, BilingualField, BilingualTextArea, BilingualSection, AdminCard } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 
 export function SeoPage() {
   const { t } = useTranslation();
   const { seo, setSeo } = useAdminStore();
-  const { lang } = useAdminLang();
   const [form, setForm] = useState<{
     siteTitle?: { es?: string; en?: string };
     siteDescription?: { es?: string; en?: string };
@@ -38,27 +37,30 @@ export function SeoPage() {
         saved={saved}
       />
 
-      <div className="space-y-4 max-w-2xl">
-        <LangToggle />
-
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-5">
-          <TextField
+      <div className="space-y-4">
+        <BilingualSection>
+          <BilingualField
             label="Título del sitio"
-            value={form.siteTitle?.[lang] ?? ""}
-            onChange={(v) => setForm({ ...form, siteTitle: { ...form.siteTitle, [lang]: v } })}
+            es={form.siteTitle?.es ?? ""}
+            en={form.siteTitle?.en ?? ""}
+            onChange={(l: Lang, v) => setForm({ ...form, siteTitle: { ...form.siteTitle, [l]: v } })}
           />
-          <TextAreaField
+          <BilingualTextArea
             label="Descripción"
-            value={form.siteDescription?.[lang] ?? ""}
-            onChange={(v) => setForm({ ...form, siteDescription: { ...form.siteDescription, [lang]: v } })}
+            es={form.siteDescription?.es ?? ""}
+            en={form.siteDescription?.en ?? ""}
+            onChange={(l: Lang, v) => setForm({ ...form, siteDescription: { ...form.siteDescription, [l]: v } })}
             rows={3}
           />
+        </BilingualSection>
+
+        <AdminCard title="Metadatos">
           <TextField label="OG Image URL" type="url" value={form.ogImageUrl ?? ""} onChange={(v) => setForm({ ...form, ogImageUrl: v || null })} placeholder="https://..." />
           <div className="grid grid-cols-2 gap-4">
             <TextField label="Twitter Handle" value={form.twitterHandle ?? ""} onChange={(v) => setForm({ ...form, twitterHandle: v || null })} placeholder="@handle" />
             <TextField label="Google Analytics ID" value={form.googleAnalyticsId ?? ""} onChange={(v) => setForm({ ...form, googleAnalyticsId: v || null })} placeholder="G-XXXXXXXXXX" />
           </div>
-        </div>
+        </AdminCard>
       </div>
     </div>
   );

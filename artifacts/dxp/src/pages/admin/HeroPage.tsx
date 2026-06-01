@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
+import { BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 export function HeroPage() {
   const { t } = useTranslation();
   const { hero, setHero } = useAdminStore();
-  const { lang } = useAdminLang();
   const [draft, setDraft] = useState(() => structuredClone(hero));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const tr = draft.translations[lang];
   const update = (mut: (d: typeof draft) => void) =>
     setDraft((prev) => {
       const next = structuredClone(prev);
@@ -41,32 +38,21 @@ export function HeroPage() {
         saved={saved}
       />
 
-      <div className="space-y-6 max-w-3xl">
-        <LangToggle />
+      <div className="space-y-6">
+        <BilingualSection>
+          <BilingualField label="Eyebrow" es={draft.translations.es.eyebrow} en={draft.translations.en.eyebrow} onChange={(l, v) => update((d) => { d.translations[l].eyebrow = v; })} />
+          <BilingualTextArea label="Título" es={draft.translations.es.title} en={draft.translations.en.title} onChange={(l, v) => update((d) => { d.translations[l].title = v; })} rows={2} hint={RICH_TEXT_HINT} />
+          <BilingualTextArea label="Subtítulo" es={draft.translations.es.subtitle} en={draft.translations.en.subtitle} onChange={(l, v) => update((d) => { d.translations[l].subtitle = v; })} rows={2} />
+        </BilingualSection>
 
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-4">
-          <TextField label="Eyebrow" value={tr.eyebrow} onChange={(v) => update((d) => { d.translations[lang].eyebrow = v; })} />
-          <TextAreaField
-            label="Título"
-            value={tr.title}
-            onChange={(v) => update((d) => { d.translations[lang].title = v; })}
-            rows={2}
-            hint={RICH_TEXT_HINT}
-          />
-          <TextAreaField label="Subtítulo" value={tr.subtitle} onChange={(v) => update((d) => { d.translations[lang].subtitle = v; })} rows={2} />
-        </div>
-
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
-          <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-3">Estadísticas</label>
-          <div className="space-y-2">
-            {tr.stats.map((stat, i) => (
-              <div key={i} className="flex gap-2">
-                <TextField className="w-24" value={stat.value} onChange={(v) => update((d) => { d.translations[lang].stats[i].value = v; })} placeholder="2" />
-                <TextField className="flex-1" value={stat.label} onChange={(v) => update((d) => { d.translations[lang].stats[i].label = v; })} placeholder="Etiqueta" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <BilingualSection title="Estadísticas">
+          {draft.translations.es.stats.map((_, i) => (
+            <div key={i} className="space-y-3 pb-3 border-b border-[#F1F5F9] last:border-0 last:pb-0">
+              <BilingualField label={`Valor ${i + 1}`} es={draft.translations.es.stats[i].value} en={draft.translations.en.stats[i].value} onChange={(l, v) => update((d) => { d.translations[l].stats[i].value = v; })} placeholder="2" />
+              <BilingualField label={`Etiqueta ${i + 1}`} es={draft.translations.es.stats[i].label} en={draft.translations.en.stats[i].label} onChange={(l, v) => update((d) => { d.translations[l].stats[i].label = v; })} placeholder="Etiqueta" />
+            </div>
+          ))}
+        </BilingualSection>
       </div>
     </div>
   );

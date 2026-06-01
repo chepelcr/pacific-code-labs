@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
   Search, Navigation, LayoutTemplate, Globe, Palette, Image,
   Download, Settings, FileSearch, Activity, ChevronLeft,
-  ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale, Languages,
+  ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale, Languages, Share2, Info,
 } from "lucide-react";
 
 interface NavItem {
@@ -26,6 +26,7 @@ const NAV: NavGroup[] = [
     items: [
       { href: "/admin/dashboard",        labelKey: "admin.dashboard",      icon: LayoutDashboard },
       { href: "/admin/hero",              labelKey: "admin.hero",           icon: Sparkles },
+      { href: "/admin/about",             labelKey: "admin.about",          icon: Info },
       { href: "/admin/products",          labelKey: "admin.products",       icon: Package },
       { href: "/admin/services",          labelKey: "admin.services",       icon: Wrench },
       { href: "/admin/case-studies",      labelKey: "admin.caseStudies",    icon: BookOpen },
@@ -54,6 +55,7 @@ const NAV: NavGroup[] = [
     groupKey: "admin.platform",
     items: [
       { href: "/admin/content-explorer",  labelKey: "admin.contentExplorer",icon: FileSearch },
+      { href: "/admin/inventory",         labelKey: "admin.inventory",      icon: Share2 },
       { href: "/admin/diagnostics",       labelKey: "admin.diagnostics",    icon: Activity },
     ],
   },
@@ -120,27 +122,15 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
           </div>
         )}
 
-        <div className="flex items-center gap-1">
-          {/* Mobile close */}
-          {onClose && !collapsed && (
-            <button
-              onClick={onClose}
-              className="lg:hidden text-white/30 hover:text-white p-1 rounded transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-          {/* Desktop collapse toggle */}
+        {/* Mobile close (desktop collapse lives on the floating edge tab only) */}
+        {onClose && !collapsed && (
           <button
-            onClick={onToggle}
-            className="hidden lg:flex text-white/30 hover:text-white p-1 rounded transition-colors"
-            data-testid="sidebar-toggle"
+            onClick={onClose}
+            className="lg:hidden text-white/30 hover:text-white p-1 rounded transition-colors"
           >
-            {collapsed
-              ? <ChevronRight className="w-4 h-4" />
-              : <ChevronLeft className="w-4 h-4" />}
+            <X className="w-4 h-4" />
           </button>
-        </div>
+        )}
       </div>
 
       {/* Nav */}

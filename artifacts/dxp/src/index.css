@@ -228,6 +228,27 @@
   html { scroll-behavior: smooth; }
   /* Offset section anchors so the fixed navbar (h-16) doesn't cover their tops. */
   section[id] { scroll-margin-top: 4rem; }
+
+  /* Brand-styled, theme-aware scrollbars. Driven by --muted-foreground so the
+     thumb tints itself for light/dark automatically. Applies to every native
+     overflow container (admin layout/sidebar, modals, the public document).
+     The Radix ScrollArea keeps its own thumb (bg-border) and is unaffected. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.4) transparent;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.35);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.6);
+  }
+  ::-webkit-scrollbar-corner { background: transparent; }
 }
 
 /* Language-switch transition: fade + scale + blur out, then in. Applied to the

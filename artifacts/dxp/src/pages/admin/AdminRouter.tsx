@@ -16,8 +16,10 @@ import { ContentVersionsPage } from "./ContentVersionsPage";
 import { SettingsPage } from "./SettingsPage";
 import { ContentExplorerPage } from "./ContentExplorerPage";
 import { DiagnosticsPage } from "./DiagnosticsPage";
+import { InventoryPage } from "./InventoryPage";
 import { BrandingPage } from "./BrandingPage";
 import { HeroPage } from "./HeroPage";
+import { AboutPage } from "./AboutPage";
 import { PhilosophyPage } from "./PhilosophyPage";
 import { LegalPagesPage } from "./LegalPagesPage";
 import { TranslationsPage } from "./TranslationsPage";
@@ -35,6 +37,7 @@ export function AdminRouter() {
         <Route path="/admin" component={() => <Redirect to="/admin/dashboard" />} />
         <Route path="/admin/dashboard" component={DashboardPage} />
         <Route path="/admin/hero" component={HeroPage} />
+        <Route path="/admin/about" component={AboutPage} />
         <Route path="/admin/products" component={ProductsPage} />
         <Route path="/admin/services" component={ServicesPage} />
         <Route path="/admin/case-studies" component={CaseStudiesPage} />
@@ -53,6 +56,7 @@ export function AdminRouter() {
         <Route path="/admin/settings" component={SettingsPage} />
         <Route path="/admin/branding" component={BrandingPage} />
         <Route path="/admin/content-explorer" component={ContentExplorerPage} />
+        <Route path="/admin/inventory" component={InventoryPage} />
         <Route path="/admin/diagnostics" component={DiagnosticsPage} />
       </Switch>
     </AdminLayout>

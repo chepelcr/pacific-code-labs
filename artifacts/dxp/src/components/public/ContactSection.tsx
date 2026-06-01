@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2 } from "lucide-react";
 import { useAdminStore } from "@/lib/admin-store";
+import { submitContact, contactDeliveryEnabled } from "@/lib/contact";
 
 export function ContactSection({ embedded = false }: { embedded?: boolean }) {
   const { t } = useTranslation();
   const addMessage = useAdminStore((s) => s.addContactMessage);
+  const contactConfig = useAdminStore((s) => s.settings.contact);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState({
     name: "", email: "", company: "", subject: "", message: "",
   });
@@ -15,10 +19,21 @@ export function ContactSection({ embedded = false }: { embedded?: boolean }) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) return;
+    setError(false);
+    // Always keep a local log; deliver off-device through the configured provider.
     addMessage(form);
+    if (contactDeliveryEnabled(contactConfig)) {
+      setSending(true);
+      const ok = await submitContact(form, contactConfig);
+      setSending(false);
+      if (!ok) {
+        setError(true);
+        return;
+      }
+    }
     setSent(true);
     setForm({ name: "", email: "", company: "", subject: "", message: "" });
   };
@@ -84,12 +99,19 @@ export function ContactSection({ embedded = false }: { embedded?: boolean }) {
               <textarea name="message" value={form.message} onChange={handleChange} placeholder={t("contact.placeholder_message")} rows={5} required className={`${inputClass} resize-none`} data-testid="input-message" />
             </div>
 
+            {error && (
+              <p className="text-sm text-red-500 text-center" data-testid="contact-error">
+                {t("contact.error")}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1d4ed8] text-white font-semibold text-sm hover:from-[#1d4ed8] hover:to-[#1e40af] transition-all shadow-lg shadow-[#2563EB]/25"
+              disabled={sending}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1d4ed8] text-white font-semibold text-sm hover:from-[#1d4ed8] hover:to-[#1e40af] disabled:opacity-70 transition-all shadow-lg shadow-[#2563EB]/25"
               data-testid="button-submit"
             >
-              <Send className="w-4 h-4" />
+              {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
               {t("contact.send")}
             </button>
           </form>

@@ -1,11 +1,24 @@
-import { Save, Check } from "lucide-react";
-import { useAdminLang } from "@/lib/admin-lang";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Save, Check, Languages, ArrowLeftRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { translateText, type Lang } from "@/lib/translate";
+import { useAutoTranslate } from "@/lib/use-auto-translate";
 
 /**
  * Shared admin form primitives — the common building blocks every content page
- * uses, mirroring the pos-landing dashboard kit (LangToggle, TextField,
- * TextAreaField, Toggle, SaveButton) so the dashboard looks and behaves
- * consistently. Styled in the Pacific Code Labs admin palette.
+ * uses (TextField, TextAreaField, Toggle, SaveButton) plus the bilingual editing
+ * kit (BilingualField/BilingualTextArea/BilingualSection) that shows Spanish and
+ * English side by side and can auto-fill the empty side via the on-device
+ * Translator API. Styled in the Pacific Code Labs admin palette.
  */
 
 const inputCls =
@@ -13,33 +26,271 @@ const inputCls =
 const labelCls =
   "block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5";
 
-/** Segmented ES/EN toggle bound to the shared admin editing language. */
-export function LangToggle({ className = "" }: { className?: string }) {
-  const { lang, setLang } = useAdminLang();
+/**
+ * Full-width white card with an Eye/EyeOff toggle to collapse its body. `action`
+ * renders inline in the header (left of the eye). Used everywhere in admin so
+ * sections fill the container and can be folded away.
+ */
+export function AdminCard({
+  title,
+  action,
+  children,
+  className = "",
+  bodyClassName = "p-6 space-y-4",
+  defaultOpen = true,
+}: {
+  title?: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+  bodyClassName?: string;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
   return (
-    <div
-      className={`flex items-center justify-between rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 ${className}`}
-      data-testid="admin-lang-toggle"
-    >
-      <span className="text-xs font-semibold uppercase tracking-widest text-[#94A3B8]">
-        Idioma de edición
-      </span>
-      <div className="flex gap-1.5">
-        {(["es", "en"] as const).map((l) => (
+    <div className={`bg-white rounded-2xl border border-[#E2E8F0] ${className}`} data-testid="admin-card">
+      <div
+        className={`flex items-center justify-between gap-3 px-6 py-3.5 transition-[border-color] duration-300 ${
+          open ? "border-b border-[#F1F5F9]" : "border-b border-transparent"
+        }`}
+      >
+        <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wider">{title}</span>
+        <div className="flex items-center gap-2 ml-auto">
+          {action}
           <button
-            key={l}
-            onClick={() => setLang(l)}
-            className={`h-8 px-3 rounded-lg text-sm font-semibold transition-colors ${
-              lang === l
-                ? "bg-[#2563EB] text-white"
-                : "bg-[#F1F5F9] text-[#475569] hover:bg-[#E2E8F0]"
-            }`}
-            data-testid={`admin-lang-${l}`}
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="text-[#94A3B8] hover:text-[#2563EB] transition-colors"
+            title={open ? "Colapsar" : "Expandir"}
+            aria-expanded={open}
+            data-testid="admin-card-toggle"
           >
-            {l === "es" ? "🇪🇸 Español" : "🇬🇧 English"}
+            {open ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
           </button>
+        </div>
+      </div>
+      {/* grid-rows 1fr→0fr animates height with no JS measuring; inner clips. */}
+      <div
+        className={`grid transition-all duration-300 ease-out ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className={bodyClassName}>{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Bilingual section: collects its fields' "translate the empty side" actions
+// so a single button can fill every blank target from its filled source. ---
+type TranslateFn = (source: Lang, target: Lang) => Promise<void>;
+interface SectionCtx {
+  register: (id: string, fn: TranslateFn) => void;
+  unregister: (id: string) => void;
+}
+const BilingualSectionContext = createContext<SectionCtx | null>(null);
+
+export function BilingualSection({
+  title,
+  children,
+  className = "",
+}: {
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const { enabled } = useAutoTranslate();
+  const fns = useRef(new Map<string, TranslateFn>());
+  const [busy, setBusy] = useState(false);
+  const [source, setSource] = useState<Lang>("es");
+  const target: Lang = source === "es" ? "en" : "es";
+
+  const ctx = useMemo<SectionCtx>(
+    () => ({
+      register: (id, fn) => fns.current.set(id, fn),
+      unregister: (id) => fns.current.delete(id),
+    }),
+    [],
+  );
+
+  const run = async () => {
+    setBusy(true);
+    for (const fn of fns.current.values()) {
+      // sequential: model handles one request at a time most reliably
+      await fn(source, target);
+    }
+    setBusy(false);
+  };
+
+  const translateAction = enabled ? (
+    <>
+      <button
+        type="button"
+        onClick={() => setSource(target)}
+        className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#F1F5F9] text-[#475569] text-xs font-semibold hover:bg-[#E2E8F0] transition-colors"
+        title={t("admin.autoTranslate")}
+        data-testid="bilingual-direction"
+      >
+        <span>{source.toUpperCase()}</span>
+        <ArrowLeftRight className="w-3 h-3" />
+        <span>{target.toUpperCase()}</span>
+      </button>
+      <button
+        type="button"
+        onClick={run}
+        disabled={busy}
+        className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-[#2563EB] text-white text-xs font-semibold hover:bg-[#1d4ed8] disabled:opacity-60 transition-colors"
+        data-testid="bilingual-translate"
+      >
+        {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Languages className="w-3.5 h-3.5" />}
+        {busy ? t("admin.autoTranslating") : t("admin.autoTranslateSection")}
+      </button>
+    </>
+  ) : undefined;
+
+  return (
+    <BilingualSectionContext.Provider value={ctx}>
+      <div data-testid="bilingual-section" className={className}>
+        <AdminCard title={title} action={translateAction}>
+          {children}
+        </AdminCard>
+      </div>
+    </BilingualSectionContext.Provider>
+  );
+}
+
+/** One pair of ES/EN inputs for the same field, rendered side by side. */
+function useBilingualField(
+  es: string,
+  en: string,
+  onChange: (lang: Lang, value: string) => void,
+) {
+  const { enabled, fillEmptyOnBlur } = useAutoTranslate();
+  const section = useContext(BilingualSectionContext);
+  const id = useId();
+
+  // Keep the latest values in a ref so the registered/section callbacks read live state.
+  const values = useRef({ es, en });
+  values.current = { es, en };
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
+  const translateEmpty = useCallback<TranslateFn>(async (source, tgt) => {
+    const src = values.current[source];
+    const dst = values.current[tgt];
+    if (!src?.trim() || dst?.trim()) return; // only fill an empty target
+    const out = await translateText(src, source, tgt);
+    if (out) onChangeRef.current(tgt, out);
+  }, []);
+
+  useEffect(() => {
+    if (!section) return;
+    section.register(id, translateEmpty);
+    return () => section.unregister(id);
+  }, [section, id, translateEmpty]);
+
+  const onBlur = (source: Lang) => async () => {
+    if (!enabled || !fillEmptyOnBlur) return;
+    await translateEmpty(source, source === "es" ? "en" : "es");
+  };
+
+  return { onBlur };
+}
+
+export function BilingualField({
+  label,
+  es,
+  en,
+  onChange,
+  placeholder,
+  hint,
+  type = "text",
+  className = "",
+}: {
+  label?: string;
+  es: string;
+  en: string;
+  onChange: (lang: Lang, value: string) => void;
+  placeholder?: string;
+  hint?: string;
+  type?: "text" | "email" | "url";
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const { onBlur } = useBilingualField(es, en, onChange);
+  const extra = type === "url" || type === "email" ? "font-mono" : "";
+  return (
+    <div className={className}>
+      {label && <label className={labelCls}>{label}</label>}
+      <div className="grid grid-cols-2 gap-3">
+        {(["es", "en"] as const).map((l) => (
+          <div key={l}>
+            <span className="block text-[10px] font-bold uppercase tracking-widest text-[#94A3B8] mb-1">
+              {t(l === "es" ? "admin.spanish" : "admin.english")}
+            </span>
+            <input
+              type={type}
+              value={l === "es" ? es : en}
+              onChange={(e) => onChange(l, e.target.value)}
+              onBlur={onBlur(l)}
+              placeholder={placeholder}
+              className={`${inputCls} ${extra}`}
+              data-testid={`bilingual-${l}`}
+            />
+          </div>
         ))}
       </div>
+      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
+    </div>
+  );
+}
+
+export function BilingualTextArea({
+  label,
+  es,
+  en,
+  onChange,
+  rows = 3,
+  placeholder,
+  hint,
+  className = "",
+}: {
+  label?: string;
+  es: string;
+  en: string;
+  onChange: (lang: Lang, value: string) => void;
+  rows?: number;
+  placeholder?: string;
+  hint?: string;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const { onBlur } = useBilingualField(es, en, onChange);
+  return (
+    <div className={className}>
+      {label && <label className={labelCls}>{label}</label>}
+      <div className="grid grid-cols-2 gap-3">
+        {(["es", "en"] as const).map((l) => (
+          <div key={l}>
+            <span className="block text-[10px] font-bold uppercase tracking-widest text-[#94A3B8] mb-1">
+              {t(l === "es" ? "admin.spanish" : "admin.english")}
+            </span>
+            <textarea
+              value={l === "es" ? es : en}
+              onChange={(e) => onChange(l, e.target.value)}
+              onBlur={onBlur(l)}
+              rows={rows}
+              placeholder={placeholder}
+              className={`${inputCls} h-auto py-2 resize-y leading-relaxed`}
+              data-testid={`bilingual-${l}`}
+            />
+          </div>
+        ))}
+      </div>
+      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
     </div>
   );
 }

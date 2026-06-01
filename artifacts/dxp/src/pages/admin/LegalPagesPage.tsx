@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextField, TextAreaField } from "@/components/admin/AdminUI";
+import { BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 
 const PAGES = ["privacy", "terms"] as const;
 
 export function LegalPagesPage() {
   const { t } = useTranslation();
   const { legal, setLegal } = useAdminStore();
-  const { lang } = useAdminLang();
   const [draft, setDraft] = useState(() => structuredClone(legal));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const update = (
     page: (typeof PAGES)[number],
+    lang: Lang,
     field: "title" | "updated" | "body",
     value: string,
   ) =>
@@ -45,20 +45,16 @@ export function LegalPagesPage() {
         saved={saved}
       />
 
-      <div className="space-y-6 max-w-3xl">
-        <LangToggle />
+      <div className="space-y-6">
         {PAGES.map((page) => {
-          const tr = draft[page].translations[lang];
+          const es = draft[page].translations.es;
+          const en = draft[page].translations.en;
           return (
-            <div key={page} className="bg-white rounded-2xl border border-[#E2E8F0] p-6 space-y-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-[#0F172A]">
-                {page === "privacy" ? "Privacidad / Privacy" : "Términos / Terms"}
-                <span className="ml-2 font-mono text-xs font-normal text-[#94A3B8]">/{page}</span>
-              </h2>
-              <TextField label="Título" value={tr.title} onChange={(v) => update(page, "title", v)} />
-              <TextField label="Última actualización" value={tr.updated} onChange={(v) => update(page, "updated", v)} />
-              <TextAreaField label="Contenido" value={tr.body} onChange={(v) => update(page, "body", v)} rows={10} />
-            </div>
+            <BilingualSection key={page} title={`${page === "privacy" ? "Privacidad / Privacy" : "Términos / Terms"} · /${page}`}>
+              <BilingualField label="Título" es={es.title} en={en.title} onChange={(l, v) => update(page, l, "title", v)} />
+              <BilingualField label="Última actualización" es={es.updated} en={en.updated} onChange={(l, v) => update(page, l, "updated", v)} />
+              <BilingualTextArea label="Contenido" es={es.body} en={en.body} onChange={(l, v) => update(page, l, "body", v)} rows={10} />
+            </BilingualSection>
           );
         })}
       </div>

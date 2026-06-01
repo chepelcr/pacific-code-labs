@@ -1,0 +1,26 @@
+{
+  "translations": {
+    "es": {
+      "eyebrow": "Pacific Code Labs",
+      "title": "Tecnología construida en Costa Rica",
+      "body": "Pacific Code Labs nace de la convicción de que la tecnología debe resolver problemas reales. Somos un equipo de ingenieros y diseñadores costarricenses que construye productos digitales con identidad, propósito y excelencia técnica.",
+      "valuesTitle": "Nuestras Áreas",
+      "stats": [
+        { "value": "2019", "label": "Fundados en Costa Rica" },
+        { "value": "10+", "label": "Clientes en Centroamérica" },
+        { "value": "20+", "label": "Proyectos entregados" }
+      ]
+    },
+    "en": {
+      "eyebrow": "Pacific Code Labs",
+      "title": "Technology built in Costa Rica",
+      "body": "Pacific Code Labs was born from the conviction that technology must solve real problems. We are a team of Costa Rican engineers and designers who build digital products with identity, purpose, and technical excellence.",
+      "valuesTitle": "Our Areas",
+      "stats": [
+        { "value": "2019", "label": "Founded in Costa Rica" },
+        { "value": "10+", "label": "Clients in Central America" },
+        { "value": "20+", "label": "Projects delivered" }
+      ]
+    }
+  }
+}

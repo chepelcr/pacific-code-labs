@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { LangToggle, TextAreaField } from "@/components/admin/AdminUI";
+import { BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
-import { useAdminLang } from "@/lib/admin-lang";
+import type { Lang } from "@/lib/translate";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 const PILLARS = ["knowledge", "community", "growth"] as const;
@@ -11,12 +11,11 @@ const PILLARS = ["knowledge", "community", "growth"] as const;
 export function PhilosophyPage() {
   const { t } = useTranslation();
   const { philosophy, setPhilosophy } = useAdminStore();
-  const { lang } = useAdminLang();
   const [draft, setDraft] = useState(() => structuredClone(philosophy));
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const update = (pillar: (typeof PILLARS)[number], value: string) =>
+  const update = (pillar: (typeof PILLARS)[number], lang: Lang, value: string) =>
     setDraft((prev) => {
       const next = structuredClone(prev);
       next[pillar][lang] = value;
@@ -42,20 +41,17 @@ export function PhilosophyPage() {
         saved={saved}
       />
 
-      <div className="space-y-6 max-w-3xl">
-        <LangToggle />
+      <div className="space-y-6">
         {PILLARS.map((pillar) => (
-          <div key={pillar} className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-[#0F172A] mb-3">
-              {t(`philosophy.${pillar}_title`)}
-            </h2>
-            <TextAreaField
-              value={draft[pillar][lang]}
-              onChange={(v) => update(pillar, v)}
+          <BilingualSection key={pillar} title={t(`philosophy.${pillar}_title`)}>
+            <BilingualTextArea
+              es={draft[pillar].es}
+              en={draft[pillar].en}
+              onChange={(l, v) => update(pillar, l, v)}
               rows={4}
               hint={RICH_TEXT_HINT}
             />
-          </div>
+          </BilingualSection>
         ))}
       </div>
     </div>

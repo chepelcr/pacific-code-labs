@@ -11,6 +11,18 @@ GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
 # Stop Git Bash (MSYS) from rewriting the "/" BASE_PATH into a Windows path.
 export MSYS_NO_PATHCONV=1
 
+# The tooling env vars on this machine are stored *with literal quotes* in their
+# values (e.g. COREPACK_HOME='"E:\node-tooling\corepack"'). Corepack then treats
+# the quoted string as a relative path and crashes with a mangled mkdir. Strip
+# any surrounding quotes so they stay clean Windows paths, and make sure pnpm is
+# on PATH (PNPM_HOME). Keep the values as Windows paths — do NOT POSIX-convert
+# them, or "/" style routes get rewritten under MSYS.
+strip_quotes() { local v="${!1}"; v="${v%\"}"; v="${v#\"}"; export "$1=$v"; }
+for _v in COREPACK_HOME PNPM_HOME npm_config_cache npm_config_prefix; do
+  [ -n "${!_v}" ] && strip_quotes "$_v"
+done
+[ -n "$PNPM_HOME" ] && export PATH="/e/node-tooling/pnpm-bin:$PATH"
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT" || exit 1
 

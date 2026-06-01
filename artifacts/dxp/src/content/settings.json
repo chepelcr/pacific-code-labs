@@ -1,0 +1,12 @@
+{
+  "siteName": "Pacific Code Labs",
+  "autoTranslate": {
+    "enabled": true,
+    "fillEmptyOnBlur": true
+  },
+  "contact": {
+    "provider": "none",
+    "endpoint": "",
+    "accessKey": ""
+  }
+}

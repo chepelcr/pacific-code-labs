@@ -1,10 +1,22 @@
 {
   "copyright": {
-    "es": "© 2025 Pacific Code Labs. Todos los derechos reservados.",
-    "en": "© 2025 Pacific Code Labs. All rights reserved."
+    "es": "© 2026 Pacific Code Labs. Todos los derechos reservados.",
+    "en": "© 2026 Pacific Code Labs. All rights reserved."
   },
   "links": [
-    { "url": "/privacy", "label": { "es": "Privacidad", "en": "Privacy" } },
-    { "url": "/terms", "label": { "es": "Términos", "en": "Terms" } }
+    {
+      "url": "/privacy",
+      "label": {
+        "es": "Privacidad",
+        "en": "Privacy"
+      }
+    },
+    {
+      "url": "/terms",
+      "label": {
+        "es": "Términos",
+        "en": "Terms"
+      }
+    }
   ]
 }
