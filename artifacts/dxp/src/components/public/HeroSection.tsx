@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import heroData from "@/content/hero.json";
 
@@ -10,7 +11,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#EEF2FF] dark:bg-[#0F172A]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 bg-[#EEF2FF] dark:bg-[#0F172A]"
       data-testid="hero-section"
     >
       {/* Animated grid background */}
@@ -65,7 +66,7 @@ export function HeroSection() {
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#2563EB]/25 dark:border-[#2563EB]/30 bg-[#2563EB]/8 dark:bg-[#2563EB]/10 text-[#2563EB] dark:text-[#06B6D4] text-sm font-medium mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
-          Costa Rica · Technology · Purpose
+          {content.eyebrow}
         </div>
 
         {/* Heading */}
@@ -89,29 +90,25 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#products"
+          <Link
+            href="/products"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1d4ed8] text-white font-semibold text-sm hover:from-[#1d4ed8] hover:to-[#1e40af] transition-all shadow-lg shadow-[#2563EB]/25"
             data-testid="hero-cta-primary"
           >
             {t("hero.cta_primary")}
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            href="/contact"
             className="px-8 py-3.5 rounded-xl border border-[#0F172A]/20 dark:border-white/15 text-[#0F172A] dark:text-white/80 font-semibold text-sm hover:bg-[#0F172A]/5 dark:hover:bg-white/5 hover:text-[#0F172A] dark:hover:text-white transition-all"
             data-testid="hero-cta-secondary"
           >
             {t("hero.cta_secondary")}
-          </a>
+          </Link>
         </div>
 
         {/* Stats */}
         <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto border-t border-[#0F172A]/10 dark:border-white/10 pt-10">
-          {[
-            { value: "2", label: lang === "es" ? "Productos SaaS" : "SaaS Products" },
-            { value: "5+", label: lang === "es" ? "Áreas de servicio" : "Service areas" },
-            { value: "CR", label: lang === "es" ? "Hecho en Costa Rica" : "Made in Costa Rica" },
-          ].map((stat) => (
+          {content.stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl font-bold text-[#0F172A] dark:text-white">{stat.value}</div>
               <div className="text-xs text-[#94A3B8] dark:text-white/40 mt-1">{stat.label}</div>

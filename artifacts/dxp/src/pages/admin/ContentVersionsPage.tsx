@@ -16,6 +16,7 @@ export function ContentVersionsPage() {
     { name: "philosophy.json", data: store.philosophy, description: "Philosophy section" },
     { name: "navigation.json", data: store.navigation, description: "Navigation links" },
     { name: "footer.json", data: store.footer, description: "Footer content" },
+    { name: "legal.json", data: store.legal, description: "Privacy & Terms pages" },
     { name: "seo.json", data: store.seo, description: "SEO settings" },
     { name: "languages.json", data: store.languages, description: `${store.languages.length} languages` },
     { name: "themes.json", data: store.themes, description: `${store.themes.length} themes` },

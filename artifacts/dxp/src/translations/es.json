@@ -31,7 +31,8 @@
     "title": "Nuestros Productos",
     "subtitle": "Soluciones tecnológicas diseñadas para transformar industrias.",
     "learn_more": "Saber Más",
-    "visit": "Visitar"
+    "visit": "Visitar",
+    "active": "Activo"
   },
   "services": {
     "title": "Nuestros Servicios",
@@ -76,11 +77,15 @@
     "navigation": "Navegación",
     "footer": "Pie de Página",
     "languages": "Idiomas",
+    "translations": "Traducciones",
     "themes": "Temas",
     "media": "Biblioteca de Medios",
     "contentVersions": "Versiones de Contenido",
     "settings": "Configuración",
     "branding": "Marca y Logo",
+    "hero": "Portada (Hero)",
+    "philosophy": "Filosofía",
+    "legal": "Páginas Legales",
     "contentExplorer": "Explorador de Contenido",
     "diagnostics": "Diagnósticos",
     "export": "Exportar JSON",
@@ -110,6 +115,7 @@
     "error": "Ha ocurrido un error",
     "not_found": "No encontrado",
     "back_home": "Volver al inicio",
-    "go_to_admin": "Ir al Admin"
+    "go_to_admin": "Ir al Admin",
+    "toggle_language": "Switch to English"
   }
 }

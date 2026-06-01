@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Plus, Edit2, Trash2, ExternalLink } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
+import { ICON_NAMES } from "@/lib/icons";
 
 export function ProductsPage() {
   const { t } = useTranslation();
@@ -21,6 +22,7 @@ export function ProductsPage() {
       tagline_en: p.translations.en?.tagline ?? "",
       description_en: p.translations.en?.description ?? "",
       externalUrl: p.externalUrl ?? "",
+      iconName: p.iconName ?? "",
       status: p.status,
     });
     setEditing(id);
@@ -34,6 +36,7 @@ export function ProductsPage() {
             ...p,
             status: form.status as "active" | "draft" | "archived",
             externalUrl: form.externalUrl || null,
+            iconName: form.iconName || "Boxes",
             translations: {
               ...p.translations,
               es: { ...p.translations.es, name: form.name_es, tagline: form.tagline_es, description: form.description_es },
@@ -154,6 +157,15 @@ export function ProductsPage() {
                     <option value="archived">Archived</option>
                   </select>
                 </div>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] mb-1">Icono</label>
+                <select value={form.iconName} onChange={(e) => setForm({...form, iconName: e.target.value})} className="w-full px-3 py-2 rounded-xl border border-[#E2E8F0] text-sm focus:outline-none focus:border-[#2563EB] bg-white" data-testid="select-product-icon">
+                  {ICON_NAMES.map((name) => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                </select>
+                <p className="text-[11px] text-[#94A3B8] mt-1">Se usa cuando el producto no tiene logo (logoUrl).</p>
               </div>
             </div>
             <div className="flex gap-3 mt-6">

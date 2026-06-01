@@ -31,7 +31,8 @@
     "title": "Our Products",
     "subtitle": "Technology solutions designed to transform industries.",
     "learn_more": "Learn More",
-    "visit": "Visit"
+    "visit": "Visit",
+    "active": "Active"
   },
   "services": {
     "title": "Our Services",
@@ -76,11 +77,15 @@
     "navigation": "Navigation",
     "footer": "Footer",
     "languages": "Languages",
+    "translations": "Translations",
     "themes": "Themes",
     "media": "Media Library",
     "contentVersions": "Content Versions",
     "settings": "Settings",
     "branding": "Branding",
+    "hero": "Hero",
+    "philosophy": "Philosophy",
+    "legal": "Legal Pages",
     "contentExplorer": "Content Explorer",
     "diagnostics": "Diagnostics",
     "export": "Export JSON",
@@ -110,6 +115,7 @@
     "error": "An error occurred",
     "not_found": "Not found",
     "back_home": "Back to home",
-    "go_to_admin": "Go to Admin"
+    "go_to_admin": "Go to Admin",
+    "toggle_language": "Cambiar a Español"
   }
 }

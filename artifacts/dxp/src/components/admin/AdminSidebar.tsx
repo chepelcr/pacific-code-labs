@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
   Search, Navigation, LayoutTemplate, Globe, Palette, Image,
   Download, Settings, FileSearch, Activity, ChevronLeft,
-  ChevronRight, ChevronDown, X, Brush,
+  ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale, Languages,
 } from "lucide-react";
 
 interface NavItem {
@@ -25,20 +25,24 @@ const NAV: NavGroup[] = [
     groupKey: "admin.business",
     items: [
       { href: "/admin/dashboard",        labelKey: "admin.dashboard",      icon: LayoutDashboard },
+      { href: "/admin/hero",              labelKey: "admin.hero",           icon: Sparkles },
       { href: "/admin/products",          labelKey: "admin.products",       icon: Package },
       { href: "/admin/services",          labelKey: "admin.services",       icon: Wrench },
       { href: "/admin/case-studies",      labelKey: "admin.caseStudies",    icon: BookOpen },
+      { href: "/admin/philosophy",        labelKey: "admin.philosophy",     icon: Lightbulb },
       { href: "/admin/faq",               labelKey: "admin.faq",            icon: HelpCircle },
       { href: "/admin/contact",           labelKey: "admin.contact",        icon: Mail },
       { href: "/admin/seo",               labelKey: "admin.seo",            icon: Search },
       { href: "/admin/navigation",        labelKey: "admin.navigation",     icon: Navigation },
       { href: "/admin/footer",            labelKey: "admin.footer",         icon: LayoutTemplate },
+      { href: "/admin/legal",             labelKey: "admin.legal",          icon: Scale },
     ],
   },
   {
     groupKey: "admin.cms",
     items: [
       { href: "/admin/languages",         labelKey: "admin.languages",      icon: Globe },
+      { href: "/admin/translations",      labelKey: "admin.translations",   icon: Languages },
       { href: "/admin/themes",            labelKey: "admin.themes",         icon: Palette },
       { href: "/admin/media",             labelKey: "admin.media",          icon: Image },
       { href: "/admin/content-versions",  labelKey: "admin.contentVersions",icon: Download },

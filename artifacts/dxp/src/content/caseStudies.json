@@ -1,54 +1,54 @@
 [
   {
-    "id": "case-tsuru-coope",
-    "slug": "tsuru-cooperativa",
+    "id": "case-aeryx",
+    "slug": "aeryx-elysium",
     "status": "active",
     "sortOrder": 1,
     "imageUrl": null,
-    "industry": "Agriculture",
+    "industry": "Gaming",
     "translations": {
       "es": {
-        "title": "Cooperativa Agrícola moderniza su gestión con Tsuru",
-        "summary": "Una cooperativa de productores implementó Tsuru para digitalizar su cadena de producción y comercialización.",
-        "challenge": "La cooperativa manejaba inventarios, pedidos y facturación manualmente, generando errores y retrasos costosos.",
-        "solution": "Implementamos Tsuru con módulos de inventario, POS y facturación electrónica integrados con el sistema tributario costarricense.",
-        "result": "Reducción del 60% en errores administrativos y aumento del 35% en eficiencia operativa en los primeros 6 meses."
+        "title": "Aeryx Elysium: ambiente de esports para Latinoamérica",
+        "summary": "Plataforma de comunidad competitiva de Mobile Legends para 10 países de Latinoamérica.",
+        "challenge": "Aeryx necesitaba un ambiente de juego de nivel producción para organizar torneos, gestionar equipos y rosters, y calcular un ranking regional («Camino al Mundial») a través de 10 países.",
+        "solution": "Construimos una plataforma multi-aplicación: un sitio público, un panel administrativo protegido con Cognito y un backend serverless en AWS, apoyados en un sistema de diseño y un cliente de API compartidos.",
+        "result": "Un ambiente unificado de esports que centraliza torneos, equipos y el ranking regional en una sola plataforma, hoy en desarrollo activo junto al equipo de Aeryx."
       },
       "en": {
-        "title": "Agricultural Cooperative modernizes management with Tsuru",
-        "summary": "A producers' cooperative implemented Tsuru to digitize their production and marketing chain.",
-        "challenge": "The cooperative managed inventory, orders, and invoicing manually, generating costly errors and delays.",
-        "solution": "We implemented Tsuru with integrated inventory, POS, and electronic invoicing modules connected to Costa Rica's tax system.",
-        "result": "60% reduction in administrative errors and 35% increase in operational efficiency in the first 6 months."
+        "title": "Aeryx Elysium: an esports environment for Latin America",
+        "summary": "A competitive Mobile Legends community platform spanning 10 Latin American countries.",
+        "challenge": "Aeryx needed a production-grade gaming environment to run tournaments, manage teams and rosters, and compute a regional ranking (\"Camino al Mundial\") across 10 countries.",
+        "solution": "We built a multi-app platform: a public site, a Cognito-gated admin panel, and a serverless AWS backend, backed by a shared design system and typed API client.",
+        "result": "A unified esports environment that centralizes tournaments, teams, and the regional ranking in one platform, currently in active development with the Aeryx team."
       }
     },
-    "createdAt": "2024-03-01T00:00:00Z",
-    "updatedAt": "2024-03-01T00:00:00Z"
+    "createdAt": "2025-01-01T00:00:00Z",
+    "updatedAt": "2026-05-31T00:00:00Z"
   },
   {
-    "id": "case-firecode-eng",
-    "slug": "firecode-ingenieria",
+    "id": "case-modas-laura",
+    "slug": "modas-laura",
     "status": "active",
     "sortOrder": 2,
     "imageUrl": null,
-    "industry": "Engineering",
+    "industry": "Retail",
     "translations": {
       "es": {
-        "title": "Firma de ingeniería reduce tiempos de consulta con FireCode CR",
-        "summary": "Una firma de ingeniería especializada adoptó FireCode CR para acelerar consultas de cumplimiento técnico.",
-        "challenge": "Los ingenieros invertían hasta 4 horas por proyecto buscando normativas NFPA y reglamentos locales aplicables.",
-        "solution": "Integramos FireCode CR como asistente de consulta instantánea para el equipo técnico, con acceso a toda la normativa vigente.",
-        "result": "El tiempo de consulta de normativas se redujo de 4 horas a 15 minutos por proyecto, con mayor precisión en los dictámenes."
+        "title": "Modas Laura digitaliza su facturación e inventario",
+        "summary": "Una empresa de retail de moda moderniza su facturación electrónica y sus procesos operativos.",
+        "challenge": "La facturación, la gestión de clientes y productos, y los reportes de crossdocking se hacían manualmente; generar un solo reporte de crossdocking tomaba hasta 45 minutos.",
+        "solution": "Desarrollamos un sistema de facturación electrónica (React + Node.js) conforme a la normativa del Ministerio de Hacienda, e implementamos un servicio en Python (AWS Lambda, S3, API Gateway, FastAPI y pandas) que genera automáticamente reportes de crossdocking, resúmenes de cajas, faltantes y etiquetas.",
+        "result": "El tiempo de generación de reportes de crossdocking se redujo de 45 a 5 minutos, con gestión integral de clientes, productos y facturación electrónica."
       },
       "en": {
-        "title": "Engineering firm reduces consultation time with FireCode CR",
-        "summary": "A specialized engineering firm adopted FireCode CR to accelerate technical compliance consultations.",
-        "challenge": "Engineers spent up to 4 hours per project searching for applicable NFPA standards and local regulations.",
-        "solution": "We integrated FireCode CR as an instant consultation assistant for the technical team, with access to all current regulations.",
-        "result": "Regulation consultation time was reduced from 4 hours to 15 minutes per project, with greater accuracy in technical opinions."
+        "title": "Modas Laura digitizes its invoicing and inventory",
+        "summary": "A fashion retail company modernizes its electronic invoicing and operational processes.",
+        "challenge": "Invoicing, customer and product management, and crossdocking reports were all manual; generating a single crossdocking report took up to 45 minutes.",
+        "solution": "We built an electronic invoicing system (React + Node.js) compliant with Costa Rica's Ministry of Finance regulations, and a Python service (AWS Lambda, S3, API Gateway, FastAPI, and pandas) that automatically generates crossdocking reports, box summaries, missing items, and labels.",
+        "result": "Crossdocking report generation dropped from 45 minutes to 5, alongside end-to-end management of customers, products, and electronic invoicing."
       }
     },
-    "createdAt": "2024-05-01T00:00:00Z",
-    "updatedAt": "2024-05-01T00:00:00Z"
+    "createdAt": "2021-01-01T00:00:00Z",
+    "updatedAt": "2026-05-31T00:00:00Z"
   }
 ]

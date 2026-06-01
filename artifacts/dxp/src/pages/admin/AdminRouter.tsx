@@ -17,6 +17,10 @@ import { SettingsPage } from "./SettingsPage";
 import { ContentExplorerPage } from "./ContentExplorerPage";
 import { DiagnosticsPage } from "./DiagnosticsPage";
 import { BrandingPage } from "./BrandingPage";
+import { HeroPage } from "./HeroPage";
+import { PhilosophyPage } from "./PhilosophyPage";
+import { LegalPagesPage } from "./LegalPagesPage";
+import { TranslationsPage } from "./TranslationsPage";
 import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 
 export function AdminRouter() {
@@ -30,15 +34,19 @@ export function AdminRouter() {
       <Switch>
         <Route path="/admin" component={() => <Redirect to="/admin/dashboard" />} />
         <Route path="/admin/dashboard" component={DashboardPage} />
+        <Route path="/admin/hero" component={HeroPage} />
         <Route path="/admin/products" component={ProductsPage} />
         <Route path="/admin/services" component={ServicesPage} />
         <Route path="/admin/case-studies" component={CaseStudiesPage} />
+        <Route path="/admin/philosophy" component={PhilosophyPage} />
         <Route path="/admin/faq" component={FaqPage} />
         <Route path="/admin/contact" component={ContactPage} />
         <Route path="/admin/seo" component={SeoPage} />
         <Route path="/admin/navigation" component={NavigationPage} />
         <Route path="/admin/footer" component={FooterPage} />
+        <Route path="/admin/legal" component={LegalPagesPage} />
         <Route path="/admin/languages" component={LanguagesPage} />
+        <Route path="/admin/translations" component={TranslationsPage} />
         <Route path="/admin/themes" component={ThemesPage} />
         <Route path="/admin/media" component={MediaPage} />
         <Route path="/admin/content-versions" component={ContentVersionsPage} />

@@ -1,12 +1,24 @@
 {
   "translations": {
     "es": {
+      "eyebrow": "Costa Rica · Tecnología · Propósito",
       "title": "Transformamos procesos empresariales en software inteligente.",
-      "subtitle": "Desarrollamos productos tecnológicos y soluciones empresariales desde Costa Rica."
+      "subtitle": "Desarrollamos productos tecnológicos y soluciones empresariales desde Costa Rica.",
+      "stats": [
+        { "value": "2", "label": "Productos SaaS" },
+        { "value": "5+", "label": "Áreas de servicio" },
+        { "value": "CR", "label": "Hecho en Costa Rica" }
+      ]
     },
     "en": {
+      "eyebrow": "Costa Rica · Technology · Purpose",
       "title": "We transform business processes into intelligent software.",
-      "subtitle": "We build technology products and business solutions from Costa Rica."
+      "subtitle": "We build technology products and business solutions from Costa Rica.",
+      "stats": [
+        { "value": "2", "label": "SaaS Products" },
+        { "value": "5+", "label": "Service areas" },
+        { "value": "CR", "label": "Made in Costa Rica" }
+      ]
     }
   }
 }
