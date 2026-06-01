@@ -55,7 +55,13 @@ export function PublicNavbar() {
     }, 220);
   };
 
-  const toggleTheme = () => setDark((d) => !d);
+  const toggleTheme = () => {
+    // Enable colour transitions only for the duration of the switch.
+    const root = document.documentElement;
+    root.classList.add("theme-transition");
+    setDark((d) => !d);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 400);
+  };
 
   /* Tailwind classes change between light/dark based on the `.dark` class on <html> */
   const navBg = scrolled
