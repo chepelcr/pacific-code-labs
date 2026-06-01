@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import heroData from "@/content/hero.json";
 
@@ -10,7 +11,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#EEF2FF] dark:bg-[#0F172A]"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 bg-[#EEF2FF] dark:bg-[#0F172A]"
       data-testid="hero-section"
     >
       {/* Animated grid background */}
@@ -89,20 +90,20 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#products"
+          <Link
+            href="/products"
             className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1d4ed8] text-white font-semibold text-sm hover:from-[#1d4ed8] hover:to-[#1e40af] transition-all shadow-lg shadow-[#2563EB]/25"
             data-testid="hero-cta-primary"
           >
             {t("hero.cta_primary")}
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            href="/contact"
             className="px-8 py-3.5 rounded-xl border border-[#0F172A]/20 dark:border-white/15 text-[#0F172A] dark:text-white/80 font-semibold text-sm hover:bg-[#0F172A]/5 dark:hover:bg-white/5 hover:text-[#0F172A] dark:hover:text-white transition-all"
             data-testid="hero-cta-secondary"
           >
             {t("hero.cta_secondary")}
-          </a>
+          </Link>
         </div>
 
         {/* Stats */}

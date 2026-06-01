@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Menu, X, Globe, Sun, Moon } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
@@ -52,50 +53,58 @@ export function PublicNavbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Logo size={36} />
             <span className="text-[#0F172A] dark:text-white font-semibold tracking-tight hidden sm:block">
               Pacific Code Labs
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6" data-testid="nav-links">
             {[...navigationData.items]
               .sort((a, b) => a.order - b.order)
               .map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   className="text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium transition-colors"
-                  data-testid={`nav-link-${item.href.replace("#", "")}`}
+                  data-testid={`nav-link-${item.href.replace(/^\//, "")}`}
                 >
                   {item.label[lang] ?? item.label.es}
-                </a>
+                </Link>
               ))}
           </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-1">
-            {/* Language toggle */}
+            {/* Language toggle — globe spins on hover, label cross-fades on switch */}
             <button
               onClick={toggleLang}
-              className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 text-sm font-medium transition-all"
+              className="group flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 text-sm font-medium transition-all duration-300"
               data-testid="lang-toggle"
               title={lang === "es" ? "Switch to English" : "Cambiar a Español"}
+              aria-label="Toggle language"
             >
-              <Globe className="w-4 h-4" />
-              <span className="uppercase text-xs font-semibold">{lang}</span>
+              <Globe className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
+              <span
+                key={lang}
+                className="uppercase text-xs font-semibold inline-block animate-in fade-in zoom-in-95 duration-300"
+              >
+                {lang}
+              </span>
             </button>
 
-            {/* Dark / light toggle */}
+            {/* Dark / light toggle — Sun/Moon rotate + scale cross-fade */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 transition-all"
+              className="relative flex items-center justify-center w-9 h-9 rounded-lg text-[#475569] hover:text-[#0F172A] dark:text-white/60 dark:hover:text-white hover:bg-[#0F172A]/6 dark:hover:bg-white/8 transition-all duration-300"
               data-testid="theme-toggle"
               title={dark ? "Modo claro" : "Modo oscuro"}
+              aria-label="Toggle theme"
             >
-              {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              <Sun className="absolute w-4 h-4 rotate-0 scale-100 transition-all duration-500 dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute w-4 h-4 rotate-90 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100" />
             </button>
 
             {/* Admin link — only rendered when the admin CMS is enabled
@@ -128,14 +137,14 @@ export function PublicNavbar() {
           {[...navigationData.items]
             .sort((a, b) => a.order - b.order)
             .map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
                 className="block text-[#475569] hover:text-[#0F172A] dark:text-white/70 dark:hover:text-white text-sm font-medium py-2 px-2 rounded-lg hover:bg-[#0F172A]/5 dark:hover:bg-white/5 transition-colors"
               >
                 {item.label[lang] ?? item.label.es}
-              </a>
+              </Link>
             ))}
         </div>
       )}

@@ -76,7 +76,7 @@ points, guard them with `ADMIN_ENABLED`.
 
 - **No backend at runtime.** Content is bundled JSON. Admin edits live in Zustand; "save" = click **Export JSON** → `downloadJson()` → commit the file → next build picks it up.
 - Contact form submissions persist to `localStorage("pcl-contact-messages")` only.
-- Routing: `wouter`, with base derived from `import.meta.env.BASE_URL`.
+- Routing: `wouter` (path-based, no `#` hashes), base derived from `import.meta.env.BASE_URL`. The landing page is one scrollable document; each section has a clean path (`/products`, `/services`, …) that maps to its element `id` via `src/lib/sections.ts`. `PublicWebsite` smooth-scrolls to the matching section on every location change, so nav clicks, deep links, and back/forward all work. Section anchors get `scroll-margin-top` (in `index.css`) so the fixed navbar doesn't cover them.
 - Styling: TailwindCSS v4 + shadcn/ui. Theme toggle persisted in `localStorage("pcl-theme")`.
 - Brand colors: Midnight Navy `#0F172A` · Tech Blue `#2563EB` · Electric Cyan `#06B6D4` · Emerald `#10B981` · BG `#F8FAFC`.
 

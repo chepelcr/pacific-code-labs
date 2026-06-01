@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { listActiveProducts } from "@/services/products.service";
@@ -81,14 +82,14 @@ export function ProductsSection() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-3">
-                    <a
-                      href="#contact"
+                    <Link
+                      href="/contact"
                       className="flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8] transition-colors"
                       data-testid={`product-learn-more-${product.id}`}
                     >
                       {t("products.learn_more")}
                       <ArrowRight className="w-4 h-4" />
-                    </a>
+                    </Link>
                     {product.externalUrl && (
                       <a
                         href={product.externalUrl}
