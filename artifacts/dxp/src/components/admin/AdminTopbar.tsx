@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, Sun, Moon, ExternalLink, UploadCloud, Loader2, Check, AlertCircle, Info } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 import { useDarkMode } from "@/lib/theme";
 import { publishChanges } from "@/lib/local-cms";
+import { useAdminUi, guardNavigation } from "@/lib/admin-ui";
 
 interface Props {
   /** Opens the mobile sidebar drawer (only shown below lg). */
@@ -27,9 +28,24 @@ export function AdminTopbar({ onMenu }: Props) {
   const { t } = useTranslation();
   const { dark, toggle } = useDarkMode();
   const [state, setState] = useState<PublishState>({ kind: "idle" });
+  const pendingPublish = useAdminUi((s) => s.pendingPublish);
+  const refreshPublish = useAdminUi((s) => s.refreshPublish);
+
+  // Detect pending (unpublished) changes on mount, when a content page saves
+  // (dispatched by downloadJson), and when the window regains focus.
+  useEffect(() => {
+    void refreshPublish();
+    const onChange = () => void refreshPublish();
+    window.addEventListener("focus", onChange);
+    window.addEventListener("pcl:content-saved", onChange);
+    return () => {
+      window.removeEventListener("focus", onChange);
+      window.removeEventListener("pcl:content-saved", onChange);
+    };
+  }, [refreshPublish]);
 
   const publish = async () => {
-    if (state.kind === "publishing") return;
+    if (state.kind === "publishing" || !pendingPublish) return;
     setState({ kind: "publishing" });
     const res = await publishChanges();
     if (res.ok && res.nothingToPublish) {
@@ -39,13 +55,20 @@ export function AdminTopbar({ onMenu }: Props) {
     } else {
       setState({ kind: "error", error: res.error ?? "error" });
     }
+    void refreshPublish();
     // Auto-reset back to idle after a few seconds (errors linger a bit longer).
     window.setTimeout(() => setState({ kind: "idle" }), res.ok ? 4000 : 8000);
   };
 
-  // Publish button appearance per state.
+  // Disabled while publishing, and when idle with no pending changes.
+  const disabled = state.kind === "publishing" || (state.kind === "idle" && !pendingPublish);
+
+  // Publish button appearance per state. Idle is muted when there's nothing to
+  // publish (enabled blue only once the user has saved pending changes).
   const publishStyles: Record<PublishState["kind"], string> = {
-    idle: "bg-primary text-primary-foreground hover:bg-primary/90",
+    idle: pendingPublish
+      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+      : "bg-muted text-muted-foreground cursor-not-allowed",
     publishing: "bg-primary/80 text-primary-foreground cursor-wait",
     success: "bg-emerald-600 text-white",
     nothing: "bg-muted text-muted-foreground",
@@ -101,9 +124,12 @@ export function AdminTopbar({ onMenu }: Props) {
         <Moon className="absolute w-4 h-4 rotate-90 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100" />
       </button>
 
-      {/* View public site */}
+      {/* View public site (guarded: prompt if the open page has unsaved edits) */}
       <a
         href="/"
+        onClick={(e) => {
+          if (guardNavigation("/")) e.preventDefault();
+        }}
         className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted text-sm font-medium transition-colors"
         data-testid="admin-view-site"
         title={t("admin.viewSite")}
@@ -112,13 +138,19 @@ export function AdminTopbar({ onMenu }: Props) {
         <span className="hidden md:inline">{t("admin.viewSite")}</span>
       </a>
 
-      {/* Publish */}
+      {/* Publish — enabled only when there are saved-but-unpublished changes */}
       <button
         onClick={publish}
-        disabled={state.kind === "publishing"}
+        disabled={disabled}
         className={`flex items-center gap-2 h-9 px-4 rounded-lg text-sm font-semibold transition-colors disabled:opacity-90 ${publishStyles[state.kind]}`}
         data-testid="admin-publish"
-        title={state.kind === "error" ? state.error : t("admin.publish")}
+        title={
+          state.kind === "error"
+            ? state.error
+            : state.kind === "idle" && !pendingPublish
+            ? t("admin.nothingToPublish")
+            : t("admin.publish")
+        }
       >
         {publishContent()}
       </button>

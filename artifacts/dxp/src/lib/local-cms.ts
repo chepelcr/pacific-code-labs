@@ -91,6 +91,26 @@ export interface GitLogResult {
   error?: string;
 }
 
+export interface GitStatusResult {
+  ok: boolean;
+  /** True when the content/translations/public dirs have uncommitted changes. */
+  pending?: boolean;
+  /** Number of changed files. */
+  files?: number;
+  error?: string;
+}
+
+/** Whether there are unpublished (uncommitted) changes in the content dirs. */
+export async function fetchGitStatus(): Promise<GitStatusResult> {
+  if (!LOCAL_CMS_ENABLED) return { ok: false, pending: false };
+  try {
+    const res = await fetch("/__local/git-status");
+    return (await res.json()) as GitStatusResult;
+  } catch (err) {
+    return { ok: false, pending: false, error: String(err) };
+  }
+}
+
 /** Read a page of recent commits on the current branch (admin Diagnostics). */
 export async function fetchGitLog(skip = 0, limit = 10): Promise<GitLogResult> {
   if (!LOCAL_CMS_ENABLED) return { ok: false, error: "unavailable" };

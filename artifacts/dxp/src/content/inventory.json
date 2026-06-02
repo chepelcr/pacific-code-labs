@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-02T05:30:52.256Z",
+  "generatedAt": "2026-06-02T15:47:53.640Z",
   "counts": {
-    "nodes": 143,
-    "edges": 285
+    "nodes": 145,
+    "edges": 293
   },
   "nodes": [
     {
@@ -46,6 +46,13 @@
       "type": "component",
       "group": "admin",
       "path": "src/components/admin/PageHeader.tsx"
+    },
+    {
+      "id": "components/admin/UnsavedChangesModal",
+      "label": "UnsavedChangesModal",
+      "type": "component",
+      "group": "admin",
+      "path": "src/components/admin/UnsavedChangesModal.tsx"
     },
     {
       "id": "components/Analytics",
@@ -657,6 +664,13 @@
       "path": "src/lib/admin-store.ts"
     },
     {
+      "id": "lib/admin-ui",
+      "label": "admin-ui",
+      "type": "lib",
+      "group": "admin",
+      "path": "src/lib/admin-ui.ts"
+    },
+    {
       "id": "lib/contact",
       "label": "contact",
       "type": "lib",
@@ -1064,13 +1078,28 @@
       "kind": "imports"
     },
     {
+      "from": "components/admin/AdminLayout",
+      "to": "components/admin/UnsavedChangesModal",
+      "kind": "imports"
+    },
+    {
       "from": "components/admin/AdminSidebar",
       "to": "components/shared/Logo",
       "kind": "imports"
     },
     {
+      "from": "components/admin/AdminSidebar",
+      "to": "lib/admin-ui",
+      "kind": "imports"
+    },
+    {
       "from": "components/admin/AdminTopbar",
       "to": "components/shared/Logo",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/AdminTopbar",
+      "to": "lib/admin-ui",
       "kind": "imports"
     },
     {
@@ -1096,6 +1125,26 @@
     {
       "from": "components/admin/PageHeader",
       "to": "components/admin/AdminUI",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/PageHeader",
+      "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/PageHeader",
+      "to": "lib/admin-ui",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/UnsavedChangesModal",
+      "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/UnsavedChangesModal",
+      "to": "lib/admin-ui",
       "kind": "imports"
     },
     {
@@ -1705,6 +1754,11 @@
     },
     {
       "from": "lib/admin-store",
+      "to": "lib/local-cms",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/admin-ui",
       "to": "lib/local-cms",
       "kind": "imports"
     },

@@ -5,13 +5,14 @@ import { Fragment, type ReactNode } from "react";
  * `parseTitle` approach). Editors type a simple syntax in the JSON/admin and
  * it renders to styled React nodes — no HTML, no XSS surface.
  *
- * Syntax:
- *   \n          → line break (type a literal backslash-n)
- *   {{text}}    → brand gradient highlight (Tech Blue → Electric Cyan)
- *   [[text]]    → Electric Cyan
- *   ((text))    → Emerald
- *   <<text>>    → Amber
- *   **text**    → bold
+ * Syntax (markers nest, so styles combine):
+ *   \n            → line break (type a literal backslash-n)
+ *   {{text}}      → brand gradient highlight (Tech Blue → Electric Cyan)
+ *   [[text]]      → Electric Cyan
+ *   ((text))      → Emerald
+ *   <<text>>      → Amber
+ *   **text**      → bold
+ *   [[**text**]]  → cyan AND bold (any combination nests)
  *
  * Plain text with none of the above renders unchanged, so it's safe to apply
  * everywhere.
@@ -28,38 +29,41 @@ const STYLE_CLASS: Record<Style, string> = {
   bold: "font-bold",
 };
 
+// Non-global regexes: each `.exec` returns the first match from the start, so
+// we can scan recursively without lastIndex bookkeeping.
 const PATTERNS: Array<{ regex: RegExp; style: Style }> = [
-  { regex: /\{\{([^}]+)\}\}/g, style: "gradient" },
-  { regex: /\[\[([^\]]+)\]\]/g, style: "cyan" },
-  { regex: /\(\(([^)]+)\)\)/g, style: "emerald" },
-  { regex: /<<([^>]+)>>/g, style: "amber" },
-  { regex: /\*\*([^*]+)\*\*/g, style: "bold" },
+  { regex: /\{\{([\s\S]+?)\}\}/, style: "gradient" },
+  { regex: /\[\[([\s\S]+?)\]\]/, style: "cyan" },
+  { regex: /\(\(([\s\S]+?)\)\)/, style: "emerald" },
+  { regex: /<<([\s\S]+?)>>/, style: "amber" },
+  { regex: /\*\*([\s\S]+?)\*\*/, style: "bold" },
 ];
 
+/**
+ * Recursively tokenise a line: find the earliest-starting marker, emit the text
+ * before it, then a styled <span> whose children are the *parsed* inner text
+ * (so markers nest and styles combine), then continue after the marker.
+ */
 function renderLine(line: string, keyPrefix: string): ReactNode[] {
-  const matches: Array<{ index: number; length: number; text: string; style: Style }> = [];
+  let best: { index: number; length: number; text: string; style: Style } | null = null;
   for (const { regex, style } of PATTERNS) {
-    for (const m of line.matchAll(regex)) {
-      if (m.index !== undefined) {
-        matches.push({ index: m.index, length: m[0].length, text: m[1], style });
-      }
+    const m = regex.exec(line);
+    if (m && m.index !== undefined && (best === null || m.index < best.index)) {
+      best = { index: m.index, length: m[0].length, text: m[1], style };
     }
   }
-  matches.sort((a, b) => a.index - b.index);
+
+  if (!best) return line ? [line] : [];
 
   const out: ReactNode[] = [];
-  let cursor = 0;
-  matches.forEach((m, i) => {
-    if (m.index < cursor) return; // skip overlapping matches
-    if (m.index > cursor) out.push(line.slice(cursor, m.index));
-    out.push(
-      <span key={`${keyPrefix}-${i}`} className={STYLE_CLASS[m.style]}>
-        {m.text}
-      </span>,
-    );
-    cursor = m.index + m.length;
-  });
-  if (cursor < line.length) out.push(line.slice(cursor));
+  if (best.index > 0) out.push(line.slice(0, best.index));
+  out.push(
+    <span key={keyPrefix} className={STYLE_CLASS[best.style]}>
+      {renderLine(best.text, `${keyPrefix}i`)}
+    </span>,
+  );
+  const rest = line.slice(best.index + best.length);
+  if (rest) out.push(...renderLine(rest, `${keyPrefix}r`));
   return out;
 }
 
@@ -82,4 +86,4 @@ export function RichText({ children }: { children: string }) {
 
 /** One-line reminder shown under admin fields that support the syntax. */
 export const RICH_TEXT_HINT =
-  "Formato: \\n salto de línea · {{degradado}} · [[cian]] · ((verde)) · <<ámbar>> · **negrita**";
+  "Formato: \\n salto de línea · {{degradado}} · [[cian]] · ((verde)) · <<ámbar>> · **negrita** · se combinan: [[**cian y negrita**]]";

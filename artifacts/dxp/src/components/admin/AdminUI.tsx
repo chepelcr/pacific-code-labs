@@ -425,10 +425,10 @@ export function SaveButton({
 }
 
 /**
- * Floating save button — fixed to the bottom-right so it travels with the user
- * while scrolling a long content page, instead of living only in the page
- * header. Same saving/saved feedback as SaveButton. Rendered by PageHeader
- * whenever a page provides an `onSave` handler.
+ * Floating save button — a fixed, icon-only round FAB in a deep blue, anchored
+ * bottom-right so it travels with the user while scrolling a long content page.
+ * Only rendered (by PageHeader) when there are unsaved edits. The label is kept
+ * for the tooltip / aria-label.
  */
 export function FloatingSaveButton({
   onClick,
@@ -445,22 +445,22 @@ export function FloatingSaveButton({
     <button
       onClick={onClick}
       disabled={saving}
-      className={`fixed bottom-6 right-6 z-40 h-12 px-5 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg transition-all disabled:opacity-70 ${
+      className={`fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg transition-all disabled:opacity-70 ${
         saved
-          ? "bg-emerald-600 text-white"
-          : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl"
+          ? "bg-emerald-600"
+          : "bg-[#1E40AF] hover:bg-[#1E3A8A] hover:shadow-xl"
       }`}
       data-testid="btn-save-floating"
-      title={label}
+      title={saved ? "Guardado ✓" : label}
+      aria-label={label}
     >
       {saving ? (
-        <Loader2 className="w-5 h-5 animate-spin" />
+        <Loader2 className="w-6 h-6 animate-spin" />
       ) : saved ? (
-        <Check className="w-5 h-5" />
+        <Check className="w-6 h-6" />
       ) : (
-        <Save className="w-5 h-5" />
+        <Save className="w-6 h-6" />
       )}
-      <span>{saving ? "Guardando…" : saved ? "Guardado ✓" : label}</span>
     </button>
   );
 }

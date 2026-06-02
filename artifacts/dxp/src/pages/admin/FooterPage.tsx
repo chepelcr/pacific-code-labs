@@ -27,6 +27,8 @@ export function FooterPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="footer.json"
+        value={footer}
       />
 
       <div className="space-y-4">

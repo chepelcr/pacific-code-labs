@@ -43,6 +43,8 @@ export function LegalPagesPage() {
         onSave={save}
         saving={saving}
         saved={saved}
+        entity="legal.json"
+        value={draft}
       />
 
       <div className="space-y-6">

@@ -39,6 +39,8 @@ export function AboutPage() {
         onSave={save}
         saving={saving}
         saved={saved}
+        entity="about.json"
+        value={draft}
       />
 
       <div className="space-y-6">

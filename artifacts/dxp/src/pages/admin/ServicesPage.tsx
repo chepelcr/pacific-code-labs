@@ -91,6 +91,8 @@ export function ServicesPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="services.json"
+        value={services}
       />
 
       <div className="space-y-4">

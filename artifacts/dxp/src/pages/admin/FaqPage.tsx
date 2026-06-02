@@ -98,6 +98,8 @@ export function FaqPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="faq.json"
+        value={faq}
         action={
           <button onClick={handleNew} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-foreground text-sm font-medium hover:border-input transition-colors" data-testid="btn-add-faq">
             <Plus className="w-4 h-4" />

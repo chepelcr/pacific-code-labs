@@ -30,6 +30,8 @@ export function LanguagesPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="languages.json"
+        value={languages}
       />
 
       <div className="bg-card rounded-2xl border border-border overflow-hidden max-w-xl">

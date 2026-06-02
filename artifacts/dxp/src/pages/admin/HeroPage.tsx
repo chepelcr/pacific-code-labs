@@ -36,6 +36,8 @@ export function HeroPage() {
         onSave={save}
         saving={saving}
         saved={saved}
+        entity="hero.json"
+        value={draft}
       />
 
       <div className="space-y-6">

@@ -100,6 +100,13 @@ export function localCms(): Plugin {
             return reply(200, { ok: true, branch, total, skip, limit, commits });
           }
 
+          // --- Read-only: are there uncommitted changes in the publish dirs? ---
+          if (method === "GET" && req.url.startsWith("/__local/git-status")) {
+            const out = await git(["status", "--porcelain", "--", ...PUBLISH_PATHS], root);
+            const files = out ? out.split("\n").filter(Boolean).length : 0;
+            return reply(200, { ok: true, pending: files > 0, files });
+          }
+
           if (method !== "POST") return reply(404, { ok: false, error: "unknown endpoint" });
 
           // --- One-click publish: stage content, commit, push current branch. ---

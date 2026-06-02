@@ -39,6 +39,8 @@ export function PhilosophyPage() {
         onSave={save}
         saving={saving}
         saved={saved}
+        entity="philosophy.json"
+        value={draft}
       />
 
       <div className="space-y-6">

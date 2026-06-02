@@ -49,6 +49,8 @@ export function SeoPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="seo.json"
+        value={draft}
       />
 
       <div className="space-y-4">

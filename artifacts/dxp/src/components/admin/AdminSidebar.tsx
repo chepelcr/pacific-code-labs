@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/shared/Logo";
+import { guardNavigation } from "@/lib/admin-ui";
 import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
   Search, Navigation, LayoutTemplate, Globe, Palette, Image,
@@ -81,7 +82,12 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
   const [location] = useLocation();
   const [openGroup, setOpenGroup] = useState<string>(() => getActiveGroup(location));
 
-  const handleNavClick = () => {
+  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
+    // Block the jump and prompt when the open page has unsaved edits.
+    if (guardNavigation(href)) {
+      e.preventDefault();
+      return;
+    }
     // On mobile, close the overlay drawer when a link is clicked
     onClose?.();
   };
@@ -180,7 +186,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
                         <Link
                           key={item.href}
                           href={item.href}
-                          onClick={handleNavClick}
+                          onClick={handleNavClick(item.href)}
                           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
                             active
                               ? "bg-[#2563EB] text-white"
@@ -210,7 +216,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
       <div className={`border-t border-white/5 p-3 ${collapsed ? "text-center" : ""}`}>
         <Link
           href="/"
-          onClick={handleNavClick}
+          onClick={handleNavClick("/")}
           className="flex items-center gap-2 text-white/30 hover:text-white/60 text-xs transition-colors px-2 py-1.5 rounded-lg hover:bg-white/5"
         >
           <ChevronLeft className="w-3.5 h-3.5 flex-shrink-0" />

@@ -44,6 +44,8 @@ export function SettingsPage() {
         onSave={save}
         saving={saving}
         saved={saved}
+        entity="settings.json"
+        value={draft}
       />
 
       <div className="space-y-6">

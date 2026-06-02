@@ -48,6 +48,8 @@ export function NavigationPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="navigation.json"
+        value={navigation}
         action={
           <button onClick={addItem} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-foreground text-sm font-medium hover:border-input">
             <Plus className="w-4 h-4" />

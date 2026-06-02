@@ -63,7 +63,51 @@ interface AdminStore {
   setInventory: (data: typeof inventoryData) => void;
   addContactMessage: (msg: Omit<ContactMessage, "id" | "createdAt" | "status">) => void;
   updateContactMessage: (id: string, updates: Partial<ContactMessage>) => void;
+
+  /** Serialized last-saved value per content file — the baseline for "dirty". */
+  savedSnapshots: Record<string, string>;
+  /** Record a file as just saved (its current value is now the baseline). */
+  markSaved: (filename: string, data: unknown) => void;
+  /** Revert a content entity to its last-saved snapshot (discard edits). */
+  discardEntity: (filename: string) => void;
 }
+
+/** content filename → the store slice it maps to (for snapshots & discard). */
+const ENTITY_BY_FILE: Record<string, keyof AdminStore> = {
+  "hero.json": "hero",
+  "about.json": "about",
+  "products.json": "products",
+  "services.json": "services",
+  "caseStudies.json": "caseStudies",
+  "faq.json": "faq",
+  "philosophy.json": "philosophy",
+  "languages.json": "languages",
+  "navigation.json": "navigation",
+  "footer.json": "footer",
+  "seo.json": "seo",
+  "themes.json": "themes",
+  "legal.json": "legal",
+  "settings.json": "settings",
+  "inventory.json": "inventory",
+};
+
+const INITIAL_SNAPSHOTS: Record<string, string> = {
+  "hero.json": JSON.stringify(heroData),
+  "about.json": JSON.stringify(aboutData),
+  "products.json": JSON.stringify(productsData),
+  "services.json": JSON.stringify(servicesData),
+  "caseStudies.json": JSON.stringify(caseStudiesData),
+  "faq.json": JSON.stringify(faqData),
+  "philosophy.json": JSON.stringify(philosophyData),
+  "languages.json": JSON.stringify(languagesData),
+  "navigation.json": JSON.stringify(navigationData),
+  "footer.json": JSON.stringify(footerData),
+  "seo.json": JSON.stringify(seoData),
+  "themes.json": JSON.stringify(themesData),
+  "legal.json": JSON.stringify(legalData),
+  "settings.json": JSON.stringify(settingsData),
+  "inventory.json": JSON.stringify(inventoryData),
+};
 
 export const useAdminStore = create<AdminStore>((set) => ({
   hero: heroData,
@@ -119,20 +163,53 @@ export const useAdminStore = create<AdminStore>((set) => ({
       localStorage.setItem("pcl-contact-messages", JSON.stringify(updated));
       return { contactMessages: updated };
     }),
+
+  savedSnapshots: INITIAL_SNAPSHOTS,
+  markSaved: (filename, data) =>
+    set((state) => ({
+      savedSnapshots: { ...state.savedSnapshots, [filename]: JSON.stringify(data) },
+    })),
+  discardEntity: (filename) => {
+    const snap = useAdminStore.getState().savedSnapshots[filename];
+    const key = ENTITY_BY_FILE[filename];
+    if (snap === undefined || !key) return;
+    set({ [key]: JSON.parse(snap) } as Partial<AdminStore>);
+  },
 }));
+
+/**
+ * Whether `value` differs from the last-saved snapshot for `filename`. Works for
+ * both editing models: draft pages pass their local draft; pages that mutate the
+ * store directly pass the store slice. Re-renders when the snapshot changes
+ * (i.e. after a save), so the floating Save button hides itself.
+ */
+export function useEntityDirty(filename: string, value: unknown): boolean {
+  const snap = useAdminStore((s) => s.savedSnapshots[filename]);
+  return JSON.stringify(value) !== snap;
+}
 
 export async function downloadJson(filename: string, data: unknown) {
   // In local dev, write straight into the repo file (ready to commit). Falls
   // back to a browser download when the write-back endpoint isn't available.
-  if (await saveContentFile(filename, data)) {
+  const wrote = await saveContentFile(filename, data);
+  if (wrote) {
     console.info(`[local-cms] saved ${filename} to the repo`);
-    return;
+  } else {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
   }
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  // The entity is now clean (matches what's on disk); the working tree has
+  // pending changes to publish. Mark the entity clean, and notify the admin
+  // shell to re-check publish state — via a DOM event so this module stays free
+  // of admin-only imports (admin-store is also pulled into the public bundle by
+  // the contact form, and we don't want the admin-ui store leaking there).
+  useAdminStore.getState().markSaved(filename, data);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("pcl:content-saved"));
+  }
 }

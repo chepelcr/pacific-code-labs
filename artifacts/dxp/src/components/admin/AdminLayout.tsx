@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminTopbar } from "./AdminTopbar";
+import { UnsavedChangesModal } from "./UnsavedChangesModal";
 
 interface Props {
   children: React.ReactNode;
@@ -56,6 +57,9 @@ export function AdminLayout({ children }: Props) {
           {children}
         </main>
       </div>
+
+      {/* Unsaved-changes guard (driven by the editor registration in PageHeader) */}
+      <UnsavedChangesModal />
     </div>
   );
 }

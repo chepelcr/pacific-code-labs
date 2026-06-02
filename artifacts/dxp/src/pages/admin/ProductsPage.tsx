@@ -95,6 +95,8 @@ export function ProductsPage() {
         onSave={persist}
         saving={saving}
         saved={saved}
+        entity="products.json"
+        value={products}
       />
 
       <div className="space-y-4">
