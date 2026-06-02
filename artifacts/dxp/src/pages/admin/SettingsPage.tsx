@@ -7,7 +7,7 @@ import { translatorSupported } from "@/lib/translate";
 import { contactDeliveryEnabled } from "@/lib/contact";
 
 const selectCls =
-  "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
+  "w-full h-10 rounded-xl border border-border bg-card px-3 text-sm focus:outline-none focus:border-primary";
 
 const CONTACT_PROVIDERS = ["none", "formsubmit", "web3forms", "formspree", "custom"] as const;
 
@@ -54,10 +54,10 @@ export function SettingsPage() {
             onChange={(v) => update((d) => { d.siteName = v; })}
           />
           <div>
-            <h3 className="text-sm font-semibold text-[#0F172A] mb-1">Modo de almacenamiento</h3>
-            <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+            <h3 className="text-sm font-semibold text-foreground mb-1">Modo de almacenamiento</h3>
+            <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-background border border-border">
               <div className="w-2 h-2 rounded-full bg-[#10B981]" />
-              <span className="text-sm text-[#475569]">JSON local (archivos en repositorio)</span>
+              <span className="text-sm text-muted-foreground">JSON local (archivos en repositorio)</span>
             </div>
           </div>
         </AdminCard>
@@ -68,23 +68,23 @@ export function SettingsPage() {
             checked={draft.autoTranslate.enabled}
             onChange={(v) => update((d) => { d.autoTranslate.enabled = v; })}
           />
-          <p className="text-xs text-[#94A3B8] -mt-2">{t("admin.autoTranslateHint")}</p>
+          <p className="text-xs text-muted-foreground -mt-2">{t("admin.autoTranslateHint")}</p>
           <Toggle
             label="Auto-llenar al salir del campo"
             checked={draft.autoTranslate.fillEmptyOnBlur}
             onChange={(v) => update((d) => { d.autoTranslate.fillEmptyOnBlur = v; })}
           />
           {!translatorSupported() && (
-            <p className="text-xs text-[#D97706] bg-[#FFFBEB] border border-[#FDE68A] rounded-lg px-3 py-2">
+            <p className="text-xs text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 rounded-lg px-3 py-2">
               {t("admin.autoTranslateUnsupported")}
             </p>
           )}
         </AdminCard>
 
         <AdminCard title={t("admin.contactDelivery")}>
-          <p className="text-xs text-[#94A3B8]">{t("admin.contactDeliveryHint")}</p>
+          <p className="text-xs text-muted-foreground">{t("admin.contactDeliveryHint")}</p>
           <div>
-            <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">{t("admin.contactProvider")}</label>
+            <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("admin.contactProvider")}</label>
             <select
               value={provider}
               onChange={(e) => update((d) => { d.contact.provider = e.target.value; })}
@@ -120,7 +120,7 @@ export function SettingsPage() {
           )}
           <div className="flex items-center gap-2 text-xs">
             <span className={`w-2 h-2 rounded-full ${contactDeliveryEnabled(draft.contact) ? "bg-[#10B981]" : "bg-[#CBD5E1]"}`} />
-            <span className="text-[#64748B]">
+            <span className="text-muted-foreground">
               {contactDeliveryEnabled(draft.contact)
                 ? "Entrega activa — los mensajes se envían al proveedor."
                 : "Entrega inactiva — los mensajes solo se guardan localmente."}
@@ -131,7 +131,7 @@ export function SettingsPage() {
         <AdminCard title="Acciones">
           <button
             onClick={() => { localStorage.clear(); window.location.reload(); }}
-            className="w-full px-4 py-2.5 rounded-xl border border-[#FCA5A5] text-[#DC2626] text-sm font-medium hover:bg-[#FEF2F2] transition-colors text-left"
+            className="w-full px-4 py-2.5 rounded-xl border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-medium hover:bg-red-100 dark:hover:bg-red-950/60 transition-colors text-left"
             data-testid="btn-clear-storage"
           >
             Limpiar almacenamiento local

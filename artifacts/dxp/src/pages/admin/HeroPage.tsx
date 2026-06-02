@@ -47,7 +47,7 @@ export function HeroPage() {
 
         <BilingualSection title="Estadísticas">
           {draft.translations.es.stats.map((_, i) => (
-            <div key={i} className="space-y-3 pb-3 border-b border-[#F1F5F9] last:border-0 last:pb-0">
+            <div key={i} className="space-y-3 pb-3 border-b border-border last:border-0 last:pb-0">
               <BilingualField label={`Valor ${i + 1}`} es={draft.translations.es.stats[i].value} en={draft.translations.en.stats[i].value} onChange={(l, v) => update((d) => { d.translations[l].stats[i].value = v; })} placeholder="2" />
               <BilingualField label={`Etiqueta ${i + 1}`} es={draft.translations.es.stats[i].label} en={draft.translations.en.stats[i].label} onChange={(l, v) => update((d) => { d.translations[l].stats[i].label = v; })} placeholder="Etiqueta" />
             </div>

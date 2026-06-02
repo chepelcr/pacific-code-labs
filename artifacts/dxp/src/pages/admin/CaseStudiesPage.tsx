@@ -8,7 +8,7 @@ import type { Lang } from "@/lib/translate";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 const selectCls =
-  "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
+  "w-full h-10 rounded-xl border border-border bg-card px-3 text-sm focus:outline-none focus:border-primary";
 
 const emptyTr = { title: "", summary: "", challenge: "", solution: "", result: "" };
 
@@ -107,7 +107,7 @@ export function CaseStudiesPage() {
         saving={saving}
         saved={saved}
         action={
-          <button onClick={handleNew} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] text-sm font-medium hover:border-[#CBD5E1]" data-testid="btn-add-case-study">
+          <button onClick={handleNew} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-foreground text-sm font-medium hover:border-input" data-testid="btn-add-case-study">
             <Plus className="w-4 h-4" />
             {t("admin.add")}
           </button>
@@ -115,30 +115,30 @@ export function CaseStudiesPage() {
       />
 
       <div className="space-y-4">
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC]">
-                <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Título</th>
-                <th className="text-left px-6 py-3 font-semibold text-[#64748B] hidden md:table-cell">Industria</th>
-                <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Estado</th>
-                <th className="text-right px-6 py-3 font-semibold text-[#64748B]">Acciones</th>
+              <tr className="border-b border-border bg-background">
+                <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Título</th>
+                <th className="text-left px-6 py-3 font-semibold text-muted-foreground hidden md:table-cell">Industria</th>
+                <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Estado</th>
+                <th className="text-right px-6 py-3 font-semibold text-muted-foreground">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {caseStudies.map((cs) => (
-                <tr key={cs.id} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]" data-testid={`case-study-row-${cs.id}`}>
-                  <td className="px-6 py-4 font-medium text-[#0F172A]">{cs.translations.es?.title}</td>
-                  <td className="px-6 py-4 text-[#64748B] hidden md:table-cell">{cs.industry ?? "—"}</td>
+                <tr key={cs.id} className="border-b border-border last:border-0 hover:bg-muted" data-testid={`case-study-row-${cs.id}`}>
+                  <td className="px-6 py-4 font-medium text-foreground">{cs.translations.es?.title}</td>
+                  <td className="px-6 py-4 text-muted-foreground hidden md:table-cell">{cs.industry ?? "—"}</td>
                   <td className="px-6 py-4">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                      cs.status === "active" ? "bg-[#DCFCE7] text-[#16A34A]" : "bg-[#F1F5F9] text-[#64748B]"
+                      cs.status === "active" ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400" : "bg-muted text-muted-foreground"
                     }`}>{cs.status}</span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => handleEdit(cs.id)} className="text-[#94A3B8] hover:text-[#2563EB]"><Edit2 className="w-4 h-4" /></button>
-                      <button onClick={() => handleDelete(cs.id)} className="text-[#94A3B8] hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+                      <button onClick={() => handleEdit(cs.id)} className="text-muted-foreground hover:text-primary"><Edit2 className="w-4 h-4" /></button>
+                      <button onClick={() => handleDelete(cs.id)} className="text-muted-foreground hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </td>
                 </tr>
@@ -150,8 +150,8 @@ export function CaseStudiesPage() {
 
       {editing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-            <h2 className="text-lg font-bold text-[#0F172A] mb-6">{isNew ? "Nuevo Caso" : "Editar Caso"}</h2>
+          <div className="bg-card rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+            <h2 className="text-lg font-bold text-foreground mb-6">{isNew ? "Nuevo Caso" : "Editar Caso"}</h2>
             <div className="space-y-4">
               <BilingualSection>
                 <BilingualField label="Título" es={form.es.title} en={form.en.title} onChange={(l, v) => setTr(l, "title", v)} />
@@ -160,10 +160,10 @@ export function CaseStudiesPage() {
                 <BilingualTextArea label="Solución" es={form.es.solution} en={form.en.solution} onChange={(l, v) => setTr(l, "solution", v)} rows={3} />
                 <BilingualTextArea label="Resultado" es={form.es.result} en={form.en.result} onChange={(l, v) => setTr(l, "result", v)} rows={2} />
               </BilingualSection>
-              <div className="grid grid-cols-2 gap-3 bg-white rounded-2xl border border-[#E2E8F0] p-6">
+              <div className="grid grid-cols-2 gap-3 bg-card rounded-2xl border border-border p-6">
                 <TextField label="Industria" value={form.industry} onChange={(v) => setForm({ ...form, industry: v })} />
                 <div>
-                  <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">Estado</label>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Estado</label>
                   <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={selectCls}>
                     <option value="active">Active</option>
                     <option value="draft">Draft</option>
@@ -173,8 +173,8 @@ export function CaseStudiesPage() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleApply} className="flex-1 px-4 py-2.5 rounded-xl bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1d4ed8]">{t("admin.save")}</button>
-              <button onClick={() => setEditing(null)} className="px-4 py-2.5 rounded-xl border border-[#E2E8F0] text-[#64748B] font-semibold text-sm">{t("admin.cancel")}</button>
+              <button onClick={handleApply} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary/90">{t("admin.save")}</button>
+              <button onClick={() => setEditing(null)} className="px-4 py-2.5 rounded-xl border border-border text-muted-foreground font-semibold text-sm">{t("admin.cancel")}</button>
             </div>
           </div>
         </div>

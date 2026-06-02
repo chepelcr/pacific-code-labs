@@ -1,6 +1,10 @@
 import type { Plugin } from "vite";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 /**
  * Dev-only middleware that lets the local admin dashboard write its edits
@@ -10,11 +14,21 @@ import path from "node:path";
  *     → writes src/content/<file>  (or src/translations/<file> for es/en.json)
  *   POST /__local/asset    { filename: "logo.png", dataUrl: "data:image/...;base64,..." }
  *     → writes public/<file>
+ *   POST /__local/publish  {}
+ *     → git add (content/translations/public) + commit + push (current branch)
+ *   GET  /__local/git-log?skip=0&limit=10
+ *     → recent commits on the current branch (for the admin Diagnostics card)
  *
  * `apply: "serve"` keeps it out of production builds entirely.
  */
 const JSON_NAME = /^[a-zA-Z0-9_-]+\.json$/;
 const ASSET_NAME = /^[a-zA-Z0-9_-]+\.(png|jpe?g|webp|svg|ico)$/i;
+
+/** Run a git command from `cwd`; returns trimmed stdout. */
+async function git(args: string[], cwd: string): Promise<string> {
+  const { stdout } = await execFileAsync("git", args, { cwd, maxBuffer: 10 * 1024 * 1024 });
+  return stdout.trim();
+}
 
 function readBody(req: import("node:http").IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -41,8 +55,14 @@ export function localCms(): Plugin {
         return target;
       };
 
+      // The three dirs the admin "Publish" button stages, relative to the repo
+      // (cwd for git is `root`, i.e. artifacts/dxp — git discovers the repo).
+      const PUBLISH_PATHS = ["src/content", "src/translations", "public"];
+
       server.middlewares.use(async (req, res, next) => {
-        if (req.method !== "POST" || !req.url || !req.url.startsWith("/__local/")) return next();
+        const method = req.method ?? "";
+        if (!req.url || !req.url.startsWith("/__local/") || (method !== "POST" && method !== "GET"))
+          return next();
 
         const reply = (code: number, payload: unknown) => {
           res.statusCode = code;
@@ -57,6 +77,52 @@ export function localCms(): Plugin {
         if (!isLocal) return reply(403, { ok: false, error: "forbidden" });
 
         try {
+          // --- Read-only: recent commits on the current branch (Diagnostics card). ---
+          if (method === "GET" && req.url.startsWith("/__local/git-log")) {
+            const q = new URL(req.url, "http://localhost").searchParams;
+            const skip = Math.max(0, Number(q.get("skip")) || 0);
+            const limit = Math.min(100, Math.max(1, Number(q.get("limit")) || 10));
+            const branch = await git(["rev-parse", "--abbrev-ref", "HEAD"], root);
+            const total = Number(await git(["rev-list", "--count", "HEAD"], root)) || 0;
+            // Unit/record separators keep subjects with spaces/newlines intact.
+            const raw = await git(
+              ["log", `--skip=${skip}`, `-n`, String(limit), "--pretty=format:%H%x1f%s%x1f%an%x1f%cI%x1e"],
+              root,
+            );
+            const commits = raw
+              .split("\x1e")
+              .map((s) => s.replace(/^\n/, ""))
+              .filter(Boolean)
+              .map((line) => {
+                const [hash, subject, author, date] = line.split("\x1f");
+                return { hash, shortHash: hash.slice(0, 7), subject, author, date };
+              });
+            return reply(200, { ok: true, branch, total, skip, limit, commits });
+          }
+
+          if (method !== "POST") return reply(404, { ok: false, error: "unknown endpoint" });
+
+          // --- One-click publish: stage content, commit, push current branch. ---
+          if (req.url.startsWith("/__local/publish")) {
+            await git(["add", "-A", "--", ...PUBLISH_PATHS], root);
+            // `git diff --cached --quiet` exits 0 when nothing is staged.
+            let hasStaged = false;
+            try {
+              await git(["diff", "--cached", "--quiet"], root);
+            } catch {
+              hasStaged = true;
+            }
+            if (!hasStaged) return reply(200, { ok: true, nothingToPublish: true });
+
+            const message = `content: update via admin (${new Date().toISOString()})`;
+            await git(["commit", "-m", message], root);
+            const hash = await git(["rev-parse", "--short", "HEAD"], root);
+            const branch = await git(["rev-parse", "--abbrev-ref", "HEAD"], root);
+            await git(["push"], root);
+            server.config.logger.info(`[local-cms] published ${hash} → ${branch}`);
+            return reply(200, { ok: true, hash, branch, message });
+          }
+
           const body = JSON.parse(await readBody(req));
 
           if (req.url.startsWith("/__local/content")) {
@@ -84,7 +150,10 @@ export function localCms(): Plugin {
 
           return reply(404, { ok: false, error: "unknown endpoint" });
         } catch (err) {
-          return reply(400, { ok: false, error: String(err) });
+          // git failures (e.g. push rejected, no upstream) carry the useful text on stderr.
+          const e = err as { stderr?: string; message?: string };
+          const error = (e?.stderr?.trim() || e?.message || String(err)).trim();
+          return reply(400, { ok: false, error });
         }
       });
     },

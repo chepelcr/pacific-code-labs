@@ -48,26 +48,26 @@ export function ContentVersionsPage() {
         }
       />
 
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC]">
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Archivo</th>
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B] hidden md:table-cell">Descripción</th>
-              <th className="text-right px-6 py-3 font-semibold text-[#64748B]">Descargar</th>
+            <tr className="border-b border-border bg-background">
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Archivo</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground hidden md:table-cell">Descripción</th>
+              <th className="text-right px-6 py-3 font-semibold text-muted-foreground">Descargar</th>
             </tr>
           </thead>
           <tbody>
             {files.map((f) => (
-              <tr key={f.name} className="border-b border-[#F1F5F9] last:border-0 hover:bg-[#F8FAFC]" data-testid={`content-file-${f.name}`}>
+              <tr key={f.name} className="border-b border-border last:border-0 hover:bg-muted" data-testid={`content-file-${f.name}`}>
                 <td className="px-6 py-4">
-                  <code className="text-[#2563EB] font-mono text-xs bg-[#EFF6FF] px-2 py-1 rounded">{f.name}</code>
+                  <code className="text-primary font-mono text-xs bg-primary/10 px-2 py-1 rounded">{f.name}</code>
                 </td>
-                <td className="px-6 py-4 text-[#64748B] hidden md:table-cell">{f.description}</td>
+                <td className="px-6 py-4 text-muted-foreground hidden md:table-cell">{f.description}</td>
                 <td className="px-6 py-4 text-right">
                   <button
                     onClick={() => downloadJson(f.name, f.data)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-xs font-medium transition-colors ml-auto"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-input text-xs font-medium transition-colors ml-auto"
                     data-testid={`download-${f.name}`}
                   >
                     <Download className="w-3.5 h-3.5" />

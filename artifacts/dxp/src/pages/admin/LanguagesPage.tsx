@@ -32,40 +32,40 @@ export function LanguagesPage() {
         saved={saved}
       />
 
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden max-w-xl">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden max-w-xl">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#E2E8F0] bg-[#F8FAFC]">
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Idioma</th>
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Código</th>
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Por defecto</th>
-              <th className="text-left px-6 py-3 font-semibold text-[#64748B]">Activo</th>
+            <tr className="border-b border-border bg-background">
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Idioma</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Código</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Por defecto</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted-foreground">Activo</th>
             </tr>
           </thead>
           <tbody>
             {languages.map((l) => (
-              <tr key={l.code} className="border-b border-[#F1F5F9] last:border-0" data-testid={`language-row-${l.code}`}>
+              <tr key={l.code} className="border-b border-border last:border-0" data-testid={`language-row-${l.code}`}>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-[#94A3B8]" />
-                    <span className="font-medium text-[#0F172A]">{l.name}</span>
+                    <Globe className="w-4 h-4 text-muted-foreground" />
+                    <span className="font-medium text-foreground">{l.name}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <code className="text-xs bg-[#F1F5F9] px-2 py-1 rounded font-mono">{l.code}</code>
+                  <code className="text-xs bg-muted px-2 py-1 rounded font-mono">{l.code}</code>
                 </td>
                 <td className="px-6 py-4">
                   {l.isDefault
                     ? <Check className="w-4 h-4 text-[#10B981]" />
-                    : <X className="w-4 h-4 text-[#CBD5E1]" />}
+                    : <X className="w-4 h-4 text-muted-foreground" />}
                 </td>
                 <td className="px-6 py-4">
                   <button
                     onClick={() => toggleActive(l.code)}
-                    className={`w-10 h-5 rounded-full transition-colors ${l.isActive ? "bg-[#2563EB]" : "bg-[#E2E8F0]"}`}
+                    className={`w-10 h-5 rounded-full transition-colors ${l.isActive ? "bg-primary" : "bg-secondary"}`}
                     data-testid={`toggle-language-${l.code}`}
                   >
-                    <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform mx-0.5 ${l.isActive ? "translate-x-5" : ""}`} />
+                    <div className={`w-4 h-4 rounded-full bg-card shadow transition-transform mx-0.5 ${l.isActive ? "translate-x-5" : ""}`} />
                   </button>
                 </td>
               </tr>

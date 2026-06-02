@@ -22,9 +22,9 @@ import { useAutoTranslate } from "@/lib/use-auto-translate";
  */
 
 const inputCls =
-  "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm text-[#0F172A] focus:outline-none focus:border-[#2563EB] transition-colors";
+  "w-full h-10 rounded-xl border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:border-primary transition-colors";
 const labelCls =
-  "block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5";
+  "block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5";
 
 /**
  * Full-width white card with an Eye/EyeOff toggle to collapse its body. `action`
@@ -48,19 +48,19 @@ export function AdminCard({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className={`bg-white rounded-2xl border border-[#E2E8F0] ${className}`} data-testid="admin-card">
+    <div className={`bg-card rounded-2xl border border-border ${className}`} data-testid="admin-card">
       <div
         className={`flex items-center justify-between gap-3 px-6 py-3.5 transition-[border-color] duration-300 ${
-          open ? "border-b border-[#F1F5F9]" : "border-b border-transparent"
+          open ? "border-b border-border" : "border-b border-transparent"
         }`}
       >
-        <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wider">{title}</span>
+        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{title}</span>
         <div className="flex items-center gap-2 ml-auto">
           {action}
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
-            className="text-[#94A3B8] hover:text-[#2563EB] transition-colors"
+            className="text-muted-foreground hover:text-primary transition-colors"
             title={open ? "Colapsar" : "Expandir"}
             aria-expanded={open}
             data-testid="admin-card-toggle"
@@ -130,7 +130,7 @@ export function BilingualSection({
       <button
         type="button"
         onClick={() => setSource(target)}
-        className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#F1F5F9] text-[#475569] text-xs font-semibold hover:bg-[#E2E8F0] transition-colors"
+        className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-muted text-muted-foreground text-xs font-semibold hover:bg-secondary transition-colors"
         title={t("admin.autoTranslate")}
         data-testid="bilingual-direction"
       >
@@ -142,7 +142,7 @@ export function BilingualSection({
         type="button"
         onClick={run}
         disabled={busy}
-        className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-[#2563EB] text-white text-xs font-semibold hover:bg-[#1d4ed8] disabled:opacity-60 transition-colors"
+        className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 disabled:opacity-60 transition-colors"
         data-testid="bilingual-translate"
       >
         {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Languages className="w-3.5 h-3.5" />}
@@ -228,7 +228,7 @@ export function BilingualField({
       <div className="grid grid-cols-2 gap-3">
         {(["es", "en"] as const).map((l) => (
           <div key={l}>
-            <span className="block text-[10px] font-bold uppercase tracking-widest text-[#94A3B8] mb-1">
+            <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
               {t(l === "es" ? "admin.spanish" : "admin.english")}
             </span>
             <input
@@ -243,7 +243,7 @@ export function BilingualField({
           </div>
         ))}
       </div>
-      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -275,7 +275,7 @@ export function BilingualTextArea({
       <div className="grid grid-cols-2 gap-3">
         {(["es", "en"] as const).map((l) => (
           <div key={l}>
-            <span className="block text-[10px] font-bold uppercase tracking-widest text-[#94A3B8] mb-1">
+            <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
               {t(l === "es" ? "admin.spanish" : "admin.english")}
             </span>
             <textarea
@@ -290,7 +290,7 @@ export function BilingualTextArea({
           </div>
         ))}
       </div>
-      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -329,7 +329,7 @@ export function TextField({
         placeholder={placeholder}
         className={`${inputCls} ${type === "url" || type === "email" ? "font-mono" : ""}`}
       />
-      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -361,7 +361,7 @@ export function TextAreaField({
         placeholder={placeholder}
         className={`${inputCls} h-auto py-2 resize-y leading-relaxed`}
       />
-      {hint && <p className="mt-1 text-xs text-[#94A3B8]">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -385,7 +385,7 @@ export function Toggle({
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${
-          checked ? "bg-[#2563EB]" : "bg-[#CBD5E1]"
+          checked ? "bg-primary" : "bg-input"
         }`}
       >
         <span
@@ -394,7 +394,7 @@ export function Toggle({
           }`}
         />
       </button>
-      {label && <span className="text-sm font-medium text-[#0F172A]">{label}</span>}
+      {label && <span className="text-sm font-medium text-foreground">{label}</span>}
     </label>
   );
 }
@@ -415,11 +415,52 @@ export function SaveButton({
     <button
       onClick={onClick}
       disabled={saving}
-      className="h-9 px-4 rounded-lg bg-[#2563EB] text-white text-sm font-semibold flex items-center gap-2 hover:bg-[#1d4ed8] disabled:opacity-60 transition-colors"
+      className="h-9 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center gap-2 hover:bg-primary/90 disabled:opacity-60 transition-colors"
       data-testid="btn-save"
     >
       {saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
       {saving ? "Guardando…" : saved ? "Guardado ✓" : label}
+    </button>
+  );
+}
+
+/**
+ * Floating save button — fixed to the bottom-right so it travels with the user
+ * while scrolling a long content page, instead of living only in the page
+ * header. Same saving/saved feedback as SaveButton. Rendered by PageHeader
+ * whenever a page provides an `onSave` handler.
+ */
+export function FloatingSaveButton({
+  onClick,
+  saving = false,
+  saved = false,
+  label = "Guardar",
+}: {
+  onClick: () => void;
+  saving?: boolean;
+  saved?: boolean;
+  label?: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={saving}
+      className={`fixed bottom-6 right-6 z-40 h-12 px-5 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg transition-all disabled:opacity-70 ${
+        saved
+          ? "bg-emerald-600 text-white"
+          : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl"
+      }`}
+      data-testid="btn-save-floating"
+      title={label}
+    >
+      {saving ? (
+        <Loader2 className="w-5 h-5 animate-spin" />
+      ) : saved ? (
+        <Check className="w-5 h-5" />
+      ) : (
+        <Save className="w-5 h-5" />
+      )}
+      <span>{saving ? "Guardando…" : saved ? "Guardado ✓" : label}</span>
     </button>
   );
 }

@@ -38,3 +38,66 @@ export async function uploadAsset(filename: string, dataUrl: string): Promise<bo
     return false;
   }
 }
+
+export interface PublishResult {
+  ok: boolean;
+  /** Short commit hash when a commit was created. */
+  hash?: string;
+  branch?: string;
+  message?: string;
+  /** True when there was nothing staged to commit. */
+  nothingToPublish?: boolean;
+  /** Error text (git stderr) when ok is false. */
+  error?: string;
+}
+
+/**
+ * Stage the content/translations/public files, commit them with an auto
+ * message, and push the current branch — the dev-only "Publish" action that
+ * saves a trip to the terminal. Returns the parsed server result, or an error
+ * object when the write-back endpoint isn't available (non-dev build).
+ */
+export async function publishChanges(): Promise<PublishResult> {
+  if (!LOCAL_CMS_ENABLED) return { ok: false, error: "unavailable" };
+  try {
+    const res = await fetch("/__local/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
+    return (await res.json()) as PublishResult;
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+export interface GitCommit {
+  hash: string;
+  shortHash: string;
+  subject: string;
+  author: string;
+  /** Committer date, ISO 8601. */
+  date: string;
+}
+
+export interface GitLogResult {
+  ok: boolean;
+  branch?: string;
+  /** Total commits reachable from HEAD (for pagination). */
+  total?: number;
+  skip?: number;
+  limit?: number;
+  commits?: GitCommit[];
+  error?: string;
+}
+
+/** Read a page of recent commits on the current branch (admin Diagnostics). */
+export async function fetchGitLog(skip = 0, limit = 10): Promise<GitLogResult> {
+  if (!LOCAL_CMS_ENABLED) return { ok: false, error: "unavailable" };
+  try {
+    const res = await fetch(`/__local/git-log?skip=${skip}&limit=${limit}`);
+    return (await res.json()) as GitLogResult;
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}

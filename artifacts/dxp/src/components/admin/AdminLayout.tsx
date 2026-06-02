@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
-import { Logo } from "@/components/shared/Logo";
-import { Menu } from "lucide-react";
+import { AdminTopbar } from "./AdminTopbar";
 
 interface Props {
   children: React.ReactNode;
@@ -24,7 +23,7 @@ export function AdminLayout({ children }: Props) {
   };
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC] overflow-hidden" data-testid="admin-layout">
+    <div className="flex h-screen bg-background overflow-hidden" data-testid="admin-layout">
       {/* Desktop sidebar */}
       <div className="hidden lg:flex flex-shrink-0">
         <AdminSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
@@ -51,20 +50,7 @@ export function AdminLayout({ children }: Props) {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile topbar */}
-        <div className="lg:hidden flex items-center gap-3 h-14 px-4 bg-white border-b border-[#E2E8F0]">
-          <button
-            onClick={openMobile}
-            className="text-[#64748B] hover:text-[#0F172A]"
-            data-testid="mobile-menu-btn"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-2">
-            <Logo size={24} />
-            <span className="text-[#0F172A] font-semibold text-sm">Admin</span>
-          </div>
-        </div>
+        <AdminTopbar onMenu={openMobile} />
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           {children}

@@ -40,7 +40,7 @@ export function FooterPage() {
 
         <BilingualSection title="Enlaces">
           {footer.links.map((link, i) => (
-            <div key={i} className="space-y-2 pb-3 border-b border-[#F1F5F9] last:border-0 last:pb-0">
+            <div key={i} className="space-y-2 pb-3 border-b border-border last:border-0 last:pb-0">
               <BilingualField
                 label="Etiqueta"
                 es={link.label.es ?? ""}

@@ -32,7 +32,7 @@ export function DashboardPage() {
           <Link
             key={s.label}
             href={s.href}
-            className="block bg-white rounded-2xl border border-[#E2E8F0] p-5 hover:shadow-md hover:border-[#CBD5E1] transition-all"
+            className="block bg-card rounded-2xl border border-border p-5 hover:shadow-md hover:border-input transition-all"
             data-testid={`stat-card-${s.label}`}
           >
             <div className="flex items-start justify-between mb-3">
@@ -42,10 +42,10 @@ export function DashboardPage() {
               >
                 <s.icon className="w-5 h-5" style={{ color: s.color }} />
               </div>
-              <span className="text-3xl font-bold text-[#0F172A]">{s.value}</span>
+              <span className="text-3xl font-bold text-foreground">{s.value}</span>
             </div>
-            <div className="text-sm font-medium text-[#64748B]">{s.label}</div>
-            <div className="text-xs text-[#94A3B8] mt-0.5">
+            <div className="text-sm font-medium text-muted-foreground">{s.label}</div>
+            <div className="text-xs text-muted-foreground mt-0.5">
               {s.active} {s.activeLabel ?? t("admin.active").toLowerCase()}
             </div>
           </Link>
@@ -54,10 +54,10 @@ export function DashboardPage() {
 
       {/* New messages */}
       {newMessages.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 mb-6">
+        <div className="bg-card rounded-2xl border border-border p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
             <Mail className="w-5 h-5 text-[#F59E0B]" />
-            <h2 className="font-semibold text-[#0F172A]">
+            <h2 className="font-semibold text-foreground">
               {newMessages.length} {t("admin.new_messages")}
             </h2>
           </div>
@@ -65,18 +65,18 @@ export function DashboardPage() {
             {newMessages.slice(0, 5).map((msg) => (
               <div
                 key={msg.id}
-                className="flex items-start gap-3 p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]"
+                className="flex items-start gap-3 p-3 rounded-xl bg-background border border-border"
                 data-testid={`message-preview-${msg.id}`}
               >
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2563EB] to-[#06B6D4] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                   {msg.name[0]?.toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-sm font-medium text-[#0F172A]">{msg.name}</div>
-                  <div className="text-xs text-[#94A3B8]">{msg.email}</div>
-                  <div className="text-xs text-[#64748B] mt-1 truncate">{msg.message}</div>
+                  <div className="text-sm font-medium text-foreground">{msg.name}</div>
+                  <div className="text-xs text-muted-foreground">{msg.email}</div>
+                  <div className="text-xs text-muted-foreground mt-1 truncate">{msg.message}</div>
                 </div>
-                <div className="text-xs text-[#94A3B8] flex-shrink-0 flex items-center gap-1">
+                <div className="text-xs text-muted-foreground flex-shrink-0 flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   {new Date(msg.createdAt).toLocaleDateString()}
                 </div>
@@ -87,21 +87,21 @@ export function DashboardPage() {
       )}
 
       {/* Content overview */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
+      <div className="bg-card rounded-2xl border border-border p-6">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-[#2563EB]" />
-          <h2 className="font-semibold text-[#0F172A]">Resumen de Contenido</h2>
+          <TrendingUp className="w-5 h-5 text-primary" />
+          <h2 className="font-semibold text-foreground">Resumen de Contenido</h2>
         </div>
         <div className="space-y-3">
           {store.products.map((p) => (
-            <div key={p.id} className="flex items-center justify-between py-2 border-b border-[#F1F5F9] last:border-0">
+            <div key={p.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
               <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-[#2563EB]" />
-                <span className="text-sm text-[#0F172A]">{p.translations.es.name}</span>
+                <Package className="w-4 h-4 text-primary" />
+                <span className="text-sm text-foreground">{p.translations.es.name}</span>
               </div>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                  p.status === "active" ? "bg-[#DCFCE7] text-[#16A34A]" : "bg-[#F1F5F9] text-[#64748B]"
+                  p.status === "active" ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400" : "bg-muted text-muted-foreground"
                 }`}
               >
                 {p.status}
@@ -109,12 +109,12 @@ export function DashboardPage() {
             </div>
           ))}
           {store.services.slice(0, 3).map((s) => (
-            <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#F1F5F9] last:border-0">
+            <div key={s.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
               <div className="flex items-center gap-2">
                 <Wrench className="w-4 h-4 text-[#06B6D4]" />
-                <span className="text-sm text-[#0F172A]">{s.translations.es.name}</span>
+                <span className="text-sm text-foreground">{s.translations.es.name}</span>
               </div>
-              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-[#DCFCE7] text-[#16A34A]">
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
                 {s.status}
               </span>
             </div>

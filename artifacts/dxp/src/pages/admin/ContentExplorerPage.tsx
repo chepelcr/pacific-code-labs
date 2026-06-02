@@ -10,15 +10,15 @@ function JsonTree({ data, depth = 0 }: { data: unknown; depth?: number }) {
   if (Array.isArray(data)) {
     return (
       <span>
-        <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-0.5 text-[#94A3B8] hover:text-[#64748B]">
+        <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-0.5 text-muted-foreground hover:text-muted-foreground">
           {open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-          <span className="text-[#64748B] text-xs">[{data.length}]</span>
+          <span className="text-muted-foreground text-xs">[{data.length}]</span>
         </button>
         {open && (
-          <div className="ml-4 border-l border-[#E2E8F0] pl-3 mt-0.5">
+          <div className="ml-4 border-l border-border pl-3 mt-0.5">
             {data.map((v, i) => (
               <div key={i} className="my-0.5 text-xs">
-                <span className="text-[#94A3B8]">{i}: </span>
+                <span className="text-muted-foreground">{i}: </span>
                 <JsonTree data={v} depth={depth + 1} />
               </div>
             ))}
@@ -32,16 +32,16 @@ function JsonTree({ data, depth = 0 }: { data: unknown; depth?: number }) {
     const entries = Object.entries(data);
     return (
       <span>
-        <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-0.5 text-[#94A3B8] hover:text-[#64748B]">
+        <button onClick={() => setOpen(!open)} className="inline-flex items-center gap-0.5 text-muted-foreground hover:text-muted-foreground">
           {open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-          <span className="text-[#64748B] text-xs">{"{"}…{"}"}</span>
+          <span className="text-muted-foreground text-xs">{"{"}…{"}"}</span>
         </button>
         {open && (
-          <div className="ml-4 border-l border-[#E2E8F0] pl-3 mt-0.5">
+          <div className="ml-4 border-l border-border pl-3 mt-0.5">
             {entries.map(([k, v]) => (
               <div key={k} className="my-0.5 text-xs">
-                <span className="text-[#2563EB] font-medium">{k}</span>
-                <span className="text-[#94A3B8]">: </span>
+                <span className="text-primary font-medium">{k}</span>
+                <span className="text-muted-foreground">: </span>
                 <JsonTree data={v} depth={depth + 1} />
               </div>
             ))}
@@ -54,7 +54,7 @@ function JsonTree({ data, depth = 0 }: { data: unknown; depth?: number }) {
   if (typeof data === "string") return <span className="text-[#10B981]">"{data}"</span>;
   if (typeof data === "number") return <span className="text-[#F59E0B]">{data}</span>;
   if (typeof data === "boolean") return <span className="text-[#8B5CF6]">{String(data)}</span>;
-  return <span className="text-[#94A3B8]">null</span>;
+  return <span className="text-muted-foreground">null</span>;
 }
 
 export function ContentExplorerPage() {
@@ -86,13 +86,13 @@ export function ContentExplorerPage() {
       <div className="flex gap-6">
         {/* File list */}
         <div className="w-48 flex-shrink-0">
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
+          <div className="bg-card rounded-2xl border border-border overflow-hidden">
             {Object.keys(files).map((key) => (
               <button
                 key={key}
                 onClick={() => setSelected(key)}
-                className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm text-left border-b border-[#F1F5F9] last:border-0 transition-colors ${
-                  selected === key ? "bg-[#EFF6FF] text-[#2563EB] font-medium" : "text-[#64748B] hover:bg-[#F8FAFC]"
+                className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm text-left border-b border-border last:border-0 transition-colors ${
+                  selected === key ? "bg-primary/10 text-primary font-medium" : "text-muted-foreground hover:bg-muted"
                 }`}
                 data-testid={`explorer-file-${key}`}
               >
@@ -104,7 +104,7 @@ export function ContentExplorerPage() {
         </div>
 
         {/* JSON view */}
-        <div className="flex-1 bg-white rounded-2xl border border-[#E2E8F0] p-5 overflow-auto min-h-64">
+        <div className="flex-1 bg-card rounded-2xl border border-border p-5 overflow-auto min-h-64">
           <div className="font-mono text-xs">
             <JsonTree data={files[selected]} depth={0} />
           </div>

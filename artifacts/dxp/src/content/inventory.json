@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-01T17:47:57.257Z",
+  "generatedAt": "2026-06-02T05:30:52.256Z",
   "counts": {
-    "nodes": 141,
-    "edges": 280
+    "nodes": 143,
+    "edges": 285
   },
   "nodes": [
     {
@@ -25,6 +25,13 @@
       "type": "component",
       "group": "admin",
       "path": "src/components/admin/AdminSidebar.tsx"
+    },
+    {
+      "id": "components/admin/AdminTopbar",
+      "label": "AdminTopbar",
+      "type": "component",
+      "group": "admin",
+      "path": "src/components/admin/AdminTopbar.tsx"
     },
     {
       "id": "components/admin/AdminUI",
@@ -699,6 +706,13 @@
       "path": "src/lib/seo.ts"
     },
     {
+      "id": "lib/theme",
+      "label": "theme",
+      "type": "lib",
+      "group": "core",
+      "path": "src/lib/theme.ts"
+    },
+    {
       "id": "lib/translate",
       "label": "translate",
       "type": "lib",
@@ -1046,12 +1060,27 @@
     },
     {
       "from": "components/admin/AdminLayout",
-      "to": "components/shared/Logo",
+      "to": "components/admin/AdminTopbar",
       "kind": "imports"
     },
     {
       "from": "components/admin/AdminSidebar",
       "to": "components/shared/Logo",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/AdminTopbar",
+      "to": "components/shared/Logo",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/AdminTopbar",
+      "to": "lib/local-cms",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/AdminTopbar",
+      "to": "lib/theme",
       "kind": "imports"
     },
     {
@@ -1202,6 +1231,11 @@
     {
       "from": "components/public/PublicNavbar",
       "to": "lib/sections",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/PublicNavbar",
+      "to": "lib/theme",
       "kind": "imports"
     },
     {
@@ -1947,6 +1981,11 @@
     {
       "from": "pages/admin/DiagnosticsPage",
       "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/DiagnosticsPage",
+      "to": "lib/local-cms",
       "kind": "imports"
     },
     {

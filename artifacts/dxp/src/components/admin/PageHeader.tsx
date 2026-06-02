@@ -1,5 +1,5 @@
 import { Download } from "lucide-react";
-import { SaveButton } from "./AdminUI";
+import { FloatingSaveButton } from "./AdminUI";
 
 interface Props {
   title: string;
@@ -28,16 +28,15 @@ export function PageHeader({
   return (
     <div className="flex items-start justify-between gap-4 mb-8" data-testid="page-header">
       <div>
-        <h1 className="text-2xl font-bold text-[#0F172A]">{title}</h1>
-        {description && <p className="text-[#64748B] text-sm mt-1">{description}</p>}
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        {description && <p className="text-muted-foreground text-sm mt-1">{description}</p>}
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         {action}
-        {onSave && <SaveButton onClick={onSave} saving={saving} saved={saved} label={saveLabel} />}
         {onExport && (
           <button
             onClick={onExport}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:border-input text-sm font-medium transition-colors"
             data-testid="btn-export"
           >
             <Download className="w-4 h-4" />
@@ -45,6 +44,8 @@ export function PageHeader({
           </button>
         )}
       </div>
+      {/* Save travels with the user (fixed) instead of scrolling away in the header. */}
+      {onSave && <FloatingSaveButton onClick={onSave} saving={saving} saved={saved} label={saveLabel} />}
     </div>
   );
 }

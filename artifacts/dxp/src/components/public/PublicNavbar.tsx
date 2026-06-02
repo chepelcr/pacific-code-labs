@@ -6,33 +6,19 @@ import { Logo } from "@/components/shared/Logo";
 import navigationData from "@/content/navigation.json";
 import { ADMIN_ENABLED } from "@/lib/admin-enabled";
 import { isLang, localizedPath, localizeHref, pathLang } from "@/lib/sections";
-
-function getInitialDark(): boolean {
-  const stored = localStorage.getItem("pcl-theme");
-  if (stored) return stored === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
-function applyTheme(dark: boolean) {
-  document.documentElement.classList.toggle("dark", dark);
-  localStorage.setItem("pcl-theme", dark ? "dark" : "light");
-}
+import { useDarkMode } from "@/lib/theme";
 
 export function PublicNavbar() {
   const { t } = useTranslation();
   const [location, navigate] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(() => {
-    try { return getInitialDark(); } catch { return false; }
-  });
+  const { dark, toggle: toggleTheme } = useDarkMode();
   const lang = pathLang(location);
 
   // Current slug (path without the language prefix), e.g. "" | "products" | "privacy".
   const segs = location.replace(/^\/+/, "").replace(/\/+$/, "").split("/").filter(Boolean);
   const slug = segs.length && isLang(segs[0]) ? segs.slice(1).join("/") : segs.join("/");
-
-  useEffect(() => { applyTheme(dark); }, [dark]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -61,14 +47,6 @@ export function PublicNavbar() {
       el.classList.add("lang-anim-in");
       window.setTimeout(() => el.classList.remove("lang-anim-in"), 340);
     }, 220);
-  };
-
-  const toggleTheme = () => {
-    // Enable colour transitions only for the duration of the switch.
-    const root = document.documentElement;
-    root.classList.add("theme-transition");
-    setDark((d) => !d);
-    window.setTimeout(() => root.classList.remove("theme-transition"), 400);
   };
 
   /* Tailwind classes change between light/dark based on the `.dark` class on <html> */

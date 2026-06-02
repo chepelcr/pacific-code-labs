@@ -42,7 +42,7 @@ function unflatten(flat: Flat): Record<string, unknown> {
 }
 
 const inputCls =
-  "w-full px-3 py-2 rounded-lg border border-[#E2E8F0] text-sm focus:outline-none focus:border-[#2563EB]";
+  "w-full px-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:border-primary";
 
 export function TranslationsPage() {
   const { t, i18n } = useTranslation();
@@ -106,23 +106,23 @@ export function TranslationsPage() {
         description="Edita las cadenas de i18n (es.json / en.json). Exporta y haz commit para publicar."
         action={
           <div className="flex items-center gap-2">
-            {applied && <span className="text-xs text-[#16A34A] font-medium">Aplicado ✓</span>}
+            {applied && <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Aplicado ✓</span>}
             <button
               onClick={applyLive}
-              className="px-4 py-2 rounded-lg bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1d4ed8] transition-colors"
+              className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-colors"
               data-testid="btn-apply-translations"
             >
               {t("admin.save")}
             </button>
             <button
               onClick={() => downloadJson("es.json", unflatten(es))}
-              className="px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm font-medium transition-colors"
+              className="px-3 py-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:border-input text-sm font-medium transition-colors"
             >
               es.json
             </button>
             <button
               onClick={() => downloadJson("en.json", unflatten(en))}
-              className="px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm font-medium transition-colors"
+              className="px-3 py-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:border-input text-sm font-medium transition-colors"
             >
               en.json
             </button>
@@ -140,14 +140,14 @@ export function TranslationsPage() {
 
       <div className="space-y-6">
         {groups.map(([group, groupKeys]) => (
-          <div key={group} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
-            <div className="px-6 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-between gap-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">{group}</span>
+          <div key={group} className="bg-card rounded-2xl border border-border overflow-hidden">
+            <div className="px-6 py-3 bg-background border-b border-border flex items-center justify-between gap-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{group}</span>
               {autoTranslateEnabled && (
                 <button
                   onClick={() => translateGroup(groupKeys)}
                   disabled={translatingGroup === group}
-                  className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-white border border-[#E2E8F0] text-[#475569] text-xs font-semibold hover:border-[#2563EB] hover:text-[#2563EB] disabled:opacity-60 transition-colors"
+                  className="flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-card border border-border text-muted-foreground text-xs font-semibold hover:border-primary hover:text-primary disabled:opacity-60 transition-colors"
                   title="ES → EN"
                 >
                   {translatingGroup === group ? (
@@ -161,7 +161,7 @@ export function TranslationsPage() {
             </div>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#E2E8F0] text-left text-xs text-[#94A3B8]">
+                <tr className="border-b border-border text-left text-xs text-muted-foreground">
                   <th className="px-6 py-2 font-semibold w-1/2">Español</th>
                   <th className="px-6 py-2 font-semibold w-1/2">English</th>
                 </tr>
@@ -169,7 +169,7 @@ export function TranslationsPage() {
               <tbody>
                 {groupKeys.map((k) => (
                   // The technical i18n key is kept as a hover title, not a column.
-                  <tr key={k} title={k} className="border-b border-[#F1F5F9] last:border-0 align-top">
+                  <tr key={k} title={k} className="border-b border-border last:border-0 align-top">
                     <td className="px-6 py-3">
                       <textarea
                         value={es[k] ?? ""}

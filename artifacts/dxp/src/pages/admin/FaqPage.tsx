@@ -8,7 +8,7 @@ import type { Lang } from "@/lib/translate";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
 
 const selectCls =
-  "w-full h-10 rounded-xl border border-[#E2E8F0] bg-white px-3 text-sm focus:outline-none focus:border-[#2563EB]";
+  "w-full h-10 rounded-xl border border-border bg-card px-3 text-sm focus:outline-none focus:border-primary";
 
 interface FaqForm {
   es: { question: string; answer: string };
@@ -99,7 +99,7 @@ export function FaqPage() {
         saving={saving}
         saved={saved}
         action={
-          <button onClick={handleNew} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] text-sm font-medium hover:border-[#CBD5E1] transition-colors" data-testid="btn-add-faq">
+          <button onClick={handleNew} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-foreground text-sm font-medium hover:border-input transition-colors" data-testid="btn-add-faq">
             <Plus className="w-4 h-4" />
             {t("admin.add")}
           </button>
@@ -108,18 +108,18 @@ export function FaqPage() {
 
       <div className="space-y-3">
         {faq.map((f, i) => (
-          <div key={f.id} className="bg-white rounded-xl border border-[#E2E8F0] p-5 flex items-start gap-4" data-testid={`faq-admin-item-${f.id}`}>
-            <div className="text-xs font-bold text-[#94A3B8] w-6 flex-shrink-0 pt-1">{i + 1}</div>
+          <div key={f.id} className="bg-card rounded-xl border border-border p-5 flex items-start gap-4" data-testid={`faq-admin-item-${f.id}`}>
+            <div className="text-xs font-bold text-muted-foreground w-6 flex-shrink-0 pt-1">{i + 1}</div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-[#0F172A] text-sm">{f.translations.es?.question}</p>
-              <p className="text-[#64748B] text-xs mt-1 line-clamp-2">{f.translations.es?.answer}</p>
+              <p className="font-medium text-foreground text-sm">{f.translations.es?.question}</p>
+              <p className="text-muted-foreground text-xs mt-1 line-clamp-2">{f.translations.es?.answer}</p>
             </div>
             <span className={`text-xs px-2.5 py-1 rounded-full font-medium flex-shrink-0 ${
-              f.status === "active" ? "bg-[#DCFCE7] text-[#16A34A]" : "bg-[#F1F5F9] text-[#64748B]"
+              f.status === "active" ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400" : "bg-muted text-muted-foreground"
             }`}>{f.status}</span>
             <div className="flex gap-2 flex-shrink-0">
-              <button onClick={() => handleEdit(f.id)} className="text-[#94A3B8] hover:text-[#2563EB]"><Edit2 className="w-4 h-4" /></button>
-              <button onClick={() => handleDelete(f.id)} className="text-[#94A3B8] hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+              <button onClick={() => handleEdit(f.id)} className="text-muted-foreground hover:text-primary"><Edit2 className="w-4 h-4" /></button>
+              <button onClick={() => handleDelete(f.id)} className="text-muted-foreground hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
         ))}
@@ -127,15 +127,15 @@ export function FaqPage() {
 
       {editing && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-            <h2 className="text-lg font-bold text-[#0F172A] mb-6">{isNew ? "Nueva Pregunta" : "Editar Pregunta"}</h2>
+          <div className="bg-card rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+            <h2 className="text-lg font-bold text-foreground mb-6">{isNew ? "Nueva Pregunta" : "Editar Pregunta"}</h2>
             <div className="space-y-4">
               <BilingualSection>
                 <BilingualField label="Pregunta" es={form.es.question} en={form.en.question} onChange={(l, v) => setTr(l, "question", v)} />
                 <BilingualTextArea label="Respuesta" es={form.es.answer} en={form.en.answer} onChange={(l, v) => setTr(l, "answer", v)} rows={4} hint={RICH_TEXT_HINT} />
               </BilingualSection>
-              <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6">
-                <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1.5">Estado</label>
+              <div className="bg-card rounded-2xl border border-border p-6">
+                <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Estado</label>
                 <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={selectCls}>
                   <option value="active">Active</option>
                   <option value="draft">Draft</option>
@@ -144,8 +144,8 @@ export function FaqPage() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleApply} className="flex-1 px-4 py-2.5 rounded-xl bg-[#2563EB] text-white font-semibold text-sm hover:bg-[#1d4ed8]" data-testid="btn-save-faq">{t("admin.save")}</button>
-              <button onClick={() => setEditing(null)} className="px-4 py-2.5 rounded-xl border border-[#E2E8F0] text-[#64748B] font-semibold text-sm">{t("admin.cancel")}</button>
+              <button onClick={handleApply} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary/90" data-testid="btn-save-faq">{t("admin.save")}</button>
+              <button onClick={() => setEditing(null)} className="px-4 py-2.5 rounded-xl border border-border text-muted-foreground font-semibold text-sm">{t("admin.cancel")}</button>
             </div>
           </div>
         </div>

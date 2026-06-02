@@ -93,23 +93,23 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-[#E2E8F0] overflow-hidden">
-      <div className="p-5 border-b border-[#E2E8F0]">
-        <h3 className="font-semibold text-[#0F172A]">{asset.label}</h3>
-        <p className="text-sm text-[#64748B] mt-0.5">{asset.description}</p>
+    <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="p-5 border-b border-border">
+        <h3 className="font-semibold text-foreground">{asset.label}</h3>
+        <p className="text-sm text-muted-foreground mt-0.5">{asset.description}</p>
       </div>
 
       <div className="p-5 flex flex-col sm:flex-row gap-6">
         {/* Preview */}
         <div className="flex-shrink-0 flex flex-col items-center gap-3">
-          <div className="w-24 h-24 rounded-xl border-2 border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-center overflow-hidden">
+          <div className="w-24 h-24 rounded-xl border-2 border-border bg-background flex items-center justify-center overflow-hidden">
             {displayUrl ? (
               <img src={displayUrl} alt="preview" className="w-full h-full object-contain p-2" />
             ) : (
-              <ImageIcon className="w-8 h-8 text-[#CBD5E1]" />
+              <ImageIcon className="w-8 h-8 text-muted-foreground" />
             )}
           </div>
-          <span className="text-[10px] text-[#94A3B8] text-center leading-tight">{asset.recommended}</span>
+          <span className="text-[10px] text-muted-foreground text-center leading-tight">{asset.recommended}</span>
         </div>
 
         {/* Upload zone + info */}
@@ -122,16 +122,16 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
             onClick={() => inputRef.current?.click()}
             className={`cursor-pointer rounded-lg border-2 border-dashed px-4 py-5 text-center transition-all ${
               dragging
-                ? "border-[#2563EB] bg-blue-50"
-                : "border-[#CBD5E1] hover:border-[#2563EB] hover:bg-blue-50/40"
+                ? "border-primary bg-primary/10"
+                : "border-input hover:border-primary hover:bg-primary/10"
             }`}
           >
-            <Upload className="w-5 h-5 mx-auto mb-1.5 text-[#94A3B8]" />
-            <p className="text-sm text-[#475569]">
+            <Upload className="w-5 h-5 mx-auto mb-1.5 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">
               Arrastra una imagen o{" "}
-              <span className="text-[#2563EB] font-medium">haz clic para seleccionar</span>
+              <span className="text-primary font-medium">haz clic para seleccionar</span>
             </p>
-            <p className="text-xs text-[#94A3B8] mt-0.5">PNG · SVG · WebP · JPG · máx 2 MB</p>
+            <p className="text-xs text-muted-foreground mt-0.5">PNG · SVG · WebP · JPG · máx 2 MB</p>
             <input
               ref={inputRef}
               type="file"
@@ -143,7 +143,7 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
 
           {/* Error */}
           {error && (
-            <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm bg-red-100 dark:bg-red-950/60 rounded-lg px-3 py-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
               {error}
             </div>
@@ -151,7 +151,7 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
 
           {/* Success */}
           {saved && !error && (
-            <div className="flex items-center gap-2 text-emerald-600 text-sm bg-emerald-50 rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm bg-emerald-100 dark:bg-emerald-950/60 rounded-lg px-3 py-2">
               <CheckCircle className="w-4 h-4 flex-shrink-0" />
               Guardado en el navegador. Se aplicará al recargar la página.
             </div>
@@ -162,13 +162,13 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
             <button
               onClick={handleSave}
               disabled={!preview}
-              className="px-4 py-2 rounded-lg bg-[#2563EB] text-white text-sm font-medium disabled:opacity-40 hover:bg-[#1D4ED8] transition-colors"
+              className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium disabled:opacity-40 hover:bg-primary/90 transition-colors"
             >
               Guardar
             </button>
             <button
               onClick={handleReset}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#E2E8F0] text-sm text-[#64748B] hover:bg-[#F1F5F9] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Restaurar original
@@ -178,7 +178,7 @@ function AssetCard({ asset }: { asset: BrandAsset }) {
           {/* Usage tags */}
           <div className="flex flex-wrap gap-1.5 pt-1">
             {asset.usage.map((u) => (
-              <span key={u} className="text-[10px] bg-[#F1F5F9] text-[#475569] px-2 py-0.5 rounded-full">
+              <span key={u} className="text-[10px] bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
                 {u}
               </span>
             ))}
@@ -199,11 +199,11 @@ export function BrandingPage() {
         description="Personaliza el logo y favicon de Pacific Code Labs."
       />
 
-      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
+      <div className="bg-amber-100 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 rounded-xl px-4 py-3 text-sm text-amber-700 dark:text-amber-400 flex items-start gap-2">
         <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
         <span>
           Los cambios se guardan en el navegador local. Para hacerlos permanentes, reemplaza{" "}
-          <code className="font-mono bg-amber-100 px-1 rounded">public/logo.png</code> en el repositorio
+          <code className="font-mono bg-amber-100 dark:bg-amber-950/50 px-1 rounded">public/logo.png</code> en el repositorio
           y despliega de nuevo.
         </span>
       </div>
@@ -215,8 +215,8 @@ export function BrandingPage() {
       </div>
 
       {/* Live preview strip */}
-      <div className="bg-white rounded-xl border border-[#E2E8F0] p-5">
-        <h3 className="font-semibold text-[#0F172A] mb-4">Vista previa en contexto</h3>
+      <div className="bg-card rounded-xl border border-border p-5">
+        <h3 className="font-semibold text-foreground mb-4">Vista previa en contexto</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Navbar preview */}
           <div className="rounded-lg bg-[#0F172A] p-3 flex items-center gap-2">

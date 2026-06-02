@@ -130,7 +130,7 @@ export function InventoryPage() {
         action={
           <button
             onClick={() => downloadJson("inventory.json", inventory)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E2E8F0] bg-white text-[#64748B] hover:text-[#0F172A] hover:border-[#CBD5E1] text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:border-input text-sm font-medium transition-colors"
           >
             <Download className="w-4 h-4" />
             inventory.json
@@ -147,7 +147,7 @@ export function InventoryPage() {
               key={type}
               onClick={() => toggleType(type)}
               className={`flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-semibold border transition-colors ${
-                off ? "bg-[#F1F5F9] text-[#94A3B8] border-transparent" : "bg-white text-[#0F172A] border-[#E2E8F0]"
+                off ? "bg-muted text-muted-foreground border-transparent" : "bg-card text-foreground border-border"
               }`}
               data-testid={`inventory-filter-${type}`}
             >
@@ -160,14 +160,14 @@ export function InventoryPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar módulo…"
-          className="ml-auto w-56 h-8 rounded-lg border border-[#E2E8F0] px-3 text-sm focus:outline-none focus:border-[#2563EB]"
+          className="ml-auto w-56 h-8 rounded-lg border border-border px-3 text-sm focus:outline-none focus:border-primary"
           data-testid="inventory-search"
         />
       </div>
 
       <div className="flex gap-4">
         <div
-          className="flex-1 bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden relative"
+          className="flex-1 bg-card rounded-2xl border border-border overflow-hidden relative"
           style={{ height: "70vh" }}
         >
           <svg
@@ -241,11 +241,11 @@ export function InventoryPage() {
               })}
             </g>
           </svg>
-          <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs text-[#94A3B8] bg-white/80 rounded-lg px-2 py-1">
+          <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs text-muted-foreground bg-card/80 rounded-lg px-2 py-1">
             <span>Arrastra para mover · rueda para zoom · {Math.round(view.scale * 100)}%</span>
             <button
               onClick={() => setView({ scale: 0.8, tx: 20, ty: 20 })}
-              className="text-[#2563EB] font-semibold hover:underline"
+              className="text-primary font-semibold hover:underline"
             >
               Reset
             </button>
@@ -253,7 +253,7 @@ export function InventoryPage() {
         </div>
 
         {/* Detail panel */}
-        <div className="w-72 flex-shrink-0 bg-white rounded-2xl border border-[#E2E8F0] p-5 overflow-y-auto" style={{ height: "70vh" }}>
+        <div className="w-72 flex-shrink-0 bg-card rounded-2xl border border-border p-5 overflow-y-auto" style={{ height: "70vh" }}>
           {selectedNode ? (
             <div className="space-y-4">
               <div>
@@ -263,14 +263,14 @@ export function InventoryPage() {
                 >
                   {TYPE_META[selectedNode.type]?.label ?? selectedNode.type}
                 </span>
-                <h3 className="text-sm font-bold text-[#0F172A] mt-2">{selectedNode.label}</h3>
-                <code className="text-[11px] text-[#64748B] break-all">{selectedNode.path}</code>
+                <h3 className="text-sm font-bold text-foreground mt-2">{selectedNode.label}</h3>
+                <code className="text-[11px] text-muted-foreground break-all">{selectedNode.path}</code>
               </div>
               <PanelList title={`Usa (${neighborhood?.uses.length ?? 0})`} ids={neighborhood?.uses ?? []} nodes={inventory.nodes} onPick={setSelected} />
               <PanelList title={`Usado por (${neighborhood?.usedBy.length ?? 0})`} ids={neighborhood?.usedBy ?? []} nodes={inventory.nodes} onPick={setSelected} />
             </div>
           ) : (
-            <div className="text-sm text-[#94A3B8]">
+            <div className="text-sm text-muted-foreground">
               Haz clic en un módulo para ver sus dependencias y quién lo usa.
             </div>
           )}
@@ -293,9 +293,9 @@ function PanelList({
 }) {
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1.5">{title}</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">{title}</p>
       {ids.length === 0 ? (
-        <p className="text-xs text-[#CBD5E1]">—</p>
+        <p className="text-xs text-muted-foreground">—</p>
       ) : (
         <div className="space-y-1">
           {ids.map((id) => {
@@ -305,7 +305,7 @@ function PanelList({
               <button
                 key={id}
                 onClick={() => onPick(id)}
-                className="flex items-center gap-2 w-full text-left text-xs text-[#475569] hover:text-[#2563EB] truncate"
+                className="flex items-center gap-2 w-full text-left text-xs text-muted-foreground hover:text-primary truncate"
               >
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
                 <span className="truncate">{n?.label ?? id}</span>

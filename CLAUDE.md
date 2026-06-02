@@ -44,6 +44,38 @@ NODE_ENV=production PORT=5000 BASE_PATH=/ pnpm --filter @workspace/dxp run build
 - `vite.config.ts` **requires** both `PORT` and `BASE_PATH` env vars, even for `build`. Builds throw without them.
 - `BASE_PATH` is the Vite `base`: `/` for the custom domain (apex of the subdomain); `/<repo>/` for a default github.io project site.
 
+### Local dev scripts (repo root)
+
+Convenience wrappers for running the DXP locally on Windows/Git-Bash — prefer
+these over the raw `pnpm` command:
+
+```bash
+./reboot-server.sh   # (re)start the dev server on :5000 in the background → logs/dxp.log
+./view-logs.sh       # tail logs/dxp.log
+./stop-server.sh     # kill whatever is listening on :5000
+```
+
+`reboot-server.sh` frees port 5000, clears the Vite cache, and launches
+`@workspace/dxp run dev` detached. It also fixes two Git-Bash gotchas this
+machine has (see below), so on Windows **always start the server with it**
+rather than the bare `pnpm … run dev`:
+
+- exports `MSYS_NO_PATHCONV=1` so `BASE_PATH=/` isn't rewritten to a Windows path
+  (`MSYS2_ARG_CONV_EXCL` does **not** help — it only excludes argv, not env values);
+- strips stray surrounding quotes from `COREPACK_HOME`/`PNPM_HOME`/`npm_config_*`
+  and puts `PNPM_HOME` on `PATH` (pnpm lives on the E: disk here).
+
+### Publishing edits from the admin (no terminal needed)
+
+With the dev server running, the admin topbar (`AdminTopbar.tsx`) has a
+**Publish** button: it `git add`s `src/content` + `src/translations` + `public`,
+commits with an auto message, and `git push`es the **current branch**, via the
+dev-only `POST /__local/publish` endpoint in `vite-plugin-local-cms.ts`. So keep
+the local checkout on `main` when authoring — Publish pushes `main`, which the
+deploy workflow turns into a Pages release. The **Diagnostics** page shows recent
+commits (paginated) from the read-only `GET /__local/git-log` endpoint. Both
+endpoints are `apply: "serve"` + local-host only, so they never ship.
+
 ## Admin panel is gated out of production
 
 The admin CMS (`/admin/*`) has **no authentication** — it edits content in
