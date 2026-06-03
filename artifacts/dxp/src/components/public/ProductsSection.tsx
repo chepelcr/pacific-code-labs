@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { resolveIcon } from "@/lib/icons";
+import { resolveAssetUrl } from "@/lib/media";
 import { parseRichText } from "@/lib/rich-text";
 import { localizedPath } from "@/lib/sections";
 import { listActiveProducts } from "@/services/products.service";
@@ -64,7 +65,7 @@ export function ProductsSection() {
                       style={{ background: `${colors.from}15` }}
                     >
                       {product.logoUrl ? (
-                        <img src={product.logoUrl} alt={tr.name} className="w-8 h-8 object-contain" />
+                        <img src={resolveAssetUrl(product.logoUrl)} alt={tr.name} className="w-8 h-8 object-contain" />
                       ) : (
                         <Icon className="w-7 h-7" style={{ color: colors.from }} />
                       )}

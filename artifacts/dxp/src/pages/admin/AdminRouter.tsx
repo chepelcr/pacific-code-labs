@@ -10,7 +10,6 @@ import { SeoPage } from "./SeoPage";
 import { NavigationPage } from "./NavigationPage";
 import { FooterPage } from "./FooterPage";
 import { LanguagesPage } from "./LanguagesPage";
-import { ThemesPage } from "./ThemesPage";
 import { MediaPage } from "./MediaPage";
 import { ContentVersionsPage } from "./ContentVersionsPage";
 import { SettingsPage } from "./SettingsPage";
@@ -50,11 +49,13 @@ export function AdminRouter() {
         <Route path="/admin/legal" component={LegalPagesPage} />
         <Route path="/admin/languages" component={LanguagesPage} />
         <Route path="/admin/translations" component={TranslationsPage} />
-        <Route path="/admin/themes" component={ThemesPage} />
         <Route path="/admin/media" component={MediaPage} />
         <Route path="/admin/content-versions" component={ContentVersionsPage} />
         <Route path="/admin/settings" component={SettingsPage} />
-        <Route path="/admin/branding" component={BrandingPage} />
+        {/* Unified Site Identity (branding + themes). Old paths redirect here. */}
+        <Route path="/admin/identity" component={BrandingPage} />
+        <Route path="/admin/branding" component={() => <Redirect to="/admin/identity" />} />
+        <Route path="/admin/themes" component={() => <Redirect to="/admin/identity" />} />
         <Route path="/admin/content-explorer" component={ContentExplorerPage} />
         <Route path="/admin/inventory" component={InventoryPage} />
         <Route path="/admin/diagnostics" component={DiagnosticsPage} />

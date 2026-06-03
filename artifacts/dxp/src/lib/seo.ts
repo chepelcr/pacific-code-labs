@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import seoData from "@/content/seo.json";
 import legalData from "@/content/legal.json";
 import { LANGUAGES, isLang, localizedPath, getDefaultLang } from "@/lib/sections";
+import { absoluteAssetUrl } from "@/lib/media";
 
 /**
  * Runtime <head> management for the SPA. Keeps the browser tab title and meta
@@ -40,7 +41,8 @@ function slugOf(path: string): string {
 /** Resolve title/description/canonical/image/hreflang for a route + language. */
 export function resolveSeo(path: string, lang: Lang): HeadMeta {
   const slug = slugOf(path);
-  const image = seoData.ogImageUrl ?? `${SITE}/opengraph.jpg`;
+  // OG/Twitter need an absolute URL — a local media path is resolved against the site URL.
+  const image = seoData.ogImageUrl ? absoluteAssetUrl(seoData.ogImageUrl) : `${SITE}/opengraph.jpg`;
   const canonical = SITE + localizedPath(lang, slug);
 
   // Per-language alternates + x-default (default language).

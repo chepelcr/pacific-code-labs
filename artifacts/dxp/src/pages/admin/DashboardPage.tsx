@@ -14,7 +14,7 @@ export function DashboardPage() {
     { href: "/admin/case-studies", label: t("admin.total_case_studies"), value: store.caseStudies.length, active: store.caseStudies.filter((c) => c.status === "active").length, icon: BookOpen, color: "#10B981" },
     { href: "/admin/faq", label: t("admin.total_faq"), value: store.faq.length, active: store.faq.filter((f) => f.status === "active").length, icon: HelpCircle, color: "#8B5CF6" },
     { href: "/admin/contact", label: t("admin.contact"), value: store.contactMessages.length, active: store.contactMessages.filter((m) => m.status === "new").length, icon: Mail, color: "#F59E0B", activeLabel: t("admin.new_messages") },
-    { href: "/admin/media", label: t("admin.media"), value: store.mediaFiles.length, active: store.mediaFiles.length, icon: Image, color: "#EC4899" },
+    { href: "/admin/media", label: t("admin.media.title", "Media"), value: store.media.items.length, active: store.media.items.length, icon: Image, color: "#EC4899" },
   ];
 
   const newMessages = store.contactMessages.filter((m) => m.status === "new");

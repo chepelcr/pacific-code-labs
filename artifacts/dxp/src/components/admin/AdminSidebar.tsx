@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/shared/Logo";
+import { getBranding } from "@/repositories/branding.repository";
 import { guardNavigation } from "@/lib/admin-ui";
 import {
   LayoutDashboard, Package, Wrench, BookOpen, HelpCircle, Mail,
-  Search, Navigation, LayoutTemplate, Globe, Palette, Image,
+  Search, Navigation, LayoutTemplate, Globe, Image,
   Download, Settings, FileSearch, Activity, ChevronLeft,
   ChevronRight, ChevronDown, X, Brush, Sparkles, Lightbulb, Scale, Languages, Share2, Info,
 } from "lucide-react";
@@ -43,13 +44,12 @@ const NAV: NavGroup[] = [
   {
     groupKey: "admin.cms",
     items: [
+      { href: "/admin/identity",          labelKey: "admin.identity.nav",   icon: Brush },
+      { href: "/admin/media",             labelKey: "admin.media.nav",      icon: Image },
       { href: "/admin/languages",         labelKey: "admin.languages",      icon: Globe },
       { href: "/admin/translations",      labelKey: "admin.translations",   icon: Languages },
-      { href: "/admin/themes",            labelKey: "admin.themes",         icon: Palette },
-      { href: "/admin/media",             labelKey: "admin.media",          icon: Image },
       { href: "/admin/content-versions",  labelKey: "admin.contentVersions",icon: Download },
       { href: "/admin/settings",          labelKey: "admin.settings",       icon: Settings },
-      { href: "/admin/branding",          labelKey: "admin.branding",       icon: Brush },
     ],
   },
   {
@@ -81,6 +81,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
   const { t } = useTranslation();
   const [location] = useLocation();
   const [openGroup, setOpenGroup] = useState<string>(() => getActiveGroup(location));
+  const branding = getBranding();
 
   const handleNavClick = (href: string) => (e: React.MouseEvent) => {
     // Block the jump and prompt when the open page has unsaved edits.
@@ -98,7 +99,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
 
   return (
     <aside
-      className={`relative h-full bg-[#0F172A] border-r border-white/5 flex flex-col transition-all duration-300 ${
+      className={`relative h-full bg-sidebar text-sidebar-foreground border-r border-sidebar-border flex flex-col transition-all duration-300 ${
         collapsed ? "w-16" : "w-64"
       }`}
       data-testid="admin-sidebar"
@@ -106,7 +107,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
       {/* Edge collapse/expand tab (desktop) — floats on the right border */}
       <button
         onClick={onToggle}
-        className="hidden lg:flex absolute -right-3 top-16 z-20 w-6 h-6 items-center justify-center rounded-full bg-[#2563EB] text-white shadow-md ring-2 ring-[#F8FAFC] hover:bg-[#1d4ed8] transition-colors"
+        className="hidden lg:flex absolute -right-3 top-16 z-20 w-6 h-6 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground shadow-md ring-2 ring-background hover:bg-sidebar-primary/90 transition-colors"
         data-testid="sidebar-edge-toggle"
         title={collapsed ? "Expandir" : "Colapsar"}
       >
@@ -115,7 +116,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
 
       {/* Logo row */}
       <div
-        className={`flex items-center h-14 border-b border-white/5 px-4 ${
+        className={`flex items-center h-14 border-b border-sidebar-border px-4 ${
           collapsed ? "justify-center" : "justify-between"
         }`}
       >
@@ -124,7 +125,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
         ) : (
           <div className="flex items-center gap-2 min-w-0">
             <Logo size={28} />
-            <span className="text-white text-sm font-semibold truncate">Pacific Code Labs</span>
+            <span className="text-sidebar-foreground text-sm font-semibold truncate">{branding.companyName}</span>
           </div>
         )}
 
@@ -132,7 +133,7 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
         {onClose && !collapsed && (
           <button
             onClick={onClose}
-            className="lg:hidden text-white/30 hover:text-white p-1 rounded transition-colors"
+            className="lg:hidden text-sidebar-foreground/40 hover:text-sidebar-foreground p-1 rounded transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -155,8 +156,8 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
                   onClick={() => toggleGroup(group.groupKey)}
                   className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg mb-0.5 transition-colors group ${
                     hasActive && !isOpen
-                      ? "text-white/50"
-                      : "text-white/25 hover:text-white/50"
+                      ? "text-sidebar-foreground/60"
+                      : "text-sidebar-foreground/40 hover:text-sidebar-foreground/60"
                   }`}
                   data-testid={`sidebar-group-${group.groupKey}`}
                 >
@@ -189,8 +190,8 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
                           onClick={handleNavClick(item.href)}
                           className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
                             active
-                              ? "bg-[#2563EB] text-white"
-                              : "text-white/50 hover:text-white hover:bg-white/5"
+                              ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                              : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                           } ${collapsed ? "justify-center" : ""}`}
                           data-testid={`sidebar-link-${item.href.split("/").pop()}`}
                           title={collapsed ? t(item.labelKey) : undefined}
@@ -213,11 +214,11 @@ export function AdminSidebar({ collapsed, onToggle, onClose }: Props) {
       </nav>
 
       {/* Footer */}
-      <div className={`border-t border-white/5 p-3 ${collapsed ? "text-center" : ""}`}>
+      <div className={`border-t border-sidebar-border p-3 ${collapsed ? "text-center" : ""}`}>
         <Link
           href="/"
           onClick={handleNavClick("/")}
-          className="flex items-center gap-2 text-white/30 hover:text-white/60 text-xs transition-colors px-2 py-1.5 rounded-lg hover:bg-white/5"
+          className="flex items-center gap-2 text-sidebar-foreground/50 hover:text-sidebar-foreground/80 text-xs transition-colors px-2 py-1.5 rounded-lg hover:bg-sidebar-accent"
         >
           <ChevronLeft className="w-3.5 h-3.5 flex-shrink-0" />
           {!collapsed && <span>{t("common.back_home")}</span>}

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Edit2, Trash2, ExternalLink } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
+import { MediaPicker } from "@/components/admin/MediaPicker";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
 import type { Lang } from "@/lib/translate";
 import { ICON_NAMES } from "@/lib/icons";
@@ -17,6 +18,7 @@ interface ProductForm {
   externalUrl: string;
   iconName: string;
   status: string;
+  logoUrl: string;
 }
 
 const emptyTr = { name: "", tagline: "", description: "" };
@@ -31,6 +33,7 @@ export function ProductsPage() {
     externalUrl: "",
     iconName: "",
     status: "active",
+    logoUrl: "",
   });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -55,6 +58,7 @@ export function ProductsPage() {
       externalUrl: p.externalUrl ?? "",
       iconName: p.iconName ?? "",
       status: p.status,
+      logoUrl: p.logoUrl ?? "",
     });
     setEditing(id);
   };
@@ -68,6 +72,7 @@ export function ProductsPage() {
               ...p,
               status: form.status as "active" | "draft" | "archived",
               externalUrl: form.externalUrl || null,
+              logoUrl: form.logoUrl || null,
               iconName: form.iconName || "Boxes",
               translations: {
                 ...p.translations,
@@ -165,6 +170,14 @@ export function ProductsPage() {
                     <option value="draft">Draft</option>
                     <option value="archived">Archived</option>
                   </select>
+                </div>
+                <div className="col-span-3">
+                  <MediaPicker
+                    label={t("admin.identity.logo", "Logo")}
+                    hint={t("products.logoHint", "Optional. Falls back to the selected icon when empty.")}
+                    value={form.logoUrl}
+                    onChange={(v) => setForm({ ...form, logoUrl: v })}
+                  />
                 </div>
               </div>
             </div>

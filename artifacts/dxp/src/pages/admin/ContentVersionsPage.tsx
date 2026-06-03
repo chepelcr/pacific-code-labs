@@ -21,6 +21,8 @@ export function ContentVersionsPage() {
     { name: "seo.json", data: store.seo, description: "SEO settings" },
     { name: "languages.json", data: store.languages, description: `${store.languages.length} languages` },
     { name: "themes.json", data: store.themes, description: `${store.themes.length} themes` },
+    { name: "branding.json", data: store.branding, description: "Logo, favicon, name & tagline" },
+    { name: "media.json", data: store.media, description: `${store.media.items.length} media assets` },
     { name: "settings.json", data: store.settings, description: "Site & auto-translate settings" },
     { name: "inventory.json", data: store.inventory, description: `${store.inventory.counts.nodes} modules, ${store.inventory.counts.edges} links` },
   ];

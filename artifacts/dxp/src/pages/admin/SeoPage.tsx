@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { TextField, BilingualField, BilingualTextArea, BilingualSection, AdminCard } from "@/components/admin/AdminUI";
+import { MediaPicker } from "@/components/admin/MediaPicker";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
 import type { Lang } from "@/lib/translate";
 
@@ -72,7 +73,12 @@ export function SeoPage() {
 
         <AdminCard title="Global">
           <TextField label="URL del sitio (canonical base)" type="url" value={draft.siteUrl ?? ""} onChange={(v) => update((d) => { d.siteUrl = v; })} placeholder="https://pacific-code-labs.jcampos.dev" />
-          <TextField label="OG Image URL" type="url" value={draft.ogImageUrl ?? ""} onChange={(v) => update((d) => { d.ogImageUrl = v || null; })} placeholder="https://.../opengraph.jpg" />
+          <MediaPicker
+            label="OG Image"
+            hint={t("seo.ogImageHint", "Social share image (1200×630). Local paths are made absolute against the site URL.")}
+            value={draft.ogImageUrl ?? ""}
+            onChange={(v) => update((d) => { d.ogImageUrl = v || null; })}
+          />
           <div className="grid grid-cols-2 gap-4">
             <TextField label="Twitter Handle" value={draft.twitterHandle ?? ""} onChange={(v) => update((d) => { d.twitterHandle = v || null; })} placeholder="@handle" />
             <TextField label="Google Analytics ID" value={draft.googleAnalyticsId ?? ""} onChange={(v) => update((d) => { d.googleAnalyticsId = v || null; })} placeholder="G-XXXXXXXXXX" />

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-02T15:47:53.640Z",
+  "generatedAt": "2026-06-03T05:07:59.973Z",
   "counts": {
-    "nodes": 145,
-    "edges": 293
+    "nodes": 152,
+    "edges": 320
   },
   "nodes": [
     {
@@ -39,6 +39,13 @@
       "type": "component",
       "group": "admin",
       "path": "src/components/admin/AdminUI.tsx"
+    },
+    {
+      "id": "components/admin/MediaPicker",
+      "label": "MediaPicker",
+      "type": "component",
+      "group": "admin",
+      "path": "src/components/admin/MediaPicker.tsx"
     },
     {
       "id": "components/admin/PageHeader",
@@ -538,6 +545,13 @@
       "path": "src/content/about.json"
     },
     {
+      "id": "content/branding.json",
+      "label": "branding.json",
+      "type": "content",
+      "group": "core",
+      "path": "src/content/branding.json"
+    },
+    {
       "id": "content/caseStudies.json",
       "label": "caseStudies.json",
       "type": "content",
@@ -585,6 +599,13 @@
       "type": "content",
       "group": "core",
       "path": "src/content/legal.json"
+    },
+    {
+      "id": "content/media.json",
+      "label": "media.json",
+      "type": "content",
+      "group": "core",
+      "path": "src/content/media.json"
     },
     {
       "id": "content/navigation.json",
@@ -671,6 +692,13 @@
       "path": "src/lib/admin-ui.ts"
     },
     {
+      "id": "lib/brand-theme",
+      "label": "brand-theme",
+      "type": "lib",
+      "group": "core",
+      "path": "src/lib/brand-theme.ts"
+    },
+    {
       "id": "lib/contact",
       "label": "contact",
       "type": "lib",
@@ -697,6 +725,20 @@
       "type": "lib",
       "group": "core",
       "path": "src/lib/local-cms.ts"
+    },
+    {
+      "id": "lib/media",
+      "label": "media",
+      "type": "lib",
+      "group": "core",
+      "path": "src/lib/media.ts"
+    },
+    {
+      "id": "lib/media-upload",
+      "label": "media-upload",
+      "type": "lib",
+      "group": "core",
+      "path": "src/lib/media-upload.ts"
     },
     {
       "id": "lib/rich-text",
@@ -909,13 +951,6 @@
       "path": "src/pages/admin/SettingsPage.tsx"
     },
     {
-      "id": "pages/admin/ThemesPage",
-      "label": "ThemesPage",
-      "type": "page",
-      "group": "admin",
-      "path": "src/pages/admin/ThemesPage.tsx"
-    },
-    {
       "id": "pages/admin/TranslationsPage",
       "label": "TranslationsPage",
       "type": "page",
@@ -951,6 +986,13 @@
       "path": "src/repositories/about.repository.ts"
     },
     {
+      "id": "repositories/branding.repository",
+      "label": "branding.repository",
+      "type": "repository",
+      "group": "core",
+      "path": "src/repositories/branding.repository.ts"
+    },
+    {
       "id": "repositories/caseStudies.repository",
       "label": "caseStudies.repository",
       "type": "repository",
@@ -963,6 +1005,13 @@
       "type": "repository",
       "group": "core",
       "path": "src/repositories/inventory.repository.ts"
+    },
+    {
+      "id": "repositories/media.repository",
+      "label": "media.repository",
+      "type": "repository",
+      "group": "core",
+      "path": "src/repositories/media.repository.ts"
     },
     {
       "id": "repositories/products.repository",
@@ -1123,6 +1172,21 @@
       "kind": "imports"
     },
     {
+      "from": "components/admin/MediaPicker",
+      "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/MediaPicker",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
+      "from": "components/admin/MediaPicker",
+      "to": "lib/media-upload",
+      "kind": "imports"
+    },
+    {
       "from": "components/admin/PageHeader",
       "to": "components/admin/AdminUI",
       "kind": "imports"
@@ -1165,6 +1229,11 @@
     {
       "from": "components/public/AboutSection",
       "to": "services/services.service",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/CaseStudiesSection",
+      "to": "lib/media",
       "kind": "imports"
     },
     {
@@ -1249,6 +1318,11 @@
     },
     {
       "from": "components/public/ProductsSection",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
+      "from": "components/public/ProductsSection",
       "to": "lib/rich-text",
       "kind": "imports"
     },
@@ -1300,6 +1374,16 @@
     {
       "from": "components/public/ServicesSection",
       "to": "services/services.service",
+      "kind": "imports"
+    },
+    {
+      "from": "components/shared/Logo",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
+      "from": "components/shared/Logo",
+      "to": "repositories/branding.repository",
       "kind": "imports"
     },
     {
@@ -1684,6 +1768,11 @@
     },
     {
       "from": "lib/admin-store",
+      "to": "content/branding.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/admin-store",
       "to": "content/caseStudies.json",
       "kind": "imports"
     },
@@ -1715,6 +1804,11 @@
     {
       "from": "lib/admin-store",
       "to": "content/legal.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/admin-store",
+      "to": "content/media.json",
       "kind": "imports"
     },
     {
@@ -1758,8 +1852,28 @@
       "kind": "imports"
     },
     {
+      "from": "lib/admin-store",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
       "from": "lib/admin-ui",
       "to": "lib/local-cms",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/brand-theme",
+      "to": "content/branding.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/brand-theme",
+      "to": "content/themes.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/brand-theme",
+      "to": "lib/media",
       "kind": "imports"
     },
     {
@@ -1773,6 +1887,26 @@
       "kind": "imports"
     },
     {
+      "from": "lib/media",
+      "to": "content/seo.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/media-upload",
+      "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/media-upload",
+      "to": "lib/local-cms",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/media-upload",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
       "from": "lib/seo",
       "to": "content/legal.json",
       "kind": "imports"
@@ -1780,6 +1914,11 @@
     {
       "from": "lib/seo",
       "to": "content/seo.json",
+      "kind": "imports"
+    },
+    {
+      "from": "lib/seo",
+      "to": "lib/media",
       "kind": "imports"
     },
     {
@@ -1800,6 +1939,11 @@
     {
       "from": "main",
       "to": "App",
+      "kind": "imports"
+    },
+    {
+      "from": "main",
+      "to": "lib/brand-theme",
       "kind": "imports"
     },
     {
@@ -1944,27 +2088,42 @@
     },
     {
       "from": "pages/admin/AdminRouter",
-      "to": "pages/admin/ThemesPage",
-      "kind": "imports"
-    },
-    {
-      "from": "pages/admin/AdminRouter",
       "to": "pages/admin/TranslationsPage",
       "kind": "imports"
     },
     {
       "from": "pages/admin/BrandingPage",
-      "to": "components/admin/PageHeader",
+      "to": "components/admin/AdminUI",
       "kind": "imports"
     },
     {
       "from": "pages/admin/BrandingPage",
-      "to": "lib/local-cms",
+      "to": "components/admin/MediaPicker",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/BrandingPage",
+      "to": "lib/admin-store",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/BrandingPage",
+      "to": "lib/admin-ui",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/BrandingPage",
+      "to": "lib/brand-theme",
       "kind": "imports"
     },
     {
       "from": "pages/admin/CaseStudiesPage",
       "to": "components/admin/AdminUI",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/CaseStudiesPage",
+      "to": "components/admin/MediaPicker",
       "kind": "imports"
     },
     {
@@ -2163,6 +2322,16 @@
       "kind": "imports"
     },
     {
+      "from": "pages/admin/MediaPage",
+      "to": "lib/media",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/MediaPage",
+      "to": "lib/media-upload",
+      "kind": "imports"
+    },
+    {
       "from": "pages/admin/NavigationPage",
       "to": "components/admin/AdminUI",
       "kind": "imports"
@@ -2210,6 +2379,11 @@
     {
       "from": "pages/admin/ProductsPage",
       "to": "components/admin/AdminUI",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/ProductsPage",
+      "to": "components/admin/MediaPicker",
       "kind": "imports"
     },
     {
@@ -2240,6 +2414,11 @@
     {
       "from": "pages/admin/SeoPage",
       "to": "components/admin/AdminUI",
+      "kind": "imports"
+    },
+    {
+      "from": "pages/admin/SeoPage",
+      "to": "components/admin/MediaPicker",
       "kind": "imports"
     },
     {
@@ -2310,16 +2489,6 @@
     {
       "from": "pages/admin/SettingsPage",
       "to": "lib/translate",
-      "kind": "imports"
-    },
-    {
-      "from": "pages/admin/ThemesPage",
-      "to": "components/admin/PageHeader",
-      "kind": "imports"
-    },
-    {
-      "from": "pages/admin/ThemesPage",
-      "to": "lib/admin-store",
       "kind": "imports"
     },
     {
@@ -2448,6 +2617,11 @@
       "kind": "imports"
     },
     {
+      "from": "repositories/branding.repository",
+      "to": "content/branding.json",
+      "kind": "imports"
+    },
+    {
       "from": "repositories/caseStudies.repository",
       "to": "content/caseStudies.json",
       "kind": "imports"
@@ -2455,6 +2629,16 @@
     {
       "from": "repositories/inventory.repository",
       "to": "content/inventory.json",
+      "kind": "imports"
+    },
+    {
+      "from": "repositories/media.repository",
+      "to": "content/media.json",
+      "kind": "imports"
+    },
+    {
+      "from": "repositories/media.repository",
+      "to": "lib/media",
       "kind": "imports"
     },
     {

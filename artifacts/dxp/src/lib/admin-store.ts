@@ -12,9 +12,12 @@ import navigationData from "../content/navigation.json";
 import footerData from "../content/footer.json";
 import seoData from "../content/seo.json";
 import themesData from "../content/themes.json";
+import brandingData from "../content/branding.json";
+import mediaData from "../content/media.json";
 import legalData from "../content/legal.json";
 import settingsData from "../content/settings.json";
 import inventoryData from "../content/inventory.json";
+import type { MediaLibrary } from "./media";
 
 export interface ContactMessage {
   id: string;
@@ -40,11 +43,12 @@ interface AdminStore {
   footer: typeof footerData;
   seo: typeof seoData;
   themes: typeof themesData;
+  branding: typeof brandingData;
+  media: MediaLibrary;
   legal: typeof legalData;
   settings: typeof settingsData;
   inventory: typeof inventoryData;
   contactMessages: ContactMessage[];
-  mediaFiles: Array<{ id: string; filename: string; url: string; type: string; size: number; altText?: string; createdAt: string }>;
 
   setHero: (data: typeof heroData) => void;
   setAbout: (data: typeof aboutData) => void;
@@ -58,6 +62,8 @@ interface AdminStore {
   setFooter: (data: typeof footerData) => void;
   setSeo: (data: typeof seoData) => void;
   setThemes: (data: typeof themesData) => void;
+  setBranding: (data: typeof brandingData) => void;
+  setMedia: (data: MediaLibrary) => void;
   setLegal: (data: typeof legalData) => void;
   setSettings: (data: typeof settingsData) => void;
   setInventory: (data: typeof inventoryData) => void;
@@ -86,6 +92,8 @@ const ENTITY_BY_FILE: Record<string, keyof AdminStore> = {
   "footer.json": "footer",
   "seo.json": "seo",
   "themes.json": "themes",
+  "branding.json": "branding",
+  "media.json": "media",
   "legal.json": "legal",
   "settings.json": "settings",
   "inventory.json": "inventory",
@@ -104,6 +112,8 @@ const INITIAL_SNAPSHOTS: Record<string, string> = {
   "footer.json": JSON.stringify(footerData),
   "seo.json": JSON.stringify(seoData),
   "themes.json": JSON.stringify(themesData),
+  "branding.json": JSON.stringify(brandingData),
+  "media.json": JSON.stringify(mediaData),
   "legal.json": JSON.stringify(legalData),
   "settings.json": JSON.stringify(settingsData),
   "inventory.json": JSON.stringify(inventoryData),
@@ -122,11 +132,12 @@ export const useAdminStore = create<AdminStore>((set) => ({
   footer: footerData,
   seo: seoData,
   themes: themesData,
+  branding: brandingData,
+  media: mediaData as MediaLibrary,
   legal: legalData,
   settings: settingsData,
   inventory: inventoryData,
   contactMessages: JSON.parse(localStorage.getItem("pcl-contact-messages") || "[]"),
-  mediaFiles: [],
 
   setHero: (data) => set({ hero: data }),
   setAbout: (data) => set({ about: data }),
@@ -140,6 +151,8 @@ export const useAdminStore = create<AdminStore>((set) => ({
   setFooter: (data) => set({ footer: data }),
   setSeo: (data) => set({ seo: data }),
   setThemes: (data) => set({ themes: data }),
+  setBranding: (data) => set({ branding: data }),
+  setMedia: (data) => set({ media: data }),
   setLegal: (data) => set({ legal: data }),
   setSettings: (data) => set({ settings: data }),
   setInventory: (data) => set({ inventory: data }),

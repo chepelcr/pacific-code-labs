@@ -24,18 +24,35 @@ export async function saveContentFile(filename: string, data: unknown): Promise<
   }
 }
 
-/** Write an image asset (data URL) into the repo's public/ folder. */
-export async function uploadAsset(filename: string, dataUrl: string): Promise<boolean> {
-  if (!LOCAL_CMS_ENABLED) return false;
+export interface UploadResult {
+  ok: boolean;
+  /** Root-relative URL to reference the written asset, e.g. "/media/hero.png". */
+  url?: string;
+  error?: string;
+}
+
+/**
+ * Write an image/video/audio asset (data URL) into the repo's `public/` folder.
+ * Pass `dir: "media"` to write under `public/media/`. Returns the root-relative
+ * URL of the written file (so callers can store it in content), or `{ ok:false }`
+ * when the write-back endpoint isn't available (non-dev build).
+ */
+export async function uploadAsset(
+  filename: string,
+  dataUrl: string,
+  dir?: "media",
+): Promise<UploadResult> {
+  if (!LOCAL_CMS_ENABLED) return { ok: false, error: "unavailable" };
   try {
     const res = await fetch("/__local/asset", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename, dataUrl }),
+      body: JSON.stringify({ filename, dataUrl, dir }),
     });
-    return res.ok;
-  } catch {
-    return false;
+    const json = (await res.json()) as { ok?: boolean; url?: string; error?: string };
+    return { ok: res.ok && !!json.ok, url: json.url, error: json.error };
+  } catch (err) {
+    return { ok: false, error: String(err) };
   }
 }
 

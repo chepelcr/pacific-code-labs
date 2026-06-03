@@ -35,7 +35,11 @@ async function main() {
   const faq = await readJson(path.join(CONTENT, "faq.json"));
 
   const SITE = (seo.siteUrl ?? "https://pacific-code-labs.jcampos.dev").replace(/\/$/, "");
-  const IMAGE = seo.ogImageUrl ?? `${SITE}/opengraph.jpg`;
+  // OG image must be absolute — a local media path (e.g. "/media/og.jpg") is resolved against SITE.
+  const rawImage = seo.ogImageUrl ?? `${SITE}/opengraph.jpg`;
+  const IMAGE = /^https?:\/\//i.test(rawImage)
+    ? rawImage
+    : SITE + (rawImage.startsWith("/") ? rawImage : `/${rawImage}`);
   const template = await fs.readFile(path.join(DIST, "index.html"), "utf8");
 
   // Route descriptors (language-agnostic). title/description are resolvers.

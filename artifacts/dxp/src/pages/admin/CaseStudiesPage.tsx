@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Plus, Edit2, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { TextField, BilingualField, BilingualTextArea, BilingualSection } from "@/components/admin/AdminUI";
+import { MediaPicker } from "@/components/admin/MediaPicker";
 import { useAdminStore, downloadJson } from "@/lib/admin-store";
 import type { Lang } from "@/lib/translate";
 import { RICH_TEXT_HINT } from "@/lib/rich-text";
@@ -17,6 +18,7 @@ interface CaseForm {
   en: typeof emptyTr;
   industry: string;
   status: string;
+  imageUrl: string;
 }
 
 export function CaseStudiesPage() {
@@ -24,7 +26,7 @@ export function CaseStudiesPage() {
   const { caseStudies, setCaseStudies } = useAdminStore();
   const [editing, setEditing] = useState<string | null>(null);
   const [isNew, setIsNew] = useState(false);
-  const [form, setForm] = useState<CaseForm>({ es: { ...emptyTr }, en: { ...emptyTr }, industry: "", status: "draft" });
+  const [form, setForm] = useState<CaseForm>({ es: { ...emptyTr }, en: { ...emptyTr }, industry: "", status: "draft", imageUrl: "" });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -47,13 +49,14 @@ export function CaseStudiesPage() {
       en: { ...emptyTr, ...cs.translations.en },
       industry: cs.industry ?? "",
       status: cs.status,
+      imageUrl: cs.imageUrl ?? "",
     });
     setIsNew(false);
     setEditing(id);
   };
 
   const handleNew = () => {
-    setForm({ es: { ...emptyTr }, en: { ...emptyTr }, industry: "", status: "draft" });
+    setForm({ es: { ...emptyTr }, en: { ...emptyTr }, industry: "", status: "draft", imageUrl: "" });
     setIsNew(true);
     setEditing("new");
   };
@@ -68,7 +71,7 @@ export function CaseStudiesPage() {
           slug: id,
           status: form.status as "active" | "draft" | "archived",
           sortOrder: caseStudies.length + 1,
-          imageUrl: null,
+          imageUrl: form.imageUrl || null,
           industry: form.industry || null,
           translations: { es: form.es, en: form.en },
           createdAt: new Date().toISOString(),
@@ -83,6 +86,7 @@ export function CaseStudiesPage() {
                 ...cs,
                 status: form.status as "active" | "draft" | "archived",
                 industry: form.industry || null,
+                imageUrl: form.imageUrl || null,
                 translations: { ...cs.translations, es: form.es, en: form.en },
                 updatedAt: new Date().toISOString(),
               }
@@ -171,6 +175,13 @@ export function CaseStudiesPage() {
                     <option value="draft">Draft</option>
                     <option value="archived">Archived</option>
                   </select>
+                </div>
+                <div className="col-span-2">
+                  <MediaPicker
+                    label={t("admin.image", "Image")}
+                    value={form.imageUrl}
+                    onChange={(v) => setForm({ ...form, imageUrl: v })}
+                  />
                 </div>
               </div>
             </div>

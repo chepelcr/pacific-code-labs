@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "wouter";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminTopbar } from "./AdminTopbar";
 import { UnsavedChangesModal } from "./UnsavedChangesModal";
@@ -13,6 +14,13 @@ export function AdminLayout({ children }: Props) {
   // the slide/fade transition (in on open, out on close).
   const [mobileRender, setMobileRender] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [location] = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+
+  // Scroll the content area back to the top whenever the admin route changes.
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+  }, [location]);
 
   const openMobile = () => {
     setMobileRender(true);
@@ -53,7 +61,7 @@ export function AdminLayout({ children }: Props) {
       <div className="flex-1 flex flex-col overflow-hidden">
         <AdminTopbar onMenu={openMobile} />
 
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
+        <main ref={mainRef} className="flex-1 overflow-y-auto p-6 lg:p-8">
           {children}
         </main>
       </div>

@@ -12,8 +12,9 @@ const execFileAsync = promisify(execFile);
  *
  *   POST /__local/content  { filename: "products.json", data: {...} }
  *     → writes src/content/<file>  (or src/translations/<file> for es/en.json)
- *   POST /__local/asset    { filename: "logo.png", dataUrl: "data:image/...;base64,..." }
- *     → writes public/<file>
+ *   POST /__local/asset    { filename: "logo.png", dataUrl: "data:...;base64,...", dir?: "media" }
+ *     → writes public/<file> (or public/media/<file> when dir="media"); images,
+ *       video and audio allowed. Returns { path, url } where url is root-relative.
  *   POST /__local/publish  {}
  *     → git add (content/translations/public) + commit + push (current branch)
  *   GET  /__local/git-log?skip=0&limit=10
@@ -22,7 +23,12 @@ const execFileAsync = promisify(execFile);
  * `apply: "serve"` keeps it out of production builds entirely.
  */
 const JSON_NAME = /^[a-zA-Z0-9_-]+\.json$/;
-const ASSET_NAME = /^[a-zA-Z0-9_-]+\.(png|jpe?g|webp|svg|ico)$/i;
+const ASSET_NAME =
+  /^[a-zA-Z0-9_-]+\.(png|jpe?g|webp|svg|ico|gif|avif|mp4|webm|ogg|mov|mp3|wav|m4a)$/i;
+/** Where uploaded media may land under public/ (logo/favicon at root, library under media/). */
+const ASSET_DIRS = new Set(["", "media"]);
+/** Cap base64 upload bodies so a stray huge file can't exhaust memory (local dev only). */
+const MAX_ASSET_BYTES = 25 * 1024 * 1024;
 
 /** Run a git command from `cwd`; returns trimmed stdout. */
 async function git(args: string[], cwd: string): Promise<string> {
@@ -144,15 +150,23 @@ export function localCms(): Plugin {
           }
 
           if (req.url.startsWith("/__local/asset")) {
-            const { filename, dataUrl } = body;
+            const { filename, dataUrl, dir } = body;
             if (typeof filename !== "string" || !ASSET_NAME.test(filename)) throw new Error("bad filename");
+            const subdir = typeof dir === "string" ? dir : "";
+            if (!ASSET_DIRS.has(subdir)) throw new Error("bad dir");
             const match = /^data:[^;]+;base64,(.+)$/s.exec(dataUrl ?? "");
             if (!match) throw new Error("bad dataUrl");
-            const target = safe(publicDir, filename);
-            await fs.writeFile(target, Buffer.from(match[1], "base64"));
+            const buf = Buffer.from(match[1], "base64");
+            if (buf.length > MAX_ASSET_BYTES) throw new Error("file too large (max 25 MB)");
+            const destDir = subdir ? path.join(publicDir, subdir) : publicDir;
+            await fs.mkdir(destDir, { recursive: true });
+            const target = safe(destDir, filename);
+            await fs.writeFile(target, buf);
             const rel = path.relative(root, target);
+            // The URL the app should reference (root-relative, forward slashes).
+            const urlPath = "/" + (subdir ? `${subdir}/` : "") + filename;
             server.config.logger.info(`[local-cms] wrote asset ${rel}`);
-            return reply(200, { ok: true, path: rel });
+            return reply(200, { ok: true, path: rel, url: urlPath });
           }
 
           return reply(404, { ok: false, error: "unknown endpoint" });

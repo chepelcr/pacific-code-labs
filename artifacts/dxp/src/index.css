@@ -75,6 +75,15 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
+  /* Brand palette (hex) — the defaults; overridden at runtime from the active
+     theme in themes.json by brand-theme.ts. Consumed by the brand utility
+     classes below and (via HSL conversion) the semantic light-mode tokens. */
+  --brand-primary: #2563EB;
+  --brand-accent: #06B6D4;
+  --brand-emerald: #10B981;
+  --brand-navy: #0F172A;
+  --brand-background: #F8FAFC;
+
   /* Pacific Navy: #0F172A */
   --background:          210 40% 98%;
   --foreground:          222 47% 11%;
@@ -87,14 +96,14 @@
   --card-foreground:     222 47% 11%;
   --card-border:         214 32% 91%;
 
-  /* Sidebar (dark navy) */
-  --sidebar:             222 47% 11%;
-  --sidebar-foreground:  210 40% 95%;
-  --sidebar-border:      222 40% 18%;
+  /* Sidebar (light surface in light mode; the .dark block below makes it navy) */
+  --sidebar:             0 0% 100%;
+  --sidebar-foreground:  222 47% 11%;
+  --sidebar-border:      214 32% 91%;
   --sidebar-primary:     221 83% 53%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent:      222 40% 17%;
-  --sidebar-accent-foreground:  210 40% 85%;
+  --sidebar-accent:      210 40% 94%;
+  --sidebar-accent-foreground:  222 47% 11%;
   --sidebar-ring:        189 94% 43%;
 
   /* Popovers */
@@ -340,21 +349,22 @@
   .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
   .border.active-elevate-2:not(.no-active-interaction-elevate)::after { inset: -1px; }
 
-  /* Pacific-specific utilities */
-  .text-cyan { color: #06B6D4; }
-  .text-emerald { color: #10B981; }
-  .text-navy { color: #0F172A; }
+  /* Brand utilities — driven by the active theme's palette (brand-theme.ts),
+     with the original hex as a fallback for first paint / prerendered HTML. */
+  .text-cyan { color: var(--brand-accent, #06B6D4); }
+  .text-emerald { color: var(--brand-emerald, #10B981); }
+  .text-navy { color: var(--brand-navy, #0F172A); }
 
-  .bg-navy { background-color: #0F172A; }
-  .bg-cyan { background-color: #06B6D4; }
-  .bg-emerald { background-color: #10B981; }
+  .bg-navy { background-color: var(--brand-navy, #0F172A); }
+  .bg-cyan { background-color: var(--brand-accent, #06B6D4); }
+  .bg-emerald { background-color: var(--brand-emerald, #10B981); }
 
   .gradient-pacific {
-    background: linear-gradient(135deg, #0F172A 0%, #1e3a5f 50%, #0F172A 100%);
+    background: linear-gradient(135deg, var(--brand-navy, #0F172A) 0%, #1e3a5f 50%, var(--brand-navy, #0F172A) 100%);
   }
 
   .gradient-cyan-blue {
-    background: linear-gradient(135deg, #2563EB, #06B6D4);
+    background: linear-gradient(135deg, var(--brand-primary, #2563EB), var(--brand-accent, #06B6D4));
   }
 
   .grid-pattern {

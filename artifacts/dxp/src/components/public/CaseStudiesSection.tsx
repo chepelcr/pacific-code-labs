@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { TrendingUp, Zap, Tag } from "lucide-react";
 import { parseRichText } from "@/lib/rich-text";
+import { resolveAssetUrl } from "@/lib/media";
 import { listActiveCaseStudies } from "@/services/caseStudies.service";
 
 export function CaseStudiesSection() {
@@ -50,6 +51,16 @@ export function CaseStudiesSection() {
                 className="rounded-2xl border border-[#E2E8F0] dark:border-white/8 overflow-hidden hover:shadow-xl transition-all duration-300 lg:row-span-4 lg:grid lg:grid-rows-subgrid"
                 data-testid={`case-study-card-${cs.id}`}
               >
+                {/* Optional cover image (editable via admin → Case Studies). */}
+                {cs.imageUrl && (
+                  <img
+                    src={resolveAssetUrl(cs.imageUrl)}
+                    alt={typeof tr.title === "string" ? tr.title : ""}
+                    className="w-full h-40 object-cover"
+                    loading="lazy"
+                  />
+                )}
+
                 {/* Header — always dark gradient (intentional brand design element) */}
                 <div
                   className="px-8 py-6 relative overflow-hidden"

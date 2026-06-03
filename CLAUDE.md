@@ -119,9 +119,22 @@ is routed in `AdminRouter`, and is downloadable from `ContentVersionsPage`. When
 you add a content file you MUST add all four. Current map: hero→HeroPage,
 about→AboutPage, products→ProductsPage, services→ServicesPage, caseStudies→CaseStudiesPage,
 philosophy→PhilosophyPage, faq→FaqPage, navigation→NavigationPage,
-footer→FooterPage, legal→LegalPagesPage, seo→SeoPage, branding→BrandingPage,
-languages→LanguagesPage, themes→ThemesPage, settings→SettingsPage,
-inventory→InventoryPage. Contact messages → ContactPage (localStorage only).
+footer→FooterPage, legal→LegalPagesPage, seo→SeoPage, languages→LanguagesPage,
+settings→SettingsPage, inventory→InventoryPage, media→MediaPage. **Site Identity**
+(`/admin/identity`, `BrandingPage.tsx`) edits **both** branding→branding.json and
+themes→themes.json on one page with a combined dirty/save (the old `/admin/themes`
+and `/admin/branding` routes redirect there; there is no standalone ThemesPage).
+Contact messages → ContactPage (localStorage only).
+
+`branding.json` and `themes.json` actually **drive the live site**: `src/lib/brand-theme.ts`
+(`initBrand`, called from `main.tsx`) applies the active theme's palette to CSS variables
+(brand hex tokens + light-mode semantic tokens) and points the favicon at `branding.faviconUrl`;
+`Logo.tsx` reads `branding` (logo/companyName) via `src/repositories/branding.repository.ts`.
+Images everywhere are editable through the `MediaPicker` (`src/components/admin/MediaPicker.tsx`)
+backed by the media library (`media.json`): pick-from-library / upload-from-disk (writes
+`public/media/` via the dev `/__local/asset` endpoint, which now also accepts video/audio and a
+`dir`) / paste external URL. Local refs are root-relative paths resolved by `src/lib/media.ts`
+(`resolveAssetUrl`/`resolveMediaUrl`/`mediaRef`/`absoluteAssetUrl`, the last for OG/sitemap).
 
 The i18n strings in `translations/{es,en}.json` are editable via **TranslationsPage**
 (`/admin/translations`): a flattened key table with live preview
